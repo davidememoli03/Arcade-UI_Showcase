@@ -4,6 +4,7 @@ import {
   SHOWCASE_CATEGORIES,
   SHOWCASE_INTRO,
 } from '../data/showcase-catalog.js'
+import { getShowcaseVariants } from '../data/showcase-variants.js'
 import {
   arcToast,
   arcCountdown,
@@ -23,13 +24,17 @@ function wireDropdowns(root) {
   })
 }
 
-function wireSectionInteractive(panel, interactive) {
+function wireSectionInteractive(panel, item) {
+  const { interactive, id: itemId } = item
+  if (!interactive) return
+
   if (interactive === 'dropdown') {
     wireDropdowns(panel)
   }
+
   if (interactive === 'display') {
-    const el = panel.querySelector('#sc-seven-seg')
-    const btn = panel.querySelector('#sc-seven-refresh')
+    const el = panel.querySelector(`#sc-display-${itemId}`)
+    const btn = panel.querySelector(`#sc-display-refresh-${itemId}`)
     if (el) {
       setArcDisplayValue(el, 12_580, { pad: 6 })
     }
@@ -38,15 +43,20 @@ function wireSectionInteractive(panel, interactive) {
       setArcDisplayValue(el, Math.floor(Math.random() * 999_999), { pad: 6 })
     })
   }
+
   if (interactive === 'glitch') {
-    panel.querySelector('#sc-glitch-btn')?.addEventListener('click', () => {
-      const g = panel.querySelector('.arc-glitch')
+    panel.querySelector(`#sc-glitch-${itemId}`)?.addEventListener('click', () => {
+      let g = panel.querySelector(`#sc-glitch-${itemId}`)?.previousElementSibling
+      if (!g?.classList?.contains('arc-glitch')) {
+        g = panel.querySelector('.arc-glitch')
+      }
       if (g) triggerGlitch(g, 520)
     })
   }
+
   if (interactive === 'countdown') {
-    const el = panel.querySelector('#sc-count-el')
-    const btn = panel.querySelector('#sc-count-start')
+    const el = panel.querySelector(`#sc-count-${itemId}`)
+    const btn = panel.querySelector(`#sc-count-start-${itemId}`)
     let ctrl = null
     btn?.addEventListener('click', () => {
       ctrl?.stop?.()
@@ -60,23 +70,35 @@ function wireSectionInteractive(panel, interactive) {
       })
     })
   }
+
   if (interactive === 'audio') {
     const a = AudioManager.getInstance()
-    panel.querySelector('#sc-audio-coin')?.addEventListener('click', () => {
-      a.play('coin')
-    })
-    panel.querySelector('#sc-audio-select')?.addEventListener('click', () => {
-      a.play('select')
-    })
+    const pairs = [
+      ['sc-audio-coin', 'coin'],
+      ['sc-audio-select', 'select'],
+      ['sc-audio-blip', 'blip'],
+      ['sc-audio-error', 'error'],
+      ['sc-audio-win', 'win'],
+      ['sc-audio-gameover', 'gameover'],
+    ]
+    for (const [base, sound] of pairs) {
+      panel.querySelector(`#${base}-${itemId}`)?.addEventListener('click', () => {
+        a.play(sound)
+      })
+    }
   }
+
   if (interactive === 'toast') {
-    panel.querySelector('#sc-toast-i')?.addEventListener('click', () => {
+    panel.querySelector(`#sc-toast-i-${itemId}`)?.addEventListener('click', () => {
       arcToast.show({ message: 'PLAYER 1 READY', type: 'info', duration: 2500 })
     })
-    panel.querySelector('#sc-toast-ok')?.addEventListener('click', () => {
+    panel.querySelector(`#sc-toast-ok-${itemId}`)?.addEventListener('click', () => {
       arcToast.show({ message: 'STAGE CLEAR', type: 'success', duration: 2500 })
     })
-    panel.querySelector('#sc-toast-err')?.addEventListener('click', () => {
+    panel.querySelector(`#sc-toast-warn-${itemId}`)?.addEventListener('click', () => {
+      arcToast.show({ message: 'WARNING', type: 'warning', duration: 2500 })
+    })
+    panel.querySelector(`#sc-toast-err-${itemId}`)?.addEventListener('click', () => {
       arcToast.show({ message: 'GAME OVER', type: 'error', duration: 2500 })
     })
   }
@@ -99,39 +121,63 @@ function buildDetailCard(item) {
   const body = document.createElement('div')
   body.className = 'arc-panel-body showcase-stack'
 
+  const intro = document.createElement('p')
+  intro.className = 'showcase-blurb'
+  intro.textContent = item.blurb
+  body.appendChild(intro)
+
+  const variants = getShowcaseVariants(item)
+  for (const v of variants) {
+    const block = document.createElement('section')
+    block.className = 'showcase-variant'
+
+    const vh = document.createElement('h3')
+    vh.className = 'showcase-variant-title'
+    vh.textContent = v.title
+    block.appendChild(vh)
+
+    if (v.description) {
+      const vd = document.createElement('p')
+      vd.className = 'showcase-variant-desc'
+      vd.textContent = v.description
+      block.appendChild(vd)
+    }
+
+    if (v.previewHtml?.trim()) {
+      const prev = document.createElement('div')
+      prev.className = 'showcase-preview-box arc-border-pixel'
+      prev.style.padding = '1rem'
+      prev.innerHTML = v.previewHtml
+      block.appendChild(prev)
+    }
+
+    mountCodeBlock(block, {
+      language: v.lang ?? item.lang ?? 'html',
+      code: v.code,
+      showCopy: false,
+    })
+
+    const copy = document.createElement('div')
+    copy.className = 'showcase-variant-actions'
+    const copyBtn = document.createElement('button')
+    copyBtn.type = 'button'
+    copyBtn.className = 'arc-btn arc-btn-ghost'
+    copyBtn.textContent = 'COPY CODE'
+    copyBtn.addEventListener('click', async () => {
+      await navigator.clipboard.writeText(v.code.trim())
+      copyBtn.textContent = 'COPIATO'
+      window.setTimeout(() => {
+        copyBtn.textContent = 'COPY CODE'
+      }, 1500)
+    })
+    copy.appendChild(copyBtn)
+    block.appendChild(copy)
+
+    body.appendChild(block)
+  }
+
   const foot = document.createElement('div')
   foot.className = 'arc-panel-footer showcase-card-foot'
-
-  const blurb = document.createElement('p')
-  blurb.className = 'showcase-blurb'
-  blurb.textContent = item.blurb
-  body.appendChild(blurb)
-
-  const prev = document.createElement('div')
-  prev.className = 'showcase-preview-box arc-border-pixel'
-  prev.style.padding = '1rem'
-  prev.innerHTML = item.previewHtml
-  body.appendChild(prev)
-
-  mountCodeBlock(body, {
-    language: item.lang ?? 'html',
-    code: item.code,
-    showCopy: false,
-  })
-
-  const copy = document.createElement('button')
-  copy.type = 'button'
-  copy.className = 'arc-btn arc-btn-ghost'
-  copy.textContent = 'COPY CODE'
-  copy.addEventListener('click', async () => {
-    await navigator.clipboard.writeText(item.code.trim())
-    copy.textContent = 'COPIATO'
-    window.setTimeout(() => {
-      copy.textContent = 'COPY CODE'
-    }, 1500)
-  })
-  foot.appendChild(copy)
-
   if (item.storybook) {
     const sb = document.createElement('a')
     sb.href = item.storybook
@@ -146,9 +192,7 @@ function buildDetailCard(item) {
   panel.appendChild(body)
   panel.appendChild(foot)
 
-  if (item.interactive) {
-    wireSectionInteractive(panel, item.interactive)
-  }
+  wireSectionInteractive(panel, item)
 
   return panel
 }
@@ -194,7 +238,7 @@ export function renderShowcase(outlet, { navigateTo, showcaseSlug }) {
       <div class="arc-panel-header">${SHOWCASE_INTRO.title}</div>
       <div class="arc-panel-body">
         <p class="showcase-blurb" style="margin:0 0 1rem;">${SHOWCASE_INTRO.body}</p>
-        <p class="showcase-blurb" style="margin:0;">Scegli un componente dal menu a sinistra: ogni pagina mostra solo quell’elemento con anteprima e codice.</p>
+        <p class="showcase-blurb" style="margin:0;">Ogni componente ha una pagina con <strong>tutte le varianti e opzioni</strong> raggruppate in sezioni (anteprima + codice).</p>
       </div>
     `
     detail.appendChild(intro)

@@ -17,7 +17,7 @@ export function findShowcaseItem(slug) {
 
 export const SHOWCASE_INTRO = {
   title: 'Come usare questa pagina',
-  body: 'Ogni blocco ha lo stesso schema: titolo, una frase che spiega a cosa serve, anteprima e codice (COPY). Quasi tutto è solo HTML + classi arc-; dove serve un filo di JavaScript lo vedi nel blocco codice (AudioManager, modale, display a 7 segmenti, toast, ecc.).',
+  body: 'Ogni pagina componente elenca varianti e opzioni (anteprima + codice). Quasi tutto è HTML + classi arc-; dove serve JS lo vedi negli snippet.',
 }
 
 export const SHOWCASE_CATEGORIES = [

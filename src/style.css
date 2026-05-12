@@ -241,6 +241,39 @@ body {
   gap: 1.5rem;
 }
 
+.showcase-variant {
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(255, 0, 127, 0.25);
+}
+
+.showcase-variant:first-of-type {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
+.showcase-variant-title {
+  margin: 0 0 0.35rem;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--showcase-magenta);
+}
+
+.showcase-variant-desc {
+  margin: 0 0 0.75rem;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  opacity: 0.92;
+}
+
+.showcase-variant-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+
 .showcase-code-toolbar {
   display: flex;
   justify-content: space-between;
