@@ -1,6 +1,10 @@
 import '@davide03memoli/arcade-ui/dist/arcade-ui.css'
 import {
+  arcModal,
   AudioManager,
+  bindArcDisplays,
+  bindSliders,
+  bindTabs,
   initGlitch,
 } from '@davide03memoli/arcade-ui'
 import './style.css'
@@ -27,6 +31,10 @@ const { apply } = createRouter({
   onAfterNavigate() {
     audio.bindButtons(outlet)
     initGlitch(outlet)
+    bindTabs(outlet)
+    bindSliders(outlet)
+    bindArcDisplays(outlet)
+    arcModal.bindModalTriggers(outlet)
   },
 })
 

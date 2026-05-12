@@ -10,6 +10,7 @@ export function renderHome(outlet, { navigateTo }) {
     <p class="showcase-hero-sub">
       Neon arcade UI primitives for the web — pixel chrome, CRT vibes, and synthesized SFX via Web Audio.
       Built as pure CSS + a tiny JS layer. This site runs on the same library it documents.
+      In <strong>SHOWCASE</strong> trovi tutti i componenti elencati per categoria, con una frase che spiega il ruolo di ognuno, anteprima e codice da copiare.
     </p>
     <div class="arc-panel arc-panel-cyan" style="max-width: 560px; margin: 0 auto;">
       <div class="arc-panel-header">INSTALL</div>

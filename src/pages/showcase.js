@@ -1,13 +1,85 @@
 import { mountCodeBlock } from '../components/code-block.js'
-import { AudioManager, triggerGlitch } from '@davide03memoli/arcade-ui'
+import {
+  SHOWCASE_CATEGORIES,
+  SHOWCASE_INTRO,
+} from '../data/showcase-catalog.js'
+import {
+  arcToast,
+  arcCountdown,
+  AudioManager,
+  setArcDisplayValue,
+  triggerGlitch,
+} from '@davide03memoli/arcade-ui'
 
-const SECTIONS = [
-  { id: 'cmp-btn', label: 'Buttons' },
-  { id: 'cmp-panel', label: 'Panels' },
-  { id: 'cmp-input', label: 'Input' },
-  { id: 'cmp-glitch', label: 'Glitch' },
-  { id: 'cmp-audio', label: 'AudioManager' },
-]
+function wireDropdowns(root) {
+  root.querySelectorAll('.arc-dropdown-trigger').forEach((trigger) => {
+    if (trigger.dataset.scWired === '1') return
+    trigger.dataset.scWired = '1'
+    trigger.addEventListener('click', () => {
+      const open = trigger.getAttribute('aria-expanded') === 'true'
+      trigger.setAttribute('aria-expanded', String(!open))
+    })
+  })
+}
+
+function wireSectionInteractive(panel, interactive) {
+  if (interactive === 'dropdown') {
+    wireDropdowns(panel)
+  }
+  if (interactive === 'display') {
+    const el = panel.querySelector('#sc-seven-seg')
+    const btn = panel.querySelector('#sc-seven-refresh')
+    if (el) {
+      setArcDisplayValue(el, 12_580, { pad: 6 })
+    }
+    btn?.addEventListener('click', () => {
+      if (!el) return
+      setArcDisplayValue(el, Math.floor(Math.random() * 999_999), { pad: 6 })
+    })
+  }
+  if (interactive === 'glitch') {
+    panel.querySelector('#sc-glitch-btn')?.addEventListener('click', () => {
+      const g = panel.querySelector('.arc-glitch')
+      if (g) triggerGlitch(g, 520)
+    })
+  }
+  if (interactive === 'countdown') {
+    const el = panel.querySelector('#sc-count-el')
+    const btn = panel.querySelector('#sc-count-start')
+    let ctrl = null
+    btn?.addEventListener('click', () => {
+      ctrl?.stop?.()
+      if (!el) return
+      setArcDisplayValue(el, '15', { pad: 2 })
+      ctrl = arcCountdown(el, {
+        seconds: 15,
+        onEnd: () => {
+          ctrl = null
+        },
+      })
+    })
+  }
+  if (interactive === 'audio') {
+    const a = AudioManager.getInstance()
+    panel.querySelector('#sc-audio-coin')?.addEventListener('click', () => {
+      a.play('coin')
+    })
+    panel.querySelector('#sc-audio-select')?.addEventListener('click', () => {
+      a.play('select')
+    })
+  }
+  if (interactive === 'toast') {
+    panel.querySelector('#sc-toast-i')?.addEventListener('click', () => {
+      arcToast.show({ message: 'PLAYER 1 READY', type: 'info', duration: 2500 })
+    })
+    panel.querySelector('#sc-toast-ok')?.addEventListener('click', () => {
+      arcToast.show({ message: 'STAGE CLEAR', type: 'success', duration: 2500 })
+    })
+    panel.querySelector('#sc-toast-err')?.addEventListener('click', () => {
+      arcToast.show({ message: 'GAME OVER', type: 'error', duration: 2500 })
+    })
+  }
+}
 
 export function renderShowcase(outlet) {
   const shell = document.createElement('div')
@@ -15,159 +87,108 @@ export function renderShowcase(outlet) {
 
   const side = document.createElement('aside')
   side.className = 'showcase-sidebar'
-  for (const s of SECTIONS) {
-    const b = document.createElement('button')
-    b.type = 'button'
-    b.className = 'arc-btn arc-btn-ghost'
-    b.textContent = s.label
-    b.addEventListener('click', () => {
-      document.getElementById(s.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    })
-    side.appendChild(b)
+  side.setAttribute('aria-label', 'Sezioni componenti')
+
+  for (const cat of SHOWCASE_CATEGORIES) {
+    const catEl = document.createElement('div')
+    catEl.className = 'showcase-side-group'
+    const lab = document.createElement('div')
+    lab.className = 'showcase-side-cat'
+    lab.textContent = cat.label
+    catEl.appendChild(lab)
+    for (const item of cat.items) {
+      const b = document.createElement('button')
+      b.type = 'button'
+      b.className = 'arc-btn arc-btn-ghost'
+      b.textContent = item.navLabel
+      b.addEventListener('click', () => {
+        document.getElementById(item.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      })
+      catEl.appendChild(b)
+    }
+    side.appendChild(catEl)
   }
 
   const main = document.createElement('div')
   main.className = 'showcase-stack'
 
-  function card({ id, title, previewHtml, code, lang = 'html' }) {
+  const intro = document.createElement('div')
+  intro.className = 'arc-panel arc-panel-yellow'
+  intro.innerHTML = `
+    <div class="arc-panel-header">${SHOWCASE_INTRO.title}</div>
+    <div class="arc-panel-body">
+      <p class="showcase-blurb" style="margin:0 0 .75rem;">${SHOWCASE_INTRO.body}</p>
+    </div>
+  `
+  main.appendChild(intro)
+
+  function card(item) {
     const panel = document.createElement('section')
     panel.className = 'arc-panel arc-panel-cyan'
-    panel.id = id
-    panel.innerHTML = `
-      <div class="arc-panel-header">${title}</div>
-      <div class="arc-panel-body showcase-stack"></div>
-      <div class="arc-panel-footer"></div>
-    `
-    const body = panel.querySelector('.arc-panel-body')
-    const foot = panel.querySelector('.arc-panel-footer')
+    panel.id = item.id
+    const head = document.createElement('div')
+    head.className = 'arc-panel-header showcase-card-header'
+    head.innerHTML = `<span>${item.title}</span><span class="showcase-class-tag">${item.className}</span>`
+    const body = document.createElement('div')
+    body.className = 'arc-panel-body showcase-stack'
+    const foot = document.createElement('div')
+    foot.className = 'arc-panel-footer showcase-card-foot'
+
+    const blurb = document.createElement('p')
+    blurb.className = 'showcase-blurb'
+    blurb.textContent = item.blurb
+    body.appendChild(blurb)
+
     const prev = document.createElement('div')
     prev.className = 'showcase-preview-box arc-border-pixel'
     prev.style.padding = '1rem'
-    prev.innerHTML = previewHtml
+    prev.innerHTML = item.previewHtml
     body.appendChild(prev)
-    mountCodeBlock(body, { language: lang, code, showCopy: false })
+
+    mountCodeBlock(body, {
+      language: item.lang ?? 'html',
+      code: item.code,
+      showCopy: false,
+    })
+
     const copy = document.createElement('button')
     copy.type = 'button'
     copy.className = 'arc-btn arc-btn-ghost'
     copy.textContent = 'COPY CODE'
     copy.addEventListener('click', async () => {
-      await navigator.clipboard.writeText(code)
-      copy.textContent = 'COPIED'
+      await navigator.clipboard.writeText(item.code.trim())
+      copy.textContent = 'COPIATO'
       window.setTimeout(() => {
         copy.textContent = 'COPY CODE'
       }, 1500)
     })
     foot.appendChild(copy)
-    return panel
+
+    if (item.storybook) {
+      const sb = document.createElement('a')
+      sb.href = item.storybook
+      sb.target = '_blank'
+      sb.rel = 'noopener noreferrer'
+      sb.className = 'arc-btn arc-btn-ghost'
+      sb.textContent = 'STORYBOOK'
+      foot.appendChild(sb)
+    }
+
+    panel.appendChild(head)
+    panel.appendChild(body)
+    panel.appendChild(foot)
+    main.appendChild(panel)
+
+    if (item.interactive) {
+      wireSectionInteractive(panel, item.interactive)
+    }
   }
 
-  main.appendChild(
-    card({
-      id: 'cmp-btn',
-      title: 'arc-btn',
-      previewHtml: `
-        <button type="button" class="arc-btn arc-btn-primary">PRIMARY</button>
-        <button type="button" class="arc-btn arc-btn-ghost">GHOST</button>
-        <button type="button" class="arc-btn arc-btn-danger">DANGER / ACCENT</button>
-        <button type="button" class="arc-btn arc-btn-primary" disabled>DISABLED</button>
-      `,
-      code: `<button type="button" class="arc-btn arc-btn-primary">PRIMARY</button>
-<button type="button" class="arc-btn arc-btn-ghost">GHOST</button>
-<button type="button" class="arc-btn arc-btn-danger">DANGER / ACCENT</button>
-<button type="button" class="arc-btn arc-btn-primary" disabled>DISABLED</button>`,
-    }),
-  )
-
-  main.appendChild(
-    card({
-      id: 'cmp-panel',
-      title: 'arc-panel',
-      previewHtml: `
-        <div class="arc-panel arc-panel-cyan" style="min-width:200px;">
-          <div class="arc-panel-header">CYAN</div>
-          <div class="arc-panel-body">Panel body</div>
-        </div>
-        <div class="arc-panel arc-panel-purple" style="min-width:200px;">
-          <div class="arc-panel-header">MAGENTA / PURPLE</div>
-          <div class="arc-panel-body">Neon magenta lane</div>
-        </div>
-        <div class="arc-panel arc-panel-yellow" style="min-width:200px;">
-          <div class="arc-panel-header">YELLOW</div>
-          <div class="arc-panel-body">High score lane</div>
-        </div>
-      `,
-      code: `<div class="arc-panel arc-panel-cyan">
-  <div class="arc-panel-header">TITLE</div>
-  <div class="arc-panel-body">Content</div>
-</div>
-<div class="arc-panel arc-panel-purple">...</div>
-<div class="arc-panel arc-panel-yellow">...</div>`,
-    }),
-  )
-
-  main.appendChild(
-    card({
-      id: 'cmp-input',
-      title: 'arc-input',
-      previewHtml: `
-        <div class="arc-input-wrapper" style="min-width:240px;">
-          <label class="arc-label" for="demo-inp">CALLSIGN</label>
-          <input id="demo-inp" class="arc-input" placeholder="AAA" maxlength="3" autocomplete="off">
-        </div>
-      `,
-      code: `<div class="arc-input-wrapper">
-  <label class="arc-label" for="id">CALLSIGN</label>
-  <input id="id" class="arc-input" placeholder="AAA">
-</div>`,
-    }),
-  )
-
-  const glitchPanel = card({
-    id: 'cmp-glitch',
-    title: 'Glitch (.arc-glitch + JS)',
-    previewHtml: `
-      <p class="arc-glitch arc-text-neon" data-text="HIGH SCORE" style="font-family:var(--arc-font-pixel);font-size:1rem;margin:0;">HIGH SCORE</p>
-      <button type="button" class="arc-btn arc-btn-ghost" id="showcase-glitch-run">triggerGlitch()</button>
-    `,
-    code: `import { initGlitch, triggerGlitch } from '@davide03memoli/arcade-ui'
-
-initGlitch(document.body)
-
-<p class="arc-glitch" data-text="HIGH SCORE">HIGH SCORE</p>
-
-triggerGlitch(element, 450)`,
-    lang: 'javascript',
-  })
-  main.appendChild(glitchPanel)
-
-  const audioPanel = card({
-    id: 'cmp-audio',
-    title: 'AudioManager',
-    previewHtml: `
-      <button type="button" class="arc-btn arc-btn-primary" id="showcase-audio-coin">play('coin')</button>
-      <button type="button" class="arc-btn arc-btn-ghost" id="showcase-audio-blip">play('blip')</button>
-    `,
-    code: `import { AudioManager } from '@davide03memoli/arcade-ui'
-
-const audio = AudioManager.getInstance()
-audio.play('coin')
-audio.bindButtons(document.body)`,
-    lang: 'javascript',
-  })
-  main.appendChild(audioPanel)
-
-  glitchPanel.querySelector('#showcase-glitch-run')?.addEventListener('click', () => {
-    const g = glitchPanel.querySelector('.arc-glitch')
-    if (g) triggerGlitch(g, 500)
-  })
-
-  const a = AudioManager.getInstance()
-  audioPanel.querySelector('#showcase-audio-coin')?.addEventListener('click', () => {
-    a.play('coin')
-  })
-  audioPanel.querySelector('#showcase-audio-blip')?.addEventListener('click', () => {
-    a.play('blip')
-  })
+  for (const cat of SHOWCASE_CATEGORIES) {
+    for (const item of cat.items) {
+      card(item)
+    }
+  }
 
   shell.appendChild(side)
   shell.appendChild(main)
