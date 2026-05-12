@@ -449,14 +449,14 @@ arcSprite.init(document.querySelector('.arc-sprite'))?.play()`,
     {
       title: 'Glow box / testo',
       description: 'arc-glow-cyan · red · yellow · green · purple',
-      previewHtml: `<div style="display:flex;flex-wrap:wrap;gap:0.5rem;justify-content:center;font-family:var(--arc-font-pixel);font-size:0.6rem;">
+      previewHtml: `<div style="display:flex;flex-wrap:wrap;gap:0.85rem 1rem;justify-content:center;align-items:center;padding:0.35rem 0;font-family:var(--arc-font-pixel);font-size:clamp(0.72rem,2.4vw,0.95rem);">
 <span class="arc-glow-cyan">CY</span><span class="arc-glow-red">RD</span><span class="arc-glow-yellow">YL</span><span class="arc-glow-green">GN</span><span class="arc-glow-purple">PU</span></div>`,
       code: `<span class="arc-glow-cyan">TEXT</span>`,
     },
     {
       title: 'Effetti testo',
       description: 'arc-text-neon · arc-text-gradient · arc-text-outline · arc-text-glitch · arc-text-shadow-long · arc-text-chroma · arc-text-pixel-shadow',
-      previewHtml: `<div style="display:flex;flex-direction:column;gap:0.35rem;align-items:center;font-family:var(--arc-font-pixel);font-size:0.55rem;">
+      previewHtml: `<div style="display:flex;flex-direction:column;gap:0.85rem;align-items:center;justify-content:center;padding:0.5rem 0;font-family:var(--arc-font-pixel);font-size:clamp(0.72rem,2.3vw,0.95rem);">
 <span class="arc-text-neon">NEON</span><span class="arc-text-outline">OUTLINE</span><span class="arc-text-glitch" data-text="GLITCH">GLITCH</span></div>`,
       code: `<span class="arc-text-gradient">GRAD</span>
 <span class="arc-text-pixel-shadow">PIX</span>`,
@@ -467,16 +467,18 @@ arcSprite.init(document.querySelector('.arc-sprite'))?.play()`,
     {
       title: 'Classi',
       description: 'arc-glitch (sempre) · arc-glitch-hover (solo al passaggio del mouse)',
-      previewHtml: `<p class="arc-glitch arc-text-neon" data-text="ALWAYS" style="font-family:var(--arc-font-pixel);font-size:0.75rem;margin:0;">ALWAYS</p>
-<p class="arc-glitch-hover arc-text-neon" data-text="HOVER" style="font-family:var(--arc-font-pixel);font-size:0.75rem;margin:0;">HOVER ME</p>`,
+      previewHtml: `<div style="display:flex;flex-direction:column;align-items:center;gap:1.1rem;width:100%;padding:0.35rem 0;">
+<p class="arc-glitch arc-text-neon" data-text="ALWAYS" style="font-family:var(--arc-font-pixel);font-size:clamp(0.78rem,2.5vw,1.05rem);margin:0;text-align:center;">ALWAYS</p>
+<p class="arc-glitch-hover arc-text-neon" data-text="HOVER" style="font-family:var(--arc-font-pixel);font-size:clamp(0.78rem,2.5vw,1.05rem);margin:0;text-align:center;">HOVER ME</p></div>`,
       code: `<p class="arc-glitch" data-text="X">X</p>
 <p class="arc-glitch-hover" data-text="Y">Y</p>`,
     },
     {
       title: 'Burst (JS)',
       description: 'initGlitch(root) + triggerGlitch(el, ms)',
-      previewHtml: `<p class="arc-glitch arc-text-neon" data-text="PULSE" style="font-family:var(--arc-font-pixel);font-size:0.75rem;margin:0;">PULSE</p>
-<button type="button" class="arc-btn arc-btn-ghost arc-btn-sm" id="sc-glitch-cmp-glitch">Trigger</button>`,
+      previewHtml: `<div style="display:flex;flex-direction:column;align-items:center;gap:1rem;width:100%;">
+<p class="arc-glitch arc-text-neon" data-text="PULSE" style="font-family:var(--arc-font-pixel);font-size:clamp(0.78rem,2.5vw,1.05rem);margin:0;">PULSE</p>
+<button type="button" class="arc-btn arc-btn-ghost" id="sc-glitch-cmp-glitch">Trigger</button></div>`,
       code: `import { initGlitch, triggerGlitch } from '@davide03memoli/arcade-ui'
 initGlitch(document.body)
 triggerGlitch(el, 500)`,
@@ -488,11 +490,11 @@ triggerGlitch(el, 500)`,
     {
       title: 'Spessori e stili',
       description: 'arc-border-pixel · arc-border-pixel-thick · arc-border-pixel-inset · arc-border-pixel-chamfer · arc-border-pixel-glow',
-      previewHtml: `<div style="display:flex;flex-wrap:wrap;gap:0.5rem;justify-content:center;">
-<div class="arc-border-pixel" style="padding:0.5rem;font-size:0.75rem;">base</div>
-<div class="arc-border-pixel-thick arc-border-pixel-glow" style="padding:0.5rem;font-size:0.75rem;">thick+glow</div>
-<div class="arc-border-pixel-inset" style="padding:0.5rem;font-size:0.75rem;">inset</div>
-<div class="arc-border-pixel-chamfer" style="padding:0.5rem;font-size:0.75rem;">chamfer</div></div>`,
+      previewHtml: `<div style="display:flex;flex-wrap:wrap;gap:1rem 1.15rem;justify-content:center;align-items:stretch;padding:0.25rem 0;">
+<div class="arc-border-pixel" style="padding:0.85rem 1rem;font-family:var(--arc-font-body);font-size:1rem;line-height:1.35;">base</div>
+<div class="arc-border-pixel-thick arc-border-pixel-glow" style="padding:0.85rem 1rem;font-family:var(--arc-font-body);font-size:1rem;line-height:1.35;">thick+glow</div>
+<div class="arc-border-pixel-inset" style="padding:0.85rem 1rem;font-family:var(--arc-font-body);font-size:1rem;line-height:1.35;">inset</div>
+<div class="arc-border-pixel-chamfer" style="padding:0.85rem 1rem;font-family:var(--arc-font-body);font-size:1rem;line-height:1.35;">chamfer</div></div>`,
       code: `<div class="arc-border-pixel arc-border-pixel-glow">…</div>`,
     },
   ],
@@ -501,7 +503,7 @@ triggerGlitch(el, 500)`,
     {
       title: 'Wrapper CRT',
       description: 'Combina con arc-anim-flicker / scanline su figli se serve.',
-      previewHtml: `<div class="arc-crt-screen arc-border-pixel" style="max-width:260px;padding:0.75rem;margin:0 auto;">Contenuto tipo CRT</div>`,
+      previewHtml: `<div class="arc-crt-screen arc-border-pixel" style="max-width:min(100%,22rem);width:100%;padding:1.15rem 1.35rem;margin:0 auto;font-family:var(--arc-font-body);font-size:1.05rem;line-height:1.5;text-align:center;">Contenuto tipo CRT</div>`,
       code: `<div class="arc-crt-screen">…</div>`,
     },
   ],
@@ -510,13 +512,13 @@ triggerGlitch(el, 500)`,
     {
       title: 'Classi pattern',
       description: 'arc-bg-grid · arc-bg-dots · arc-bg-scanlines · arc-bg-noise · arc-bg-circuit · arc-bg-stars',
-      previewHtml: `<div style="display:grid;grid-template-columns:1fr 1fr;gap:0.35rem;max-width:360px;margin:0 auto;">
-<div class="arc-bg-grid arc-border-pixel" style="min-height:48px;padding:0.35rem;font-size:0.65rem;--arc-bg-opacity:0.6;">grid</div>
-<div class="arc-bg-dots arc-border-pixel" style="min-height:48px;padding:0.35rem;font-size:0.65rem;">dots</div>
-<div class="arc-bg-scanlines arc-border-pixel" style="min-height:48px;padding:0.35rem;font-size:0.65rem;">scan</div>
-<div class="arc-bg-noise arc-border-pixel" style="min-height:48px;padding:0.35rem;font-size:0.65rem;">noise</div>
-<div class="arc-bg-circuit arc-border-pixel" style="min-height:48px;padding:0.35rem;font-size:0.65rem;">circuit</div>
-<div class="arc-bg-stars arc-border-pixel" style="min-height:48px;padding:0.35rem;font-size:0.65rem;">stars</div></div>`,
+      previewHtml: `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(10rem,1fr));gap:0.75rem;max-width:32rem;width:100%;margin:0 auto;">
+<div class="arc-bg-grid arc-border-pixel" style="min-height:5.25rem;padding:0.65rem 0.75rem;font-family:var(--arc-font-body);font-size:0.95rem;line-height:1.4;display:flex;align-items:center;justify-content:center;--arc-bg-opacity:0.55;">grid</div>
+<div class="arc-bg-dots arc-border-pixel" style="min-height:5.25rem;padding:0.65rem 0.75rem;font-family:var(--arc-font-body);font-size:0.95rem;line-height:1.4;display:flex;align-items:center;justify-content:center;">dots</div>
+<div class="arc-bg-scanlines arc-border-pixel" style="min-height:5.25rem;padding:0.65rem 0.75rem;font-family:var(--arc-font-body);font-size:0.95rem;line-height:1.4;display:flex;align-items:center;justify-content:center;">scan</div>
+<div class="arc-bg-noise arc-border-pixel" style="min-height:5.25rem;padding:0.65rem 0.75rem;font-family:var(--arc-font-body);font-size:0.95rem;line-height:1.4;display:flex;align-items:center;justify-content:center;">noise</div>
+<div class="arc-bg-circuit arc-border-pixel" style="min-height:5.25rem;padding:0.65rem 0.75rem;font-family:var(--arc-font-body);font-size:0.95rem;line-height:1.4;display:flex;align-items:center;justify-content:center;">circuit</div>
+<div class="arc-bg-stars arc-border-pixel" style="min-height:5.25rem;padding:0.65rem 0.75rem;font-family:var(--arc-font-body);font-size:0.95rem;line-height:1.4;display:flex;align-items:center;justify-content:center;">stars</div></div>`,
       code: `<div class="arc-bg-grid" style="--arc-bg-opacity:0.4">…</div>`,
     },
   ],
@@ -525,11 +527,11 @@ triggerGlitch(el, 500)`,
     {
       title: 'Classi animazione',
       description: 'Token in CSS: velocità/intensità regolabili con variabili.',
-      previewHtml: `<div style="display:flex;flex-wrap:wrap;gap:0.35rem;justify-content:center;font-family:var(--arc-font-pixel);font-size:0.5rem;">
+      previewHtml: `<div style="display:flex;flex-wrap:wrap;gap:0.85rem 1rem;justify-content:center;align-items:center;padding:0.5rem 0;font-family:var(--arc-font-pixel);font-size:clamp(0.68rem,2.2vw,0.9rem);">
 <span class="arc-anim-flicker">FLICK</span>
 <span class="arc-anim-blink-cursor">|</span>
 <span class="arc-anim-insert-coin">COIN</span>
-<span class="arc-anim-scanline-move arc-border-pixel" style="padding:0.2rem;">SCAN</span></div>`,
+<span class="arc-anim-scanline-move arc-border-pixel" style="padding:0.45rem 0.6rem;">SCAN</span></div>`,
       code: `<span class="arc-anim-static-noise">…</span>
 <span class="arc-anim-power-on">…</span>
 <span class="arc-anim-power-off">…</span>

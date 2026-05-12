@@ -491,9 +491,9 @@ const ctrl = arcCountdown(displayEl, {
         blurb: 'Classi per testo luminoso, alone, contorno e gradiente — tutto token-based.',
         storybook: `${SB}/?path=/story/effects-glow--text`,
         previewHtml: `
-          <span class="arc-glow-cyan" style="font-family:var(--arc-font-pixel);font-size:0.7rem;">GLOW</span>
-          <span class="arc-text-neon" style="font-family:var(--arc-font-pixel);font-size:0.7rem;">NEON</span>
-          <span class="arc-text-outline" style="font-family:var(--arc-font-pixel);font-size:0.7rem;">OUTLINE</span>`,
+          <span class="arc-glow-cyan" style="font-family:var(--arc-font-pixel);font-size:clamp(0.75rem,2.4vw,0.95rem);">GLOW</span>
+          <span class="arc-text-neon" style="font-family:var(--arc-font-pixel);font-size:clamp(0.75rem,2.4vw,0.95rem);">NEON</span>
+          <span class="arc-text-outline" style="font-family:var(--arc-font-pixel);font-size:clamp(0.75rem,2.4vw,0.95rem);">OUTLINE</span>`,
         code: `<span class="arc-glow-cyan">TESTO</span>
 <span class="arc-text-neon">NEON</span>
 <span class="arc-text-outline">CONTORNO</span>`,
@@ -506,8 +506,8 @@ const ctrl = arcCountdown(displayEl, {
         blurb: 'Distorsione su testo: classe sul markup + `initGlitch()` per sincronizzare i layer; `triggerGlitch()` per un burst.',
         storybook: `${SB}/?path=/story/effects-glitch--always-on`,
         previewHtml: `
-          <p class="arc-glitch arc-text-neon" data-text="HIGH SCORE" style="font-family:var(--arc-font-pixel);font-size:0.85rem;margin:0;">HIGH SCORE</p>
-          <button type="button" class="arc-btn arc-btn-ghost arc-btn-sm" id="sc-glitch-btn">Trigger</button>`,
+          <p class="arc-glitch arc-text-neon" data-text="HIGH SCORE" style="font-family:var(--arc-font-pixel);font-size:clamp(0.78rem,2.5vw,1.05rem);margin:0;">HIGH SCORE</p>
+          <button type="button" class="arc-btn arc-btn-ghost" id="sc-glitch-cmp-glitch">Trigger</button>`,
         interactive: 'glitch',
         code: `<p class="arc-glitch" data-text="TITLE">TITLE</p>
 
@@ -524,7 +524,7 @@ triggerGlitch(element, 500)`,
         blurb: 'Cornice a gradini come i bordi dei giochi 8-bit; combina con `-glow` per il neon.',
         storybook: `${SB}/?path=/story/effects-pixel-border--showcase`,
         previewHtml: `
-          <div class="arc-border-pixel arc-border-pixel-glow" style="padding:1rem;">Contenuto incorniciato</div>`,
+          <div class="arc-border-pixel arc-border-pixel-glow" style="padding:1.1rem 1.25rem;font-family:var(--arc-font-body);font-size:1.05rem;">Contenuto incorniciato</div>`,
         code: `<div class="arc-border-pixel arc-border-pixel-glow">…</div>`,
       },
       {
@@ -535,7 +535,7 @@ triggerGlitch(element, 500)`,
         blurb: 'Avvolgi il contenuto per vignetta/scanline stile tubo catodico (combinabile con animazioni flicker).',
         storybook: `${SB}/?path=/story/effects-crt--screen`,
         previewHtml: `
-          <div class="arc-crt-screen arc-border-pixel" style="max-width:260px;padding:0.75rem;">
+          <div class="arc-crt-screen arc-border-pixel" style="max-width:min(100%,22rem);width:100%;padding:1.15rem 1.35rem;font-family:var(--arc-font-body);font-size:1.05rem;line-height:1.5;text-align:center;">
             Testo come dentro al cabinato
           </div>`,
         code: `<div class="arc-crt-screen">… contenuto …</div>`,
@@ -548,7 +548,7 @@ triggerGlitch(element, 500)`,
         blurb: 'Griglia, puntini, scanline, rumore, circuito, stelle — come classe su un contenitore (non sul body se vuoi controllare l’area).',
         storybook: `${SB}/?path=/story/effects-background-patterns--all-patterns`,
         previewHtml: `
-          <div class="arc-bg-grid arc-border-pixel" style="min-height:72px;padding:0.75rem;--arc-bg-opacity:0.5;">Griglia leggera</div>`,
+          <div class="arc-bg-grid arc-border-pixel" style="min-height:5rem;padding:0.85rem 1rem;font-family:var(--arc-font-body);font-size:1rem;--arc-bg-opacity:0.5;">Griglia leggera</div>`,
         code: `<div class="arc-bg-grid">…</div>
 <div class="arc-bg-scanlines">…</div>`,
       },
@@ -560,7 +560,7 @@ triggerGlitch(element, 500)`,
         blurb: 'Flicker, cursore lampeggiante, insert coin, scanline in movimento, noise TV, power on/off.',
         storybook: `${SB}/?path=/story/effects-animations--showcase`,
         previewHtml: `
-          <span class="arc-anim-insert-coin arc-text-neon" style="font-family:var(--arc-font-pixel);font-size:0.65rem;">INSERT COIN</span>`,
+          <span class="arc-anim-insert-coin arc-text-neon" style="font-family:var(--arc-font-pixel);font-size:clamp(0.7rem,2.3vw,0.9rem);">INSERT COIN</span>`,
         code: `<span class="arc-anim-flicker">…</span>
 <span class="arc-anim-insert-coin">INSERT COIN</span>`,
       },
