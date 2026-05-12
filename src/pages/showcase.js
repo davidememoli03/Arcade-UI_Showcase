@@ -163,7 +163,7 @@ export function renderShowcase(outlet, { navigateTo, showcaseSlug }) {
 
   const idx = document.createElement('a')
   idx.href = '#/showcase'
-  idx.className = sideLinkClass(!showcaseSlug)
+  idx.className = `${sideLinkClass(!showcaseSlug)} showcase-drawer-indice`
   idx.textContent = 'INDICE'
   drawer.appendChild(idx)
 

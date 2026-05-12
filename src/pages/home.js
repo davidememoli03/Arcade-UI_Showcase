@@ -6,7 +6,9 @@ export function renderHome(outlet, { navigateTo }) {
   const audio = AudioManager.getInstance()
 
   outlet.innerHTML = `
-    <h1 class="arc-glitch showcase-hero-title" data-text="INSERT COIN TO START">INSERT COIN TO START</h1>
+    <div class="showcase-hero-title-wrap">
+      <h1 class="arc-glitch showcase-hero-title" data-text="INSERT COIN TO START">INSERT COIN TO START</h1>
+    </div>
     <p class="showcase-hero-sub">
       Neon arcade UI primitives for the web — pixel chrome, CRT vibes, and synthesized SFX via Web Audio.
       Built as pure CSS + a tiny JS layer. This site runs on the same library it documents.

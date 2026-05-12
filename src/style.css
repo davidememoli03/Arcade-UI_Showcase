@@ -81,17 +81,31 @@ body {
   padding: 5.5rem 1.25rem 2.5rem;
 }
 
+.showcase-hero-title-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 0 1rem;
+  padding: 0 0.75rem;
+  box-sizing: border-box;
+}
+
 .showcase-hero-title {
   font-family: var(--arc-font-pixel, monospace);
   font-size: clamp(1.1rem, 4vw, 2.35rem);
   text-align: center;
-  margin: 0 0 1rem;
+  margin: 0;
   letter-spacing: 0.06em;
   line-height: 1.35;
   color: var(--arc-color-cyan, #00f5ff);
   text-shadow:
     0 0 12px var(--arc-color-cyan-glow, rgba(0, 245, 255, 0.45)),
     0 0 28px rgba(0, 245, 255, 0.25);
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .showcase-hero-sub {
@@ -130,7 +144,19 @@ body {
   overflow-y: auto;
   overflow-x: hidden;
   padding-right: 0.35rem;
+  padding-top: 0.15rem;
   border-right: 1px solid rgba(0, 245, 255, 0.25);
+}
+
+.showcase-drawer .showcase-drawer-indice {
+  margin-bottom: 1.1rem;
+  position: relative;
+  z-index: 0;
+}
+
+.showcase-drawer .showcase-side-group:first-of-type {
+  margin-top: 0.1rem;
+  padding-top: 0.15rem;
 }
 
 .showcase-drawer .showcase-side-group {
