@@ -1,3 +1,6 @@
+# Copia questo file in `.github/workflows/deploy.yml` per abilitare il deploy su GitHub Pages
+# (oppure: `gh auth refresh -h github.com -s workflow` e ripristina il workflow nel repo).
+#
 name: Deploy Showcase
 
 on:
