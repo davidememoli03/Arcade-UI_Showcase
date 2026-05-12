@@ -1,4 +1,4 @@
-import { normalizeRouteHash } from '../router.js'
+import { isShowcasePath, normalizeRouteHash } from '../router.js'
 
 const LINKS = [
   { route: '/home', label: 'HOME' },
@@ -8,7 +8,10 @@ const LINKS = [
 ]
 
 function linkButtonClass(route, current) {
-  const isActive = route === current
+  let isActive = route === current
+  if (route === '/showcase' && isShowcasePath(current)) {
+    isActive = true
+  }
   return isActive ? 'arc-btn arc-btn-ghost showcase-nav-active' : 'arc-btn arc-btn-ghost'
 }
 

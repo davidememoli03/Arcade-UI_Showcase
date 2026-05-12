@@ -1,9 +1,19 @@
 /**
- * Catalogo showcase: ogni voce ha testo semplice + HTML di esempio + snippet copiabile.
- * Gli id sono usati per scroll dalla sidebar (kebab in navLabel).
+ * Catalogo showcase: ogni voce ha id univoco usato nell’URL `#/showcase/<id>`.
  */
 
 const SB = 'https://davidememoli03.github.io/Arcade-UI'
+
+export function findShowcaseItem(slug) {
+  if (!slug) return null
+  for (const cat of SHOWCASE_CATEGORIES) {
+    const item = cat.items.find((i) => i.id === slug)
+    if (item) {
+      return { item, category: cat }
+    }
+  }
+  return null
+}
 
 export const SHOWCASE_INTRO = {
   title: 'Come usare questa pagina',

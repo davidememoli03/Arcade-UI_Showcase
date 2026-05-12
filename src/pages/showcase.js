@@ -1,5 +1,6 @@
 import { mountCodeBlock } from '../components/code-block.js'
 import {
+  findShowcaseItem,
   SHOWCASE_CATEGORIES,
   SHOWCASE_INTRO,
 } from '../data/showcase-catalog.js'
@@ -81,13 +82,90 @@ function wireSectionInteractive(panel, interactive) {
   }
 }
 
-export function renderShowcase(outlet) {
-  const shell = document.createElement('div')
-  shell.className = 'showcase-two-col showcase-two-col--sidebar'
+function sideLinkClass(active) {
+  const base = 'arc-btn arc-btn-ghost showcase-side-link'
+  return active ? `${base} showcase-side-link-active` : base
+}
 
-  const side = document.createElement('aside')
-  side.className = 'showcase-sidebar'
-  side.setAttribute('aria-label', 'Sezioni componenti')
+function buildDetailCard(item) {
+  const panel = document.createElement('article')
+  panel.className = 'arc-panel arc-panel-cyan'
+  panel.id = item.id
+
+  const head = document.createElement('div')
+  head.className = 'arc-panel-header showcase-card-header'
+  head.innerHTML = `<span>${item.title}</span><span class="showcase-class-tag">${item.className}</span>`
+
+  const body = document.createElement('div')
+  body.className = 'arc-panel-body showcase-stack'
+
+  const foot = document.createElement('div')
+  foot.className = 'arc-panel-footer showcase-card-foot'
+
+  const blurb = document.createElement('p')
+  blurb.className = 'showcase-blurb'
+  blurb.textContent = item.blurb
+  body.appendChild(blurb)
+
+  const prev = document.createElement('div')
+  prev.className = 'showcase-preview-box arc-border-pixel'
+  prev.style.padding = '1rem'
+  prev.innerHTML = item.previewHtml
+  body.appendChild(prev)
+
+  mountCodeBlock(body, {
+    language: item.lang ?? 'html',
+    code: item.code,
+    showCopy: false,
+  })
+
+  const copy = document.createElement('button')
+  copy.type = 'button'
+  copy.className = 'arc-btn arc-btn-ghost'
+  copy.textContent = 'COPY CODE'
+  copy.addEventListener('click', async () => {
+    await navigator.clipboard.writeText(item.code.trim())
+    copy.textContent = 'COPIATO'
+    window.setTimeout(() => {
+      copy.textContent = 'COPY CODE'
+    }, 1500)
+  })
+  foot.appendChild(copy)
+
+  if (item.storybook) {
+    const sb = document.createElement('a')
+    sb.href = item.storybook
+    sb.target = '_blank'
+    sb.rel = 'noopener noreferrer'
+    sb.className = 'arc-btn arc-btn-ghost'
+    sb.textContent = 'STORYBOOK'
+    foot.appendChild(sb)
+  }
+
+  panel.appendChild(head)
+  panel.appendChild(body)
+  panel.appendChild(foot)
+
+  if (item.interactive) {
+    wireSectionInteractive(panel, item.interactive)
+  }
+
+  return panel
+}
+
+export function renderShowcase(outlet, { navigateTo, showcaseSlug }) {
+  const layout = document.createElement('div')
+  layout.className = 'showcase-layout'
+
+  const drawer = document.createElement('aside')
+  drawer.className = 'showcase-drawer'
+  drawer.setAttribute('aria-label', 'Componenti')
+
+  const idx = document.createElement('a')
+  idx.href = '#/showcase'
+  idx.className = sideLinkClass(!showcaseSlug)
+  idx.textContent = 'INDICE'
+  drawer.appendChild(idx)
 
   for (const cat of SHOWCASE_CATEGORIES) {
     const catEl = document.createElement('div')
@@ -97,100 +175,81 @@ export function renderShowcase(outlet) {
     lab.textContent = cat.label
     catEl.appendChild(lab)
     for (const item of cat.items) {
-      const b = document.createElement('button')
-      b.type = 'button'
-      b.className = 'arc-btn arc-btn-ghost'
-      b.textContent = item.navLabel
-      b.addEventListener('click', () => {
-        document.getElementById(item.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      const a = document.createElement('a')
+      a.href = `#/showcase/${item.id}`
+      a.className = sideLinkClass(showcaseSlug === item.id)
+      a.textContent = item.navLabel
+      catEl.appendChild(a)
+    }
+    drawer.appendChild(catEl)
+  }
+
+  const detail = document.createElement('div')
+  detail.className = 'showcase-detail'
+
+  if (!showcaseSlug) {
+    const intro = document.createElement('div')
+    intro.className = 'arc-panel arc-panel-yellow'
+    intro.innerHTML = `
+      <div class="arc-panel-header">${SHOWCASE_INTRO.title}</div>
+      <div class="arc-panel-body">
+        <p class="showcase-blurb" style="margin:0 0 1rem;">${SHOWCASE_INTRO.body}</p>
+        <p class="showcase-blurb" style="margin:0;">Scegli un componente dal menu a sinistra: ogni pagina mostra solo quell’elemento con anteprima e codice.</p>
+      </div>
+    `
+    detail.appendChild(intro)
+
+    for (const cat of SHOWCASE_CATEGORIES) {
+      const block = document.createElement('div')
+      block.className = 'showcase-index-block'
+      const h = document.createElement('div')
+      h.className = 'showcase-index-cat-title'
+      h.textContent = cat.label
+      block.appendChild(h)
+      const row = document.createElement('div')
+      row.className = 'showcase-index-links'
+      for (const item of cat.items) {
+        const link = document.createElement('a')
+        link.href = `#/showcase/${item.id}`
+        link.className = 'arc-btn arc-btn-ghost'
+        link.textContent = item.navLabel
+        row.appendChild(link)
+      }
+      block.appendChild(row)
+      detail.appendChild(block)
+    }
+  }
+  else {
+    const found = findShowcaseItem(showcaseSlug)
+    if (!found) {
+      const err = document.createElement('div')
+      err.className = 'arc-panel arc-panel-red'
+      err.innerHTML = `
+        <div class="arc-panel-header">NON TROVATO</div>
+        <div class="arc-panel-body">
+          <p class="showcase-blurb">Nessun componente con id <code class="arc-label" style="display:inline;padding:0 .25rem;">${showcaseSlug}</code>.</p>
+        </div>
+        <div class="arc-panel-footer">
+          <button type="button" class="arc-btn arc-btn-primary" id="sc-badslug-back">TORNA ALL’INDICE</button>
+        </div>
+      `
+      err.querySelector('#sc-badslug-back')?.addEventListener('click', () => {
+        navigateTo('/showcase')
       })
-      catEl.appendChild(b)
+      detail.appendChild(err)
     }
-    side.appendChild(catEl)
-  }
-
-  const main = document.createElement('div')
-  main.className = 'showcase-stack'
-
-  const intro = document.createElement('div')
-  intro.className = 'arc-panel arc-panel-yellow'
-  intro.innerHTML = `
-    <div class="arc-panel-header">${SHOWCASE_INTRO.title}</div>
-    <div class="arc-panel-body">
-      <p class="showcase-blurb" style="margin:0 0 .75rem;">${SHOWCASE_INTRO.body}</p>
-    </div>
-  `
-  main.appendChild(intro)
-
-  function card(item) {
-    const panel = document.createElement('section')
-    panel.className = 'arc-panel arc-panel-cyan'
-    panel.id = item.id
-    const head = document.createElement('div')
-    head.className = 'arc-panel-header showcase-card-header'
-    head.innerHTML = `<span>${item.title}</span><span class="showcase-class-tag">${item.className}</span>`
-    const body = document.createElement('div')
-    body.className = 'arc-panel-body showcase-stack'
-    const foot = document.createElement('div')
-    foot.className = 'arc-panel-footer showcase-card-foot'
-
-    const blurb = document.createElement('p')
-    blurb.className = 'showcase-blurb'
-    blurb.textContent = item.blurb
-    body.appendChild(blurb)
-
-    const prev = document.createElement('div')
-    prev.className = 'showcase-preview-box arc-border-pixel'
-    prev.style.padding = '1rem'
-    prev.innerHTML = item.previewHtml
-    body.appendChild(prev)
-
-    mountCodeBlock(body, {
-      language: item.lang ?? 'html',
-      code: item.code,
-      showCopy: false,
-    })
-
-    const copy = document.createElement('button')
-    copy.type = 'button'
-    copy.className = 'arc-btn arc-btn-ghost'
-    copy.textContent = 'COPY CODE'
-    copy.addEventListener('click', async () => {
-      await navigator.clipboard.writeText(item.code.trim())
-      copy.textContent = 'COPIATO'
-      window.setTimeout(() => {
-        copy.textContent = 'COPY CODE'
-      }, 1500)
-    })
-    foot.appendChild(copy)
-
-    if (item.storybook) {
-      const sb = document.createElement('a')
-      sb.href = item.storybook
-      sb.target = '_blank'
-      sb.rel = 'noopener noreferrer'
-      sb.className = 'arc-btn arc-btn-ghost'
-      sb.textContent = 'STORYBOOK'
-      foot.appendChild(sb)
-    }
-
-    panel.appendChild(head)
-    panel.appendChild(body)
-    panel.appendChild(foot)
-    main.appendChild(panel)
-
-    if (item.interactive) {
-      wireSectionInteractive(panel, item.interactive)
+    else {
+      const navRow = document.createElement('div')
+      navRow.className = 'showcase-breadcrumb'
+      navRow.innerHTML = `<span class="showcase-bc-part">${found.category.label}</span>
+        <span class="showcase-bc-sep">/</span>
+        <span class="showcase-bc-part">${found.item.title}</span>`
+      detail.appendChild(navRow)
+      detail.appendChild(buildDetailCard(found.item))
     }
   }
 
-  for (const cat of SHOWCASE_CATEGORIES) {
-    for (const item of cat.items) {
-      card(item)
-    }
-  }
-
-  shell.appendChild(side)
-  shell.appendChild(main)
-  outlet.appendChild(shell)
+  layout.appendChild(drawer)
+  layout.appendChild(detail)
+  outlet.appendChild(layout)
 }
