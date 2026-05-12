@@ -33,6 +33,9 @@ export function parseShowcaseSlug(path) {
 export function createRouter({ outlet, onAfterNavigate }) {
   function apply() {
     const path = normalizeRouteHash(window.location.hash)
+    const prevDrawer = outlet.querySelector('.showcase-drawer')
+    const showcaseDrawerScroll = prevDrawer ? prevDrawer.scrollTop : 0
+
     outlet.replaceChildren()
 
     const ctx = {
@@ -43,7 +46,11 @@ export function createRouter({ outlet, onAfterNavigate }) {
     }
 
     if (isShowcasePath(path)) {
-      renderShowcase(outlet, { ...ctx, showcaseSlug: parseShowcaseSlug(path) })
+      renderShowcase(outlet, {
+        ...ctx,
+        showcaseSlug: parseShowcaseSlug(path),
+        drawerScrollTop: showcaseDrawerScroll,
+      })
     }
     else {
       const render = ROUTES[path] ?? ROUTES['/home']

@@ -197,7 +197,40 @@ function buildDetailCard(item) {
   return panel
 }
 
-export function renderShowcase(outlet, { navigateTo, showcaseSlug }) {
+/** Porta il link attivo nell’area visibile del drawer (solo scroll sul aside, non sulla pagina). */
+function scrollDrawerActiveIntoView(drawer, active, pad = 10) {
+  if (!drawer || !active) return
+  for (let i = 0; i < 4; i++) {
+    const cr = drawer.getBoundingClientRect()
+    const er = active.getBoundingClientRect()
+    let delta = 0
+    if (er.top < cr.top + pad) {
+      delta = er.top - cr.top - pad
+    }
+    else if (er.bottom > cr.bottom - pad) {
+      delta = er.bottom - cr.bottom + pad
+    }
+    else {
+      break
+    }
+    drawer.scrollTop += delta
+  }
+}
+
+function restoreShowcaseDrawer(drawer, drawerScrollTop) {
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      drawer.scrollTop = drawerScrollTop
+      const active = drawer.querySelector('a.showcase-side-link-active')
+      if (active) {
+        scrollDrawerActiveIntoView(drawer, active)
+        active.focus({ preventScroll: true })
+      }
+    })
+  })
+}
+
+export function renderShowcase(outlet, { navigateTo, showcaseSlug, drawerScrollTop = 0 }) {
   const layout = document.createElement('div')
   layout.className = 'showcase-layout'
 
@@ -296,4 +329,6 @@ export function renderShowcase(outlet, { navigateTo, showcaseSlug }) {
   layout.appendChild(drawer)
   layout.appendChild(detail)
   outlet.appendChild(layout)
+
+  restoreShowcaseDrawer(drawer, drawerScrollTop)
 }
