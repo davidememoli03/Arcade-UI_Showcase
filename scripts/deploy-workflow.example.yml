@@ -1,5 +1,7 @@
-# Copia questo file in `.github/workflows/deploy.yml` per abilitare il deploy su GitHub Pages
-# (oppure: `gh auth refresh -h github.com -s workflow` e ripristina il workflow nel repo).
+# GitHub rifiuta il push di file in .github/workflows/ se il token non ha lo scope "workflow"
+# (errore: refusing to allow an OAuth App ... without `workflow` scope).
+# Opzioni: (1) Incolla questo YAML in Repo → .github/workflows/deploy.yml da browser.
+# (2) `gh auth refresh -h github.com -s workflow` poi commit/push del workflow da CLI.
 #
 name: Deploy Showcase
 
