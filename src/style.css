@@ -127,7 +127,7 @@ body {
 
 .showcase-layout {
   display: flex;
-  gap: 1.25rem;
+  gap: 1.5rem;
   align-items: flex-start;
   width: 100%;
   max-width: 100%;
@@ -176,7 +176,7 @@ body {
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1.75rem;
 }
 
 .showcase-side-link-active {
@@ -195,6 +195,8 @@ body {
   flex-wrap: wrap;
   gap: 0.35rem;
   align-items: center;
+  padding: 0.15rem 0 0.35rem;
+  line-height: 1.5;
 }
 
 .showcase-bc-sep {
@@ -238,33 +240,34 @@ body {
 .showcase-stack {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 2rem;
 }
 
 .showcase-variant {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1.5rem;
 }
 
 .showcase-variant + .showcase-variant {
-  margin-top: 0;
-  padding-top: 1.25rem;
-  border-top: 1px solid rgba(255, 0, 127, 0.25);
+  margin-top: 0.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 0, 127, 0.28);
 }
 
 .showcase-variant-title {
   margin: 0;
-  font-size: 1rem;
+  padding-bottom: 0.05rem;
+  font-size: 1.05rem;
   font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   color: var(--showcase-magenta);
 }
 
 .showcase-variant-desc {
   margin: 0;
-  font-size: 0.85rem;
-  line-height: 1.45;
+  font-size: 0.9rem;
+  line-height: 1.55;
   opacity: 0.92;
 }
 
@@ -272,13 +275,15 @@ body {
   display: flex;
   justify-content: flex-end;
   margin-top: 0;
+  padding-top: 0.35rem;
 }
 
 .showcase-code-block {
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
-  margin-top: 0.35rem;
+  gap: 0.85rem;
+  margin-top: 0.15rem;
+  padding-top: 0.35rem;
 }
 
 .showcase-code-toolbar {
@@ -308,18 +313,20 @@ body {
   border-radius: 0;
   border: 1px solid rgba(0, 245, 255, 0.35);
   overflow: auto;
-  max-height: 320px;
+  max-height: 380px;
   position: relative;
   z-index: 0;
 }
 
 .showcase-pre-wrap pre {
   margin: 0;
+  padding: 0.85rem 1rem;
 }
 
 .showcase-pre-wrap code.hljs {
   font-family: var(--arc-font-mono, monospace);
   font-size: 0.9rem;
+  line-height: 1.55;
 }
 
 .showcase-line-highlight {
@@ -340,12 +347,14 @@ body {
 }
 
 .showcase-preview-box {
-  min-height: 140px;
+  min-height: 10.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  gap: 1rem;
+  padding: 1.35rem 1.5rem;
+  box-sizing: border-box;
 }
 
 .showcase-nav-outer {
@@ -469,8 +478,8 @@ body {
 
 .showcase-blurb {
   margin: 0;
-  font-size: 1.05rem;
-  line-height: 1.4;
+  font-size: 1.08rem;
+  line-height: 1.55;
   color: var(--arc-color-text-muted, #077);
   max-width: 52rem;
 }
@@ -493,8 +502,9 @@ body {
 .showcase-card-foot {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.65rem;
   align-items: center;
+  padding-top: 0.35rem;
 }
 
 .copy-flash {

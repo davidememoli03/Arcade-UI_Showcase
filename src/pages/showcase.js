@@ -146,7 +146,6 @@ function buildDetailCard(item) {
     if (v.previewHtml?.trim()) {
       const prev = document.createElement('div')
       prev.className = 'showcase-preview-box arc-border-pixel'
-      prev.style.padding = '1rem'
       prev.innerHTML = v.previewHtml
       block.appendChild(prev)
     }
