@@ -2,6 +2,7 @@
 :root {
   --showcase-magenta: #ff007f;
   --showcase-yellow: #ffe600;
+  --showcase-nav-offset: calc(5.35rem + env(safe-area-inset-top, 0px));
 }
 
 *,
@@ -78,7 +79,10 @@ body {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 5.5rem clamp(0.75rem, 3.5vw, 1.25rem) 2.5rem;
+  padding-top: var(--showcase-nav-offset);
+  padding-bottom: max(2rem, env(safe-area-inset-bottom, 0px));
+  padding-left: max(env(safe-area-inset-left, 0px), clamp(0.75rem, 3.5vw, 1.25rem));
+  padding-right: max(env(safe-area-inset-right, 0px), clamp(0.75rem, 3.5vw, 1.25rem));
 }
 
 .showcase-hero-title-wrap {
@@ -132,14 +136,15 @@ body {
   align-items: flex-start;
   width: 100%;
   max-width: 100%;
-  min-height: calc(100vh - 6rem);
+  min-height: calc(100svh - var(--showcase-nav-offset));
+  min-width: 0;
 }
 
 .showcase-drawer {
   width: 14.5rem;
   flex-shrink: 0;
   position: sticky;
-  top: 5.5rem;
+  top: var(--showcase-nav-offset);
   align-self: flex-start;
   padding-top: 0.15rem;
   border-right: 1px solid rgba(0, 245, 255, 0.25);
@@ -173,7 +178,8 @@ body {
 .showcase-drawer-scroll {
   overflow-x: hidden;
   overflow-y: auto;
-  max-height: calc(100vh - 5.75rem);
+  max-height: calc(100vh - var(--showcase-nav-offset) - 0.5rem);
+  max-height: calc(100dvh - var(--showcase-nav-offset) - 0.5rem);
   padding-right: 0.35rem;
   padding-bottom: 0.35rem;
   -webkit-overflow-scrolling: touch;
@@ -265,6 +271,44 @@ body {
   min-width: 0;
 }
 
+.showcase-detail .arc-panel-header {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.showcase-bc-part {
+  min-width: 0;
+}
+
+.showcase-detail .arc-panel-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.showcase-detail .arc-panel-footer .arc-btn {
+  flex: 1 1 auto;
+  min-width: min(100%, 9rem);
+  justify-content: center;
+}
+
+@media (max-width: 959px) {
+  .showcase-detail .arc-panel-footer .arc-btn {
+    flex: 1 1 100%;
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+.showcase-preview-box .arc-table-wrapper {
+  max-width: 100%;
+}
+
+.showcase-code-toolbar .arc-btn {
+  flex-shrink: 0;
+}
+
 .showcase-home-panel {
   width: 100%;
   max-width: min(560px, 100%);
@@ -277,7 +321,7 @@ body {
   max-width: min(520px, 100%);
 }
 
-@media (min-width: 769px) {
+@media (min-width: 960px) {
   .showcase-drawer-summary {
     position: absolute;
     width: 1px;
@@ -291,7 +335,13 @@ body {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 959px) {
+  .showcase-drawer-summary {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
   .showcase-layout {
     flex-direction: column;
     gap: 0.85rem;
@@ -305,26 +355,58 @@ body {
     border-right: none;
     border-bottom: 1px solid rgba(0, 245, 255, 0.25);
     padding-bottom: 0.65rem;
+    z-index: 1;
   }
 
   .showcase-drawer-scroll {
     max-height: min(52vh, 22rem);
+    max-height: min(52dvh, 22rem);
   }
 
   .showcase-main {
-    padding-top: 5rem;
+    padding-top: calc(4.75rem + env(safe-area-inset-top, 0px));
   }
 
   .showcase-detail {
     gap: 1.25rem;
+    min-width: 0;
   }
 
   .showcase-breadcrumb {
     font-size: 0.74rem;
+    padding-right: env(safe-area-inset-right, 0px);
+    padding-left: env(safe-area-inset-left, 0px);
+  }
+
+  .showcase-variant {
+    gap: 1.2rem;
+  }
+
+  .showcase-variant + .showcase-variant {
+    padding-top: 1.65rem;
+  }
+
+  .showcase-pre-wrap {
+    max-height: min(55vh, 22rem);
+    max-height: min(55dvh, 22rem);
+  }
+
+  .showcase-pre-wrap pre {
+    padding: 0.65rem 0.75rem;
+  }
+
+  .showcase-preview-box {
+    min-height: 0;
+    padding: 1rem 0.85rem;
+    justify-content: flex-start;
+    overflow-x: auto;
+    overflow-y: visible;
+    align-items: center;
+    overscroll-behavior-x: contain;
   }
 }
 
-@media (max-width: 540px) {
+@media (max-width: 900px) {
   .showcase-index-links {
     flex-wrap: nowrap;
     gap: 0.45rem;
@@ -338,6 +420,7 @@ body {
     scroll-snap-type: x proximity;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
+    overscroll-behavior-x: contain;
   }
 
   .showcase-index-links .arc-btn {
@@ -370,13 +453,14 @@ body {
 
 @media (max-width: 420px) {
   .showcase-main {
-    padding-top: 4.85rem;
-    padding-left: 0.6rem;
-    padding-right: 0.6rem;
+    padding-top: calc(4.6rem + env(safe-area-inset-top, 0px));
+    padding-left: max(0.6rem, env(safe-area-inset-left, 0px));
+    padding-right: max(0.6rem, env(safe-area-inset-right, 0px));
   }
 
   .showcase-drawer-scroll {
     max-height: min(48vh, 20rem);
+    max-height: min(48dvh, 20rem);
   }
 }
 
@@ -427,6 +511,8 @@ body {
   gap: 0.85rem;
   margin-top: 0.15rem;
   padding-top: 0.35rem;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .showcase-code-toolbar {
@@ -470,19 +556,10 @@ body {
   overflow-x: auto;
 }
 
-@media (max-width: 768px) {
-  .showcase-pre-wrap {
-    max-height: min(55vh, 22rem);
-  }
-
-  .showcase-pre-wrap pre {
-    padding: 0.65rem 0.75rem;
-  }
-}
-
 @media (max-width: 420px) {
   .showcase-pre-wrap {
     max-height: min(48vh, 18rem);
+    max-height: min(48dvh, 18rem);
   }
 }
 
@@ -503,7 +580,7 @@ body {
   gap: 1.25rem;
 }
 
-@media (min-width: 800px) {
+@media (min-width: 960px) {
   .showcase-play-grid {
     grid-template-columns: 1fr 1fr;
   }
@@ -520,17 +597,8 @@ body {
   box-sizing: border-box;
   max-width: 100%;
   width: 100%;
-}
-
-@media (max-width: 768px) {
-  .showcase-preview-box {
-    min-height: 0;
-    padding: 1rem 0.85rem;
-    justify-content: flex-start;
-    overflow-x: auto;
-    overflow-y: visible;
-    align-items: center;
-  }
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
 }
 
 @media (max-width: 420px) {
@@ -545,6 +613,7 @@ body {
   left: 0;
   right: 0;
   z-index: 100;
+  padding-top: env(safe-area-inset-top, 0px);
   background: rgba(0, 0, 0, 0.88);
   border-bottom: 1px solid rgba(0, 245, 255, 0.35);
   backdrop-filter: blur(8px);
@@ -553,7 +622,7 @@ body {
 .showcase-nav-inner {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0.65rem 1rem;
+  padding: 0.65rem max(1rem, env(safe-area-inset-right, 0px)) 0.65rem max(1rem, env(safe-area-inset-left, 0px));
   display: flex;
   align-items: center;
   gap: 1rem;

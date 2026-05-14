@@ -22,7 +22,7 @@ function bindResponsiveDrawer(detailsEl) {
     drawerResponsiveCleanup = null
   }
   const sync = () => {
-    detailsEl.open = window.matchMedia('(min-width: 769px)').matches
+    detailsEl.open = window.matchMedia('(min-width: 960px)').matches
   }
   sync()
   window.addEventListener('resize', sync, { passive: true })
@@ -297,7 +297,7 @@ export function renderShowcase(outlet, { navigateTo, showcaseSlug, drawerScrollT
 
   scrollWrap.querySelectorAll('a').forEach((a) => {
     a.addEventListener('click', () => {
-      if (!window.matchMedia('(min-width: 769px)').matches) {
+      if (!window.matchMedia('(min-width: 960px)').matches) {
         details.open = false
       }
     })
