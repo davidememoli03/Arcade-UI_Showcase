@@ -15,7 +15,7 @@ function bindHomeRoutes(outlet, navigateTo) {
 
 export function renderHome(outlet, { navigateTo }) {
   outlet.innerHTML = `
-    <div class="home-page page-flow">
+    <div class="home-page page-flow" lang="it">
       <section class="home-hero arc-border-pixel" aria-labelledby="home-hero-title">
         <header class="page-head page-head--center page-head--flush">
           <p class="page-kicker">Arcade UI · vetrina interattiva</p>
@@ -50,35 +50,50 @@ export function renderHome(outlet, { navigateTo }) {
         <div class="home-feature-grid">
           <article class="arc-panel arc-panel-cyan home-feature-card">
             <div class="arc-panel-header">SHOWCASE</div>
-            <div class="arc-panel-body">
+            <div class="arc-panel-body home-feature-body">
               <p class="home-feature-text">
-                Pagine dedicate con anteprima viva e snippet copiabile. Indice fisso su desktop, menu compatto su mobile.
+                Anteprima viva e snippet da copiare. Su desktop l’indice resta a sinistra; su mobile il menu si compatta in alto.
               </p>
             </div>
             <div class="arc-panel-footer home-feature-foot">
-              <button type="button" class="arc-btn arc-btn-primary" data-home-route="/showcase">APRI SHOWCASE ▸</button>
+              <button type="button" class="arc-btn arc-btn-primary home-feature-cta" data-home-route="/showcase">
+                <span class="home-feature-cta-stack">
+                  <span class="home-feature-cta-line">Showcase ▸</span>
+                  <span class="home-feature-cta-hint">Galleria componenti</span>
+                </span>
+              </button>
             </div>
           </article>
           <article class="arc-panel arc-panel-yellow home-feature-card">
             <div class="arc-panel-header">TUTORIAL</div>
-            <div class="arc-panel-body">
+            <div class="arc-panel-body home-feature-body">
               <p class="home-feature-text">
-                Una run guidata per capire dove mettere CSS, quando serve JS e come collegare i suoni.
+                Percorso guidato: dove sta il CSS, quando serve un filo di JS e come si collegano i suoni da cabinato.
               </p>
             </div>
             <div class="arc-panel-footer home-feature-foot">
-              <button type="button" class="arc-btn arc-btn-primary" data-home-route="/tutorial">START TUTORIAL ▸</button>
+              <button type="button" class="arc-btn arc-btn-primary home-feature-cta" data-home-route="/tutorial">
+                <span class="home-feature-cta-stack">
+                  <span class="home-feature-cta-line">Tutorial ▸</span>
+                  <span class="home-feature-cta-hint">Primi passi</span>
+                </span>
+              </button>
             </div>
           </article>
           <article class="arc-panel arc-panel-green home-feature-card">
             <div class="arc-panel-header">PLAYGROUND</div>
-            <div class="arc-panel-body">
+            <div class="arc-panel-body home-feature-body">
               <p class="home-feature-text">
-                Sandbox istantanea: scegli un componente, pasticcia nell’editor e guarda il risultato più sotto.
+                Laboratorio immediato: scegli un componente, scrivi nel riquadro e guarda il risultato appena sotto.
               </p>
             </div>
             <div class="arc-panel-footer home-feature-foot">
-              <button type="button" class="arc-btn arc-btn-primary" data-home-route="/playground">OPEN SANDBOX ▸</button>
+              <button type="button" class="arc-btn arc-btn-primary home-feature-cta" data-home-route="/playground">
+                <span class="home-feature-cta-stack">
+                  <span class="home-feature-cta-line">Sandbox ▸</span>
+                  <span class="home-feature-cta-hint">Prova dal vivo</span>
+                </span>
+              </button>
             </div>
           </article>
         </div>
