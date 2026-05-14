@@ -5,6 +5,13 @@ const COMPONENTS = [
   { id: 'button', label: 'arc-btn' },
   { id: 'panel', label: 'arc-panel' },
   { id: 'input', label: 'arc-input' },
+  { id: 'badge', label: 'arc-badge' },
+  { id: 'toggle', label: 'arc-toggle' },
+  { id: 'textarea', label: 'arc-textarea' },
+  { id: 'select', label: 'arc-select' },
+  { id: 'card', label: 'arc-card' },
+  { id: 'accordion', label: 'arc-accordion' },
+  { id: 'tooltip', label: 'data-tooltip' },
 ]
 
 function escapeHtml(s) {
@@ -27,11 +34,70 @@ function buildSnippet(state) {
   <div class="arc-panel-body">${escapeHtml(state.panelBody)}</div>
 </div>`
   }
-  const dis = state.disabled ? ' disabled' : ''
-  return `<div class="arc-input-wrapper">
+  if (state.component === 'input') {
+    const dis = state.disabled ? ' disabled' : ''
+    return `<div class="arc-input-wrapper">
   <label class="arc-label" for="playground-field">${escapeHtml(state.inputLabel)}</label>
   <input id="playground-field" class="arc-input" placeholder="${escapeHtml(state.inputPh)}"${dis}>
 </div>`
+  }
+  if (state.component === 'badge') {
+    const extra = [state.badgePulse ? 'arc-badge-pulse' : '', state.badgeOutline ? 'arc-badge-outline' : '']
+      .filter(Boolean)
+      .join(' ')
+    const mod = extra ? ` ${extra}` : ''
+    return `<span class="arc-badge arc-badge-${state.badgeColor}${mod}">${escapeHtml(state.badgeText)}</span>`
+  }
+  if (state.component === 'toggle') {
+    const ch = state.toggleChecked ? ' checked' : ''
+    return `<label class="arc-toggle">
+  <input type="checkbox" class="arc-toggle-input"${ch}>
+  <span class="arc-toggle-switch" aria-hidden="true"></span>
+  <span class="arc-toggle-label">${escapeHtml(state.toggleLabel)}</span>
+</label>`
+  }
+  if (state.component === 'textarea') {
+    return `<div class="arc-input-wrapper">
+  <label class="arc-label" for="playground-ta">${escapeHtml(state.taLabel)}</label>
+  <textarea id="playground-ta" class="arc-input arc-textarea" rows="${state.taRows}" placeholder="${escapeHtml(state.taPlaceholder)}"></textarea>
+</div>`
+  }
+  if (state.component === 'select') {
+    return `<div class="arc-input-wrapper">
+  <label class="arc-label" for="playground-sel">${escapeHtml(state.selLabel)}</label>
+  <select id="playground-sel" class="arc-input arc-select">
+    <option>${escapeHtml(state.selOpt1)}</option>
+    <option>${escapeHtml(state.selOpt2)}</option>
+    <option>${escapeHtml(state.selOpt3)}</option>
+  </select>
+</div>`
+  }
+  if (state.component === 'card') {
+    return `<div class="arc-card arc-card-${state.cardAccent}">
+  <div class="arc-card-header">
+    <div class="arc-card-avatar">${escapeHtml(state.cardAvatar)}</div>
+    <p class="arc-card-title">${escapeHtml(state.cardTitle)}</p>
+    <p class="arc-card-subtitle">${escapeHtml(state.cardSubtitle)}</p>
+  </div>
+  <div class="arc-card-body">
+    <div class="arc-card-meta">
+      <span class="arc-card-meta-key">${escapeHtml(state.cardMetaKey)}</span>
+      <span class="arc-card-meta-value">${escapeHtml(state.cardMetaVal)}</span>
+    </div>
+  </div>
+</div>`
+  }
+  if (state.component === 'accordion') {
+    const op = state.accOpen ? ' open' : ''
+    return `<details class="arc-accordion arc-accordion-${state.accColor}"${op}>
+  <summary class="arc-accordion-summary">${escapeHtml(state.accSummary)}</summary>
+  <div class="arc-accordion-content"><p>${escapeHtml(state.accBody)}</p></div>
+</details>`
+  }
+  if (state.component === 'tooltip') {
+    return `<button type="button" class="arc-btn arc-btn-ghost" data-tooltip="${escapeHtml(state.tooltipText)}">${escapeHtml(state.tooltipBtn)}</button>`
+  }
+  return ''
 }
 
 export function renderPlayground(outlet) {
@@ -48,6 +114,31 @@ export function renderPlayground(outlet) {
     panelBody: 'Continue?',
     inputLabel: 'CALLSIGN',
     inputPh: 'AAA',
+    badgeText: 'NEW',
+    badgeColor: 'cyan',
+    badgePulse: false,
+    badgeOutline: false,
+    toggleLabel: 'SOUND',
+    toggleChecked: true,
+    taLabel: 'NOTE',
+    taPlaceholder: '…',
+    taRows: 3,
+    selLabel: 'LIVELLO',
+    selOpt1: 'EASY',
+    selOpt2: 'NORMAL',
+    selOpt3: 'HARD',
+    cardAccent: 'cyan',
+    cardTitle: 'RYU',
+    cardSubtitle: 'Fighter',
+    cardAvatar: '🥷',
+    cardMetaKey: 'PWR',
+    cardMetaVal: '92',
+    accColor: 'cyan',
+    accSummary: 'Round 1',
+    accBody: 'Dettagli stage…',
+    accOpen: true,
+    tooltipBtn: 'HOVER ME',
+    tooltipText: 'Suggerimento rapido',
   }
 
   const grid = document.createElement('div')
@@ -177,6 +268,143 @@ export function renderPlayground(outlet) {
         sync()
       }))
     }
+    else if (state.component === 'badge') {
+      dynamicMount.appendChild(textField('Text', state.badgeText, (v) => {
+        state.badgeText = v
+        sync()
+      }))
+      dynamicMount.appendChild(selectField('Color', 'pg-bc', [
+        { v: 'cyan', t: 'cyan' },
+        { v: 'red', t: 'red' },
+        { v: 'yellow', t: 'yellow' },
+        { v: 'green', t: 'green' },
+        { v: 'purple', t: 'purple' },
+      ], state.badgeColor, (v) => {
+        state.badgeColor = v
+        sync()
+      }))
+      dynamicMount.appendChild(checkField('Pulse', state.badgePulse, (v) => {
+        state.badgePulse = v
+        sync()
+      }))
+      dynamicMount.appendChild(checkField('Outline', state.badgeOutline, (v) => {
+        state.badgeOutline = v
+        sync()
+      }))
+    }
+    else if (state.component === 'toggle') {
+      dynamicMount.appendChild(textField('Label', state.toggleLabel, (v) => {
+        state.toggleLabel = v
+        sync()
+      }))
+      dynamicMount.appendChild(checkField('Checked', state.toggleChecked, (v) => {
+        state.toggleChecked = v
+        sync()
+      }))
+    }
+    else if (state.component === 'textarea') {
+      dynamicMount.appendChild(textField('Label', state.taLabel, (v) => {
+        state.taLabel = v
+        sync()
+      }))
+      dynamicMount.appendChild(textField('Placeholder', state.taPlaceholder, (v) => {
+        state.taPlaceholder = v
+        sync()
+      }))
+      dynamicMount.appendChild(selectField('Rows', 'pg-tar', [
+        { v: '2', t: '2' },
+        { v: '3', t: '3' },
+        { v: '4', t: '4' },
+        { v: '5', t: '5' },
+        { v: '6', t: '6' },
+      ], String(state.taRows), (v) => {
+        state.taRows = Number(v)
+        sync()
+      }))
+    }
+    else if (state.component === 'select') {
+      dynamicMount.appendChild(textField('Label', state.selLabel, (v) => {
+        state.selLabel = v
+        sync()
+      }))
+      dynamicMount.appendChild(textField('Option 1', state.selOpt1, (v) => {
+        state.selOpt1 = v
+        sync()
+      }))
+      dynamicMount.appendChild(textField('Option 2', state.selOpt2, (v) => {
+        state.selOpt2 = v
+        sync()
+      }))
+      dynamicMount.appendChild(textField('Option 3', state.selOpt3, (v) => {
+        state.selOpt3 = v
+        sync()
+      }))
+    }
+    else if (state.component === 'card') {
+      dynamicMount.appendChild(selectField('Accent', 'pg-ca', [
+        { v: 'cyan', t: 'cyan' },
+        { v: 'purple', t: 'purple' },
+        { v: 'yellow', t: 'yellow' },
+        { v: 'red', t: 'red' },
+        { v: 'green', t: 'green' },
+      ], state.cardAccent, (v) => {
+        state.cardAccent = v
+        sync()
+      }))
+      dynamicMount.appendChild(textField('Avatar (emoji/text)', state.cardAvatar, (v) => {
+        state.cardAvatar = v
+        sync()
+      }))
+      dynamicMount.appendChild(textField('Title', state.cardTitle, (v) => {
+        state.cardTitle = v
+        sync()
+      }))
+      dynamicMount.appendChild(textField('Subtitle', state.cardSubtitle, (v) => {
+        state.cardSubtitle = v
+        sync()
+      }))
+      dynamicMount.appendChild(textField('Meta key', state.cardMetaKey, (v) => {
+        state.cardMetaKey = v
+        sync()
+      }))
+      dynamicMount.appendChild(textField('Meta value', state.cardMetaVal, (v) => {
+        state.cardMetaVal = v
+        sync()
+      }))
+    }
+    else if (state.component === 'accordion') {
+      dynamicMount.appendChild(selectField('Color', 'pg-acc', [
+        { v: 'cyan', t: 'cyan' },
+        { v: 'red', t: 'red' },
+        { v: 'yellow', t: 'yellow' },
+        { v: 'green', t: 'green' },
+      ], state.accColor, (v) => {
+        state.accColor = v
+        sync()
+      }))
+      dynamicMount.appendChild(textField('Summary', state.accSummary, (v) => {
+        state.accSummary = v
+        sync()
+      }))
+      dynamicMount.appendChild(textField('Body', state.accBody, (v) => {
+        state.accBody = v
+        sync()
+      }))
+      dynamicMount.appendChild(checkField('Open by default', state.accOpen, (v) => {
+        state.accOpen = v
+        sync()
+      }))
+    }
+    else if (state.component === 'tooltip') {
+      dynamicMount.appendChild(textField('Button label', state.tooltipBtn, (v) => {
+        state.tooltipBtn = v
+        sync()
+      }))
+      dynamicMount.appendChild(textField('Tooltip text', state.tooltipText, (v) => {
+        state.tooltipText = v
+        sync()
+      }))
+    }
     else if (state.component === 'panel') {
       dynamicMount.appendChild(selectField('Color', 'pg-pc', [
         { v: 'cyan', t: 'cyan' },
@@ -195,7 +423,7 @@ export function renderPlayground(outlet) {
         sync()
       }))
     }
-    else {
+    else if (state.component === 'input') {
       dynamicMount.appendChild(textField('Label text', state.inputLabel, (v) => {
         state.inputLabel = v
         sync()
@@ -216,15 +444,24 @@ export function renderPlayground(outlet) {
     preview.innerHTML = html
 
     propsFooter.replaceChildren()
-    const variantOrColor = state.component === 'button'
-      ? state.btnVariant
-      : state.component === 'panel'
-        ? state.panelColor
-        : '—'
+    const variantOrColor = (() => {
+      if (state.component === 'button') return state.btnVariant
+      if (state.component === 'panel') return state.panelColor
+      if (state.component === 'badge') return state.badgeColor
+      if (state.component === 'card') return state.cardAccent
+      if (state.component === 'accordion') return state.accColor
+      return '—'
+    })()
+    const disabledVal = (() => {
+      if (state.component === 'button' || state.component === 'input') return String(state.disabled)
+      if (state.component === 'toggle') return String(state.toggleChecked)
+      if (state.component === 'accordion') return String(state.accOpen)
+      return '—'
+    })()
     mountPropsTable(propsFooter, [
       { name: 'component', value: state.component },
       { name: 'variant / color', value: variantOrColor },
-      { name: 'disabled', value: state.component === 'panel' ? '—' : String(state.disabled) },
+      { name: 'flags', value: disabledVal },
     ])
 
     outBody.replaceChildren()
@@ -251,7 +488,9 @@ export function renderPlayground(outlet) {
 
   cmpSelect.addEventListener('change', () => {
     state.component = cmpSelect.value
-    state.disabled = false
+    if (state.component === 'button' || state.component === 'input') {
+      state.disabled = false
+    }
     buildDynamicControls()
     sync()
   })

@@ -13,6 +13,24 @@ import {
   triggerGlitch,
 } from '@davide03memoli/arcade-ui'
 
+/** Evita listener duplicati quando si cambia slug tra navigazioni showcase. */
+let drawerResponsiveCleanup = null
+
+function bindResponsiveDrawer(detailsEl) {
+  if (typeof drawerResponsiveCleanup === 'function') {
+    drawerResponsiveCleanup()
+    drawerResponsiveCleanup = null
+  }
+  const sync = () => {
+    detailsEl.open = window.matchMedia('(min-width: 769px)').matches
+  }
+  sync()
+  window.addEventListener('resize', sync, { passive: true })
+  drawerResponsiveCleanup = () => {
+    window.removeEventListener('resize', sync)
+  }
+}
+
 function wireDropdowns(root) {
   root.querySelectorAll('.arc-dropdown-trigger').forEach((trigger) => {
     if (trigger.dataset.scWired === '1') return
@@ -237,11 +255,22 @@ export function renderShowcase(outlet, { navigateTo, showcaseSlug, drawerScrollT
   drawer.className = 'showcase-drawer'
   drawer.setAttribute('aria-label', 'Componenti')
 
+  const details = document.createElement('details')
+  details.className = 'showcase-drawer-details'
+  details.dataset.showcaseDrawer = ''
+
+  const summary = document.createElement('summary')
+  summary.className = 'showcase-drawer-summary'
+  summary.textContent = 'COMPONENTI ▸'
+
+  const scrollWrap = document.createElement('div')
+  scrollWrap.className = 'showcase-drawer-scroll'
+
   const idx = document.createElement('a')
   idx.href = '#/showcase'
   idx.className = `${sideLinkClass(!showcaseSlug)} showcase-drawer-indice`
   idx.textContent = 'INDICE'
-  drawer.appendChild(idx)
+  scrollWrap.appendChild(idx)
 
   for (const cat of SHOWCASE_CATEGORIES) {
     const catEl = document.createElement('div')
@@ -257,8 +286,22 @@ export function renderShowcase(outlet, { navigateTo, showcaseSlug, drawerScrollT
       a.textContent = item.navLabel
       catEl.appendChild(a)
     }
-    drawer.appendChild(catEl)
+    scrollWrap.appendChild(catEl)
   }
+
+  details.appendChild(summary)
+  details.appendChild(scrollWrap)
+  drawer.appendChild(details)
+
+  bindResponsiveDrawer(details)
+
+  scrollWrap.querySelectorAll('a').forEach((a) => {
+    a.addEventListener('click', () => {
+      if (!window.matchMedia('(min-width: 769px)').matches) {
+        details.open = false
+      }
+    })
+  })
 
   const detail = document.createElement('div')
   detail.className = 'showcase-detail'
@@ -329,5 +372,5 @@ export function renderShowcase(outlet, { navigateTo, showcaseSlug, drawerScrollT
   layout.appendChild(detail)
   outlet.appendChild(layout)
 
-  restoreShowcaseDrawer(drawer, drawerScrollTop)
+  restoreShowcaseDrawer(scrollWrap, drawerScrollTop)
 }

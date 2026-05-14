@@ -12,9 +12,9 @@ export function renderHome(outlet, { navigateTo }) {
     <p class="showcase-hero-sub">
       Neon arcade UI primitives for the web — pixel chrome, CRT vibes, and synthesized SFX via Web Audio.
       Built as pure CSS + a tiny JS layer. This site runs on the same library it documents.
-      In <strong>SHOWCASE</strong> ogni componente ha una pagina dedicata (<code style="font-family:var(--arc-font-mono);font-size:0.95em;">#/showcase/…</code>), con menu fisso a sinistra.
+      In <strong>SHOWCASE</strong> ogni componente ha una pagina dedicata (<code style="font-family:var(--arc-font-mono);font-size:0.95em;">#/showcase/…</code>), con indice laterale su desktop e riquadro apribile in alto su schermi piccoli.
     </p>
-    <div class="arc-panel arc-panel-cyan" style="max-width: 560px; margin: 0 auto;">
+    <div class="arc-panel arc-panel-cyan showcase-home-panel">
       <div class="arc-panel-header">INSTALL</div>
       <div class="arc-panel-body">
         <code style="font-family: var(--arc-font-mono); font-size: 1rem;">${INSTALL}</code>
@@ -28,7 +28,7 @@ export function renderHome(outlet, { navigateTo }) {
       <button type="button" class="arc-btn arc-btn-ghost" id="home-cta-tutorial">GET STARTED</button>
       <a class="arc-btn arc-btn-ghost" href="https://github.com/davidememoli03/Arcade-UI" target="_blank" rel="noopener noreferrer">GITHUB</a>
     </div>
-    <div class="arc-panel arc-panel-purple" style="max-width: 520px; margin: 2rem auto 0;">
+    <div class="arc-panel arc-panel-purple showcase-home-panel showcase-home-panel--narrow" style="margin-top: 2rem;">
       <div class="arc-panel-header">LIVE SFX DEMO</div>
       <div class="arc-panel-body showcase-preview-box">
         <button type="button" class="arc-btn arc-btn-primary" id="home-demo-sfx" data-arc-sound-click="select">PLAY SELECT SFX</button>
