@@ -359,6 +359,24 @@ body {
   max-width: 100%;
   overflow-x: hidden;
 }
+
+.showcase-detail {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: clip;
+  display: flex;
+  flex-direction: column;
+  gap: var(--showcase-gap-page);
+  position: relative;
+  z-index: 1;
+}
+
+.showcase-detail .arc-dropdown-menu {
+  z-index: 120;
+}
+
 .showcase-drawer-details {
   width: 100%;
   margin: 0;
@@ -417,17 +435,6 @@ body {
   text-align: left;
   font-size: 0.95rem;
   padding: 0.35rem 0.5rem;
-}
-
-.showcase-detail {
-  flex: 1;
-  width: 100%;
-  min-width: 0;
-  max-width: 100%;
-  overflow-x: clip;
-  display: flex;
-  flex-direction: column;
-  gap: var(--showcase-gap-page);
 }
 
 .showcase-side-link-active {
@@ -591,27 +598,24 @@ body {
     overflow: hidden;
     box-sizing: border-box;
     min-height: 0;
+    z-index: 4;
   }
 
   .showcase-drawer-details {
-    flex: 1 1 0;
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    margin: 0;
-    padding: 0;
+    display: contents;
   }
 
   .showcase-drawer-scroll {
     flex: 1 1 0;
     min-height: 0;
+    width: 100%;
     max-height: 100%;
     overflow-x: hidden;
     overflow-y: auto;
-    overscroll-behavior: contain;
+    overscroll-behavior: auto;
     scrollbar-gutter: stable;
     -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
   }
 }
 
@@ -644,11 +648,12 @@ body {
   }
 
   .showcase-drawer-details[open] .showcase-drawer-scroll {
-    max-height: min(65vh, 22rem);
-    max-height: min(65dvh, 22rem);
+    max-height: min(72vh, 34rem);
+    max-height: min(72dvh, 34rem);
     overflow-y: auto;
-    overscroll-behavior: contain;
+    overscroll-behavior: auto;
     -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
   }
 
   .showcase-main {
