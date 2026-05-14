@@ -1,5 +1,7 @@
 import { mountCodeBlock } from '../components/code-block.js'
 import { mountPropsTable } from '../components/props-table.js'
+import { getLocale } from '../i18n/locale-store.js'
+import { t } from '../i18n/messages.js'
 
 const COMPONENTS = [
   { id: 'button', label: 'arc-btn' },
@@ -101,17 +103,17 @@ function buildSnippet(state) {
 }
 
 export function renderPlayground(outlet) {
+  const loc = getLocale()
+
   const shell = document.createElement('div')
   shell.className = 'playground-shell'
 
   const head = document.createElement('header')
   head.className = 'page-head playground-page-intro'
   head.innerHTML = `
-    <p class="page-kicker">Sandbox</p>
-    <p class="page-title">Prova markup e varianti in tempo reale</p>
-    <p class="page-desc">
-      Scegli un tipo di componente, regola stato e testi, osserva l&apos;anteprima e copia il markup dalla sezione finale.
-    </p>
+    <p class="page-kicker">${t(loc, 'playgroundKicker')}</p>
+    <p class="page-title">${t(loc, 'playgroundTitle')}</p>
+    <p class="page-desc">${t(loc, 'playgroundDesc')}</p>
   `
 
   const wrap = document.createElement('div')
@@ -124,7 +126,7 @@ export function renderPlayground(outlet) {
     btnText: 'CREDITS',
     panelColor: 'cyan',
     panelTitle: 'HUD',
-    panelBody: 'Continue?',
+    panelBody: loc === 'it' ? 'Continuare?' : 'Continue?',
     inputLabel: 'CALLSIGN',
     inputPh: 'AAA',
     badgeText: 'NEW',
@@ -136,7 +138,7 @@ export function renderPlayground(outlet) {
     taLabel: 'NOTE',
     taPlaceholder: '…',
     taRows: 3,
-    selLabel: 'LIVELLO',
+    selLabel: loc === 'it' ? 'LIVELLO' : 'LEVEL',
     selOpt1: 'EASY',
     selOpt2: 'NORMAL',
     selOpt3: 'HARD',
@@ -148,10 +150,10 @@ export function renderPlayground(outlet) {
     cardMetaVal: '92',
     accColor: 'cyan',
     accSummary: 'Round 1',
-    accBody: 'Dettagli stage…',
+    accBody: loc === 'it' ? 'Dettagli stage…' : 'Stage details…',
     accOpen: true,
     tooltipBtn: 'HOVER ME',
-    tooltipText: 'Suggerimento rapido',
+    tooltipText: loc === 'it' ? 'Suggerimento rapido' : 'Quick hint',
   }
 
   const grid = document.createElement('div')
@@ -160,7 +162,7 @@ export function renderPlayground(outlet) {
   const controlPanel = document.createElement('div')
   controlPanel.className = 'arc-panel arc-panel-cyan playground-panel playground-panel--config'
   controlPanel.innerHTML = `
-    <div class="arc-panel-header">Controlli</div>
+    <div class="arc-panel-header">${t(loc, 'playgroundControls')}</div>
     <div class="arc-panel-body showcase-stack" id="pg-controls-body"></div>
     <div class="arc-panel-footer" id="pg-props-footer"></div>
   `
@@ -168,7 +170,7 @@ export function renderPlayground(outlet) {
   const previewPanel = document.createElement('div')
   previewPanel.className = 'arc-panel arc-panel-cyan playground-panel playground-panel--preview'
   previewPanel.innerHTML = `
-    <div class="arc-panel-header">Anteprima</div>
+    <div class="arc-panel-header">${t(loc, 'playgroundPreview')}</div>
     <div class="arc-panel-body">
       <div id="pg-preview" class="showcase-preview-box"></div>
     </div>
@@ -181,19 +183,19 @@ export function renderPlayground(outlet) {
   const outputSection = document.createElement('div')
   outputSection.className = 'arc-panel arc-panel-yellow playground-panel playground-panel--output'
   outputSection.innerHTML = `
-    <div class="arc-panel-header">Codice HTML</div>
+    <div class="arc-panel-header">${t(loc, 'playgroundHtmlHeader')}</div>
     <div class="arc-panel-body" id="pg-out-body"></div>
     <div class="arc-panel-footer showcase-output-foot" id="pg-out-foot"></div>
   `
 
   const lead = document.createElement('p')
   lead.className = 'playground-lead'
-  lead.textContent = 'Seleziona un componente, poi modifica proprietà qui sotto. L\'output si aggiorna in tempo reale.'
+  lead.textContent = t(loc, 'playgroundLead')
   bodyRoot.appendChild(lead)
 
   const cmpSelectWrap = document.createElement('div')
   cmpSelectWrap.className = 'arc-input-wrapper'
-  cmpSelectWrap.innerHTML = '<label class="arc-label" for="pg-cmp">COMPONENTE</label>'
+  cmpSelectWrap.innerHTML = `<label class="arc-label" for="pg-cmp">${t(loc, 'playgroundCmpLabel')}</label>`
   const cmpSelect = document.createElement('select')
   cmpSelect.id = 'pg-cmp'
   cmpSelect.className = 'arc-input arc-select'
@@ -477,9 +479,9 @@ export function renderPlayground(outlet) {
       return '—'
     })()
     mountPropsTable(propsFooter, [
-      { name: 'componente', value: state.component },
-      { name: 'variante / colore', value: variantOrColor },
-      { name: 'flag', value: disabledVal },
+      { name: t(getLocale(), 'pgPropComponent'), value: state.component },
+      { name: t(getLocale(), 'pgPropVariant'), value: variantOrColor },
+      { name: t(getLocale(), 'pgPropFlag'), value: disabledVal },
     ])
 
     outBody.replaceChildren()
@@ -491,14 +493,17 @@ export function renderPlayground(outlet) {
 
     outFoot.replaceChildren()
     const copy = document.createElement('button')
+    const copyLbl = () => t(getLocale(), 'playgroundCopyMarkup')
+    const copyDoneLbl = () => t(getLocale(), 'playgroundCopyMarkupDone')
+
     copy.type = 'button'
     copy.className = 'arc-btn arc-btn-primary playground-copy-html'
-    copy.textContent = 'COPIA MARKUP'
+    copy.textContent = copyLbl()
     copy.addEventListener('click', async () => {
       await navigator.clipboard.writeText(html)
-      copy.textContent = 'COPIATO'
+      copy.textContent = copyDoneLbl()
       window.setTimeout(() => {
-        copy.textContent = 'COPIA MARKUP'
+        copy.textContent = copyLbl()
       }, 1500)
     })
     outFoot.appendChild(copy)

@@ -1,12 +1,37 @@
 /**
- * Catalogo showcase: ogni voce ha id univoco usato nell’URL `#/showcase/<id>`.
+ * Showcase catalog: each entry has a unique id used in URLs `#/showcase/<id>`.
+ * Canonical copy is English; Italian overlays live in `./showcase-catalog-it.js`.
  */
+
+import {
+  SHOWCASE_CATEGORY_LABEL_IT,
+  SHOWCASE_INTRO_IT,
+  SHOWCASE_ITEM_IT,
+} from './showcase-catalog-it.js'
 
 const SB = 'https://davidememoli03.github.io/Arcade-UI'
 
-export function findShowcaseItem(slug) {
+/** @param {import('../i18n/locale-store.js').Locale | string} locale */
+export function localizeShowcaseCatalog(locale) {
+  if (locale === 'it') {
+    const categories = SHOWCASE_CATEGORIES.map((cat) => ({
+      ...cat,
+      label: SHOWCASE_CATEGORY_LABEL_IT[cat.id] ?? cat.label,
+      items: cat.items.map((item) => {
+        const ov = SHOWCASE_ITEM_IT[item.id]
+        return ov ? { ...item, ...ov } : { ...item }
+      }),
+    }))
+    return { intro: SHOWCASE_INTRO_IT, categories }
+  }
+  return { intro: SHOWCASE_INTRO, categories: SHOWCASE_CATEGORIES }
+}
+
+/** @param {string | null | undefined} slug @param {import('../i18n/locale-store.js').Locale | string} [locale] */
+export function findShowcaseItem(slug, locale = 'en') {
   if (!slug) return null
-  for (const cat of SHOWCASE_CATEGORIES) {
+  const { categories } = localizeShowcaseCatalog(locale)
+  for (const cat of categories) {
     const item = cat.items.find((i) => i.id === slug)
     if (item) {
       return { item, category: cat }
@@ -16,21 +41,21 @@ export function findShowcaseItem(slug) {
 }
 
 export const SHOWCASE_INTRO = {
-  title: 'Come usare questa pagina',
-  body: 'Ogni pagina componente elenca varianti e opzioni (anteprima + codice). Quasi tutto è HTML + classi arc-; dove serve JS lo vedi negli snippet.',
+  title: 'How to use this page',
+  body: 'Each component page lists variants and options (preview + code). Almost everything is HTML + arc- classes; where JS is needed you will see it in the snippets.',
 }
 
 export const SHOWCASE_CATEGORIES = [
   {
     id: 'cat-base',
-    label: 'Base e contenitori',
+    label: 'Base & layout',
     items: [
       {
         id: 'cmp-btn',
-        navLabel: 'Pulsanti',
-        title: 'Pulsanti',
+        navLabel: 'Buttons',
+        title: 'Buttons',
         className: '.arc-btn',
-        blurb: 'Azioni cliccabili: stile arcade con varianti colore e dimensioni. Aggiungi `data-arc-sound-click` per SFX (con AudioManager).',
+        blurb: 'Clickable actions with arcade styling, color variants, and sizes. Add `data-arc-sound-click` for SFX (via AudioManager).',
         storybook: `${SB}/?path=/story/components-button--primary`,
         previewHtml: `
           <button type="button" class="arc-btn arc-btn-primary">PRIMARY</button>
@@ -48,7 +73,7 @@ export const SHOWCASE_CATEGORIES = [
         navLabel: 'Badge',
         title: 'Badge',
         className: '.arc-badge',
-        blurb: 'Etichette compatte (stato, conteggio, rank) con colori neon e opzione pulse.',
+        blurb: 'Compact labels (status, counts, ranks) with neon colors and an optional pulse.',
         storybook: `${SB}/?path=/story/components-badge--default`,
         previewHtml: `
           <span class="arc-badge arc-badge-cyan">NEW</span>
@@ -61,19 +86,19 @@ export const SHOWCASE_CATEGORIES = [
       {
         id: 'cmp-panel',
         navLabel: 'Panel',
-        title: 'Pannello',
+        title: 'Panel',
         className: '.arc-panel',
-        blurb: 'Scatola HUD con header/body/footer: il contenitore tipico per moduli e messaggi.',
+        blurb: 'HUD box with header/body/footer — the typical shell for forms and messages.',
         storybook: `${SB}/?path=/story/components-panel--default`,
         previewHtml: `
           <div class="arc-panel arc-panel-cyan" style="min-width:200px;">
-            <div class="arc-panel-header">TITOLO</div>
-            <div class="arc-panel-body">Contenuto</div>
+            <div class="arc-panel-header">TITLE</div>
+            <div class="arc-panel-body">Content</div>
             <div class="arc-panel-footer"><button type="button" class="arc-btn arc-btn-ghost">OK</button></div>
           </div>`,
         code: `<div class="arc-panel arc-panel-cyan">
-  <div class="arc-panel-header">TITOLO</div>
-  <div class="arc-panel-body">Contenuto</div>
+  <div class="arc-panel-header">TITLE</div>
+  <div class="arc-panel-body">Content</div>
   <div class="arc-panel-footer">
     <button type="button" class="arc-btn arc-btn-primary">OK</button>
   </div>
@@ -82,9 +107,9 @@ export const SHOWCASE_CATEGORIES = [
       {
         id: 'cmp-card',
         navLabel: 'Card',
-        title: 'Card (scheda)',
+        title: 'Card',
         className: '.arc-card',
-        blurb: 'Scheda stile “seleziona personaggio”: header con avatar, statistiche nel body.',
+        blurb: 'Character-select style card: header with avatar, stats in the body.',
         storybook: `${SB}/?path=/story/components-card--character-select-screen`,
         previewHtml: `
           <div class="arc-card arc-card-cyan" style="max-width:260px;">
@@ -110,33 +135,33 @@ export const SHOWCASE_CATEGORIES = [
   },
   {
     id: 'cat-form',
-    label: 'Moduli (form)',
+    label: 'Forms',
     items: [
       {
         id: 'cmp-input',
         navLabel: 'Input / label',
-        title: 'Campi di testo',
+        title: 'Text fields',
         className: '.arc-input · .arc-label',
-        blurb: 'Input testuale con etichetta sopra e hint opzionale sotto.',
+        blurb: 'Text input with a label above and an optional hint below.',
         storybook: `${SB}/?path=/story/components-input--default`,
         previewHtml: `
           <div class="arc-input-wrapper" style="min-width:240px;">
-            <label class="arc-label" for="sc-inp">NOME</label>
+            <label class="arc-label" for="sc-inp">NAME</label>
             <input id="sc-inp" class="arc-input" placeholder="AAA" maxlength="3" autocomplete="off">
-            <span class="arc-input-hint">max 3 caratteri</span>
+            <span class="arc-input-hint">max 3 characters</span>
           </div>`,
         code: `<div class="arc-input-wrapper">
-  <label class="arc-label" for="id">NOME</label>
+  <label class="arc-label" for="id">NAME</label>
   <input id="id" class="arc-input" placeholder="AAA" maxlength="3">
-  <span class="arc-input-hint">suggerimento</span>
+  <span class="arc-input-hint">hint</span>
 </div>`,
       },
       {
         id: 'cmp-textarea-select',
         navLabel: 'Textarea / Select',
-        title: 'Area testo e menu a tendina',
+        title: 'Textarea & dropdown',
         className: '.arc-textarea · .arc-select',
-        blurb: 'Stessi bordi neon: `textarea` e `select` con le classi analoghe a `arc-input`.',
+        blurb: 'Same neon borders: `textarea` and `select` use classes parallel to `arc-input`.',
         storybook: `${SB}/?path=/story/components-input--default`,
         previewHtml: `
           <div class="arc-input-wrapper" style="min-width:220px;">
@@ -144,7 +169,7 @@ export const SHOWCASE_CATEGORIES = [
             <textarea id="sc-ta" class="arc-input arc-textarea" rows="2" placeholder="…"></textarea>
           </div>
           <div class="arc-input-wrapper" style="min-width:200px;">
-            <label class="arc-label" for="sc-sel">LIVELLO</label>
+            <label class="arc-label" for="sc-sel">LEVEL</label>
             <select id="sc-sel" class="arc-input arc-select">
               <option>EASY</option><option>NORMAL</option><option>HARD</option>
             </select>
@@ -159,9 +184,9 @@ export const SHOWCASE_CATEGORIES = [
       {
         id: 'cmp-toggle',
         navLabel: 'Toggle',
-        title: 'Interruttore (toggle)',
+        title: 'Toggle switch',
         className: '.arc-toggle',
-        blurb: 'LED on/off come sui cabinati: solo HTML + checkbox, nessun JS.',
+        blurb: 'Cabinet-style LED on/off: HTML + checkbox only, no JS.',
         storybook: `${SB}/?path=/story/components-toggle--all-states`,
         previewHtml: `
           <label class="arc-toggle">
@@ -178,9 +203,9 @@ export const SHOWCASE_CATEGORIES = [
       {
         id: 'cmp-slider',
         navLabel: 'Slider',
-        title: 'Slider (range)',
+        title: 'Range slider',
         className: '.arc-slider',
-        blurb: 'Barra volume/stats: usa `data-arc-slider` + `--arc-slider-value` (percentuale). Con `bindSliders()` si aggiorna il fill automaticamente.',
+        blurb: 'Volume/stat bar: use `data-arc-slider` + `--arc-slider-value` (percentage). With `bindSliders()` the fill updates automatically.',
         storybook: `${SB}/?path=/story/components-slider--volume-panel-demo`,
         previewHtml: `
           <div class="arc-slider-wrapper" style="min-width:220px;">
@@ -197,7 +222,7 @@ export const SHOWCASE_CATEGORIES = [
 
 <!-- display valore: data-arc-slider-display="id-span" -->
 
-// Dopo aver aggiunto gli slider al DOM:
+// After sliders are in the DOM:
 // import { bindSliders } from '@davide03memoli/arcade-ui'
 // bindSliders(document.body)`,
       },
@@ -205,14 +230,14 @@ export const SHOWCASE_CATEGORIES = [
   },
   {
     id: 'cat-nav',
-    label: 'Navigazione',
+    label: 'Navigation',
     items: [
       {
         id: 'cmp-tabs',
-        navLabel: 'Schede (tabs)',
-        title: 'Schede',
+        navLabel: 'Tabs',
+        title: 'Tabs',
         className: '.arc-tabs',
-        blurb: 'Schede stile HUD. Senza JS: radio nascosti + label (vedi codice). Con JS: aggiungi `data-arc-tabs` su `.arc-tabs`, tab come `<button role="tab">`; `bindTabs()` è già attivo su questo sito dopo il caricamento pagina.',
+        blurb: 'HUD-style tabs. Without JS: hidden radios + labels (see code). With JS: add `data-arc-tabs` on `.arc-tabs`, tabs as `<button role="tab">`; `bindTabs()` already runs after navigation on this site.',
         storybook: `${SB}/?path=/story/components-tabs--multi-panel-demo`,
         previewHtml: `
           <div class="arc-tabs arc-tabs-cyan" style="max-width:320px;">
@@ -222,8 +247,8 @@ export const SHOWCASE_CATEGORIES = [
               <label class="arc-tab" for="sc-tab-a">A</label>
               <label class="arc-tab" for="sc-tab-b">B</label>
             </div>
-            <div class="arc-tab-panel">Contenuto A</div>
-            <div class="arc-tab-panel">Contenuto B</div>
+            <div class="arc-tab-panel">Panel A</div>
+            <div class="arc-tab-panel">Panel B</div>
           </div>`,
         code: `<div class="arc-tabs arc-tabs-cyan">
   <input class="arc-tab-radio" type="radio" name="unique-name" id="t1" checked>
@@ -239,15 +264,15 @@ export const SHOWCASE_CATEGORIES = [
       {
         id: 'cmp-dropdown',
         navLabel: 'Dropdown',
-        title: 'Menu a comparsa',
+        title: 'Dropdown menu',
         className: '.arc-dropdown',
-        blurb: 'Lista sotto il pulsante: apri/chiudi impostando `aria-expanded` sul trigger (vedi JS nel blocco codice).',
+        blurb: 'List under the button: toggle by setting `aria-expanded` on the trigger (see the code sample).',
         storybook: `${SB}/?path=/story/components-dropdown--default`,
         interactive: 'dropdown',
         previewHtml: `
           <div class="arc-dropdown arc-dropdown-cyan" style="min-width:220px;">
             <button type="button" class="arc-dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
-              <span class="arc-dropdown-value">DIFFICOLTÀ</span>
+              <span class="arc-dropdown-value">DIFFICULTY</span>
               <span class="arc-dropdown-chevron" aria-hidden="true"></span>
             </button>
             <ul class="arc-dropdown-menu" role="listbox">
@@ -256,7 +281,7 @@ export const SHOWCASE_CATEGORIES = [
               <li class="arc-dropdown-option" role="option">HARD</li>
             </ul>
           </div>`,
-        code: `<!-- Apri/chiudi: sul click del trigger inverti aria-expanded ("true"/"false") -->
+        code: `<!-- Toggle open/closed: on trigger click flip aria-expanded ("true"/"false") -->
 
 <div class="arc-dropdown arc-dropdown-cyan">
   <button type="button" class="arc-dropdown-trigger" aria-expanded="false">
@@ -274,62 +299,62 @@ export const SHOWCASE_CATEGORIES = [
         navLabel: 'Accordion',
         title: 'Accordion',
         className: '.arc-accordion',
-        blurb: 'Sezioni espandibili: usa `<details>` + `<summary>` con le classi accordion.',
+        blurb: 'Expandable sections: `<details>` + `<summary>` with accordion classes.',
         storybook: `${SB}/?path=/story/components-accordion--default`,
         previewHtml: `
           <div style="max-width:280px;">
             <details class="arc-accordion arc-accordion-cyan" open>
               <summary class="arc-accordion-summary">Round 1</summary>
-              <div class="arc-accordion-content"><p>Dettagli stage…</p></div>
+              <div class="arc-accordion-content"><p>Stage details…</p></div>
             </details>
             <details class="arc-accordion arc-accordion-cyan">
               <summary class="arc-accordion-summary">Round 2</summary>
-              <div class="arc-accordion-content"><p>Bloccato finché non completi il round 1.</p></div>
+              <div class="arc-accordion-content"><p>Locked until round 1 is cleared.</p></div>
             </details>
           </div>`,
         code: `<details class="arc-accordion arc-accordion-cyan" open>
-  <summary class="arc-accordion-summary">TITOLO</summary>
-  <div class="arc-accordion-content"><p>Testo</p></div>
+  <summary class="arc-accordion-summary">TITLE</summary>
+  <div class="arc-accordion-content"><p>Text</p></div>
 </details>`,
       },
     ],
   },
   {
     id: 'cat-overlay',
-    label: 'Sovrapposizioni',
+    label: 'Overlays',
     items: [
       {
         id: 'cmp-tooltip',
         navLabel: 'Tooltip',
         title: 'Tooltip',
         className: '[data-tooltip]',
-        blurb: 'Tooltip CSS puro: metti il testo in `data-tooltip` sull’elemento. Aggiungi classi posizione se serve.',
+        blurb: 'Pure CSS tooltip: put the text in `data-tooltip` on the element. Add position classes if needed.',
         storybook: `${SB}/?path=/story/components-tooltip--all-positions`,
         previewHtml: `
-          <button type="button" class="arc-btn arc-btn-ghost" data-tooltip="Suggerimento rapido">HOVER ME</button>`,
-        code: `<button type="button" class="arc-btn arc-btn-primary" data-tooltip="Testo tooltip">
+          <button type="button" class="arc-btn arc-btn-ghost" data-tooltip="Quick hint">HOVER ME</button>`,
+        code: `<button type="button" class="arc-btn arc-btn-primary" data-tooltip="Tooltip text">
   SAVE
 </button>
-<!-- opzionale: arc-tooltip-bottom sullo stesso elemento -->`,
+<!-- optional: arc-tooltip-bottom on the same element -->`,
       },
       {
         id: 'cmp-modal',
         navLabel: 'Modal',
-        title: 'Finestra modale',
+        title: 'Modal dialog',
         className: '.arc-modal',
-        blurb: 'Dialog sopra la pagina: backdrop + `arcModal.open/close` da JS, oppure `data-arc-modal-open`.',
+        blurb: 'Page overlay dialog: backdrop + `arcModal.open/close` from JS, or `data-arc-modal-open`.',
         storybook: `${SB}/?path=/story/components-modal--default`,
         previewHtml: `
-          <button type="button" class="arc-btn arc-btn-primary" data-arc-modal-open="sc-showcase-modal">APRI MODALE</button>
+          <button type="button" class="arc-btn arc-btn-primary" data-arc-modal-open="sc-showcase-modal">OPEN MODAL</button>
           <div class="arc-modal-backdrop" id="sc-showcase-modal" aria-hidden="true">
             <div class="arc-modal arc-modal-cyan" role="dialog" aria-modal="true" aria-labelledby="sc-modal-title">
               <div class="arc-modal-header">
                 <span id="sc-modal-title" class="arc-modal-title">PAUSA</span>
-                <button type="button" class="arc-modal-close" aria-label="Chiudi">[X]</button>
+                <button type="button" class="arc-modal-close" aria-label="Close">[X]</button>
               </div>
-              <div class="arc-modal-body">Continuare la partita?</div>
+              <div class="arc-modal-body">Continue the game?</div>
               <div class="arc-modal-footer">
-                <button type="button" class="arc-btn arc-btn-primary">SÌ</button>
+                <button type="button" class="arc-btn arc-btn-primary">YES</button>
                 <button type="button" class="arc-btn arc-btn-ghost">NO</button>
               </div>
             </div>
@@ -351,14 +376,14 @@ arcModal.bindModalTriggers(document.body)`,
   },
   {
     id: 'cat-data',
-    label: 'Dati e stato',
+    label: 'Data & state',
     items: [
       {
         id: 'cmp-progress',
         navLabel: 'Progress',
-        title: 'Barra di avanzamento',
+        title: 'Progress bar',
         className: '.arc-progress',
-        blurb: 'Percentuale con `--arc-progress` (es. `75%`). Variante “indeterminate” per caricamento infinito.',
+        blurb: 'Percentage with `--arc-progress` (e.g. `75%`). “Indeterminate” variant for endless loading.',
         storybook: `${SB}/?path=/story/components-progress--all-colors`,
         previewHtml: `
           <div class="arc-progress-wrapper arc-progress-cyan" style="min-width:220px;">
@@ -373,10 +398,10 @@ arcModal.bindModalTriggers(document.body)`,
       },
       {
         id: 'cmp-table',
-        navLabel: 'Tabella',
-        title: 'Tabella / classifica',
+        navLabel: 'Table',
+        title: 'Table / leaderboard',
         className: '.arc-table',
-        blurb: 'Tabella compatta per scoreboard: wrapper colorato + righe leader.',
+        blurb: 'Compact scoreboard-style table: colored wrapper + leader rows.',
         storybook: `${SB}/?path=/story/components-table--leaderboard`,
         previewHtml: `
           <div class="arc-table-wrapper arc-table-cyan" style="max-width:320px;">
@@ -398,7 +423,7 @@ arcModal.bindModalTriggers(document.body)`,
         navLabel: 'Avatar',
         title: 'Avatar',
         className: '.arc-avatar',
-        blurb: 'Ritratto quadrato con cornice neon e LED stato (online/offline).',
+        blurb: 'Square portrait with neon frame and online/offline status LED.',
         storybook: `${SB}/?path=/story/components-avatar--character-select-grid`,
         previewHtml: `
           <div class="arc-avatar arc-avatar-sm arc-avatar-frame-neon">
@@ -413,15 +438,15 @@ arcModal.bindModalTriggers(document.body)`,
       },
       {
         id: 'cmp-display',
-        navLabel: 'Display 7-seg',
-        title: 'Display a sette segmenti',
+        navLabel: '7-segment',
+        title: 'Seven-segment display',
         className: '.arc-display',
-        blurb: 'Numeri stile cabinato. L’HTML può essere vuoto: `setArcDisplayValue(el, valore)` crea le cifre.',
+        blurb: 'Cabinet-style digits. HTML can be empty: `setArcDisplayValue(el, value)` builds the digits.',
         storybook: `${SB}/?path=/story/components-display--score-counter`,
         interactive: 'display',
         previewHtml: `
           <div class="arc-display arc-display-score arc-display-cyan" id="sc-seven-seg" role="status" aria-live="polite"></div>
-          <button type="button" class="arc-btn arc-btn-ghost arc-btn-sm" id="sc-seven-refresh">Aggiorna</button>`,
+          <button type="button" class="arc-btn arc-btn-ghost arc-btn-sm" id="sc-seven-refresh">Refresh</button>`,
         code: `<div class="arc-display arc-display-score arc-display-cyan" role="status"></div>
 
 import { setArcDisplayValue } from '@davide03memoli/arcade-ui'
@@ -433,19 +458,19 @@ setArcDisplayValue(element, 125400, { pad: 6 })`,
         navLabel: 'Countdown',
         title: 'Timer (arcCountdown)',
         className: 'arcCountdown()',
-        blurb: 'Sullo stesso tipo di display puoi far scorrere un countdown: a zero viene chiamato onEnd.',
+        blurb: 'Same display type can show a ticking countdown; at zero `onEnd` runs.',
         storybook: `${SB}/?path=/story/components-display--score-counter`,
         interactive: 'countdown',
         previewHtml: `
           <div class="arc-display arc-display-timer arc-display-amber" id="sc-count-el" role="status" aria-live="polite"></div>
-          <button type="button" class="arc-btn arc-btn-primary arc-btn-sm" id="sc-count-start">AVVIA 15s</button>`,
+          <button type="button" class="arc-btn arc-btn-primary arc-btn-sm" id="sc-count-start">START 15s</button>`,
         code: `import { arcCountdown, setArcDisplayValue } from '@davide03memoli/arcade-ui'
 
 setArcDisplayValue(displayEl, '15', { pad: 2 })
 
 const ctrl = arcCountdown(displayEl, {
   seconds: 15,
-  onEnd: () => { /* tempo scaduto */ },
+  onEnd: () => { /* time up */ },
 })
 // ctrl.stop()`,
         lang: 'javascript',
@@ -455,7 +480,7 @@ const ctrl = arcCountdown(displayEl, {
         navLabel: 'Sprite',
         title: 'Sprite sheet',
         className: '.arc-sprite',
-        blurb: 'Animazione da foglio PNG (strip orizzontale). Imposti URL, numero frame, size e FPS con variabili CSS; oppure GIF con `arc-sprite-gif`.',
+        blurb: 'PNG sheet animation (horizontal strip). URL, frames, size, FPS via CSS vars; GIF mode with `arc-sprite-gif`.',
         storybook: `${SB}/?path=/story/components-sprite--sprite-sheet-strip`,
         previewHtml: `
           <div class="arc-sprite arc-sprite-pixelated arc-sprite-bg-panel"
@@ -467,7 +492,7 @@ const ctrl = arcCountdown(displayEl, {
               --arc-sprite-height: 1px;
               --arc-sprite-scale: 48;
             "></div>
-          <p class="arc-input-hint" style="max-width:220px;margin:0;">Pixel ingrandito: sostituisci con il tuo PNG strip.</p>`,
+          <p class="arc-input-hint" style="max-width:220px;margin:0;">Upscaled pixels — swap in your own PNG strip.</p>`,
         code: `<div class="arc-sprite arc-sprite-pixelated" style="
   --arc-sprite-sheet: url('/sprites/hero.png');
   --arc-sprite-frames: 4;
@@ -481,20 +506,20 @@ const ctrl = arcCountdown(displayEl, {
   },
   {
     id: 'cat-fx',
-    label: 'Look & effetti',
+    label: 'Look & effects',
     items: [
       {
         id: 'cmp-glow-text',
-        navLabel: 'Glow & testo',
-        title: 'Bagliore e testo neon',
+        navLabel: 'Glow & text',
+        title: 'Glow & neon text',
         className: '.arc-glow-* · .arc-text-*',
-        blurb: 'Classi per testo luminoso, alone, contorno e gradiente — tutto token-based.',
+        blurb: 'Classes for luminous text, halos, outlines, and gradients — all token-based.',
         storybook: `${SB}/?path=/story/effects-glow--text`,
         previewHtml: `
           <span class="arc-glow-cyan" style="font-family:var(--arc-font-pixel);font-size:clamp(0.75rem,2.4vw,0.95rem);">GLOW</span>
           <span class="arc-text-neon" style="font-family:var(--arc-font-pixel);font-size:clamp(0.75rem,2.4vw,0.95rem);">NEON</span>
           <span class="arc-text-outline" style="font-family:var(--arc-font-pixel);font-size:clamp(0.75rem,2.4vw,0.95rem);">OUTLINE</span>`,
-        code: `<span class="arc-glow-cyan">TESTO</span>
+        code: `<span class="arc-glow-cyan">TEXT</span>
 <span class="arc-text-neon">NEON</span>
 <span class="arc-text-outline">CONTORNO</span>`,
       },
@@ -503,7 +528,7 @@ const ctrl = arcCountdown(displayEl, {
         navLabel: 'Glitch',
         title: 'Glitch',
         className: '.arc-glitch',
-        blurb: 'Distorsione su testo: classe sul markup + `initGlitch()` per sincronizzare i layer; `triggerGlitch()` per un burst.',
+        blurb: 'Text distortion: class on markup + `initGlitch()` to sync layers; `triggerGlitch()` for a burst.',
         storybook: `${SB}/?path=/story/effects-glitch--always-on`,
         previewHtml: `
           <p class="arc-glitch arc-text-neon" data-text="HIGH SCORE" style="font-family:var(--arc-font-pixel);font-size:clamp(0.78rem,2.5vw,1.05rem);margin:0;">HIGH SCORE</p>
@@ -518,46 +543,46 @@ triggerGlitch(element, 500)`,
       },
       {
         id: 'cmp-pixel-border',
-        navLabel: 'Bordo pixel',
-        title: 'Bordo 8-bit',
+        navLabel: 'Pixel border',
+        title: '8-bit border',
         className: '.arc-border-pixel',
-        blurb: 'Cornice a gradini come i bordi dei giochi 8-bit; combina con `-glow` per il neon.',
+        blurb: 'Stepped frame like classic 8-bit games; combine with `-glow` for neon.',
         storybook: `${SB}/?path=/story/effects-pixel-border--showcase`,
         previewHtml: `
-          <div class="arc-border-pixel arc-border-pixel-glow" style="padding:1.1rem 1.25rem;font-family:var(--arc-font-body);font-size:1.05rem;">Contenuto incorniciato</div>`,
+          <div class="arc-border-pixel arc-border-pixel-glow" style="padding:1.1rem 1.25rem;font-family:var(--arc-font-body);font-size:1.05rem;">Framed content</div>`,
         code: `<div class="arc-border-pixel arc-border-pixel-glow">…</div>`,
       },
       {
         id: 'cmp-crt',
         navLabel: 'CRT',
-        title: 'Schermo CRT',
+        title: 'CRT screen',
         className: '.arc-crt-screen',
-        blurb: 'Avvolgi il contenuto per vignetta/scanline stile tubo catodico (combinabile con animazioni flicker).',
+        blurb: 'Wrap content for vignette/scanlines CRT look (combine with flicker animations).',
         storybook: `${SB}/?path=/story/effects-crt--screen`,
         previewHtml: `
           <div class="arc-crt-screen arc-border-pixel" style="max-width:min(100%,22rem);width:100%;padding:1.15rem 1.35rem;font-family:var(--arc-font-body);font-size:1.05rem;line-height:1.5;text-align:center;">
-            Testo come dentro al cabinato
+            Text as inside a cabinet
           </div>`,
         code: `<div class="arc-crt-screen">… contenuto …</div>`,
       },
       {
         id: 'cmp-bg-pattern',
-        navLabel: 'Sfondi pattern',
-        title: 'Pattern di sfondo',
+        navLabel: 'Backgrounds',
+        title: 'Background patterns',
         className: '.arc-bg-*',
-        blurb: 'Griglia, puntini, scanline, rumore, circuito, stelle — come classe su un contenitore (non sul body se vuoi controllare l’area).',
+        blurb: 'Grid, dots, scanlines, noise, circuits, stars — as a container class (not on body if you need a bounded area).',
         storybook: `${SB}/?path=/story/effects-background-patterns--all-patterns`,
         previewHtml: `
-          <div class="arc-bg-grid arc-border-pixel" style="min-height:5rem;padding:0.85rem 1rem;--arc-bg-opacity:0.5;display:flex;align-items:center;justify-content:center;"><span class="showcase-bg-pattern-label">Griglia leggera</span></div>`,
+          <div class="arc-bg-grid arc-border-pixel" style="min-height:5rem;padding:0.85rem 1rem;--arc-bg-opacity:0.5;display:flex;align-items:center;justify-content:center;"><span class="showcase-bg-pattern-label">Soft grid</span></div>`,
         code: `<div class="arc-bg-grid">…</div>
 <div class="arc-bg-scanlines">…</div>`,
       },
       {
         id: 'cmp-anim',
-        navLabel: 'Animazioni',
-        title: 'Animazioni cabinato',
+        navLabel: 'Animations',
+        title: 'Cabinet animations',
         className: '.arc-anim-*',
-        blurb: 'Flicker, cursore lampeggiante, insert coin, scanline in movimento, noise TV, power on/off.',
+        blurb: 'Flicker, blinking cursor, insert coin, moving scanlines, TV noise, power on/off.',
         storybook: `${SB}/?path=/story/effects-animations--showcase`,
         previewHtml: `
           <span class="arc-anim-insert-coin arc-text-neon" style="font-family:var(--arc-font-pixel);font-size:clamp(0.7rem,2.3vw,0.9rem);">INSERT COIN</span>`,
@@ -568,14 +593,14 @@ triggerGlitch(element, 500)`,
   },
   {
     id: 'cat-js',
-    label: 'JavaScript incluso',
+    label: 'Built-in JavaScript',
     items: [
       {
         id: 'cmp-audio',
         navLabel: 'AudioManager',
-        title: 'Suoni arcade',
+        title: 'Arcade sounds',
         className: 'AudioManager',
-        blurb: 'SFX sintetizzati (nessun MP3): `play(\'coin\'|\'select\'|… )` e `bindButtons()` per i data-attribute sui bottoni.',
+        blurb: 'Synthesized SFX (no MP3 files): `play(\'coin\'|\'select\'| …)` and `bindButtons()` for data attributes on buttons.',
         storybook: `${SB}/?path=/story/components-button--primary`,
         previewHtml: `
           <button type="button" class="arc-btn arc-btn-primary" id="sc-audio-coin">coin</button>
@@ -590,9 +615,9 @@ a.bindButtons(document.body)`,
       {
         id: 'cmp-toast',
         navLabel: 'Toast',
-        title: 'Notifiche toast',
+        title: 'Toast notifications',
         className: 'arcToast',
-        blurb: 'Messaggi tipo “GAME OVER” in basso o in alto: `arcToast.show({ message, type, duration })`.',
+        blurb: '“GAME OVER” style messages bottom or top: `arcToast.show({ message, type, duration })`.',
         storybook: `${SB}/?path=/story/components-toast--playground`,
         interactive: 'toast',
         previewHtml: `

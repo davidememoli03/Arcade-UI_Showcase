@@ -1,15 +1,19 @@
+import { getLocale } from '../i18n/locale-store.js'
+import { t } from '../i18n/messages.js'
+
 export function mountPropsTable(container, rows) {
+  const loc = getLocale()
   const wrap = document.createElement('div')
   wrap.className = 'arc-table-wrapper arc-table-cyan'
   wrap.innerHTML = `
     <table class="arc-table arc-table-compact">
       <caption class="playground-props-caption">
-        Stato attuale (sola lettura)
+        ${t(loc, 'playgroundPropsCaption')}
       </caption>
       <thead>
         <tr>
-          <th class="arc-table-th">Proprietà</th>
-          <th class="arc-table-th arc-table-th-num">Valore</th>
+          <th class="arc-table-th">${t(loc, 'playgroundPropsColProp')}</th>
+          <th class="arc-table-th arc-table-th-num">${t(loc, 'playgroundPropsColVal')}</th>
         </tr>
       </thead>
       <tbody></tbody>

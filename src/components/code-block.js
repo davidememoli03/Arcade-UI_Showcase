@@ -1,3 +1,6 @@
+import { getLocale } from '../i18n/locale-store.js'
+import { t } from '../i18n/messages.js'
+
 function flash(el) {
   el.classList.remove('copy-flash')
   void el.offsetWidth
@@ -27,18 +30,18 @@ export function mountCodeBlock(container, options) {
     const btn = document.createElement('button')
     btn.type = 'button'
     btn.className = 'arc-btn arc-btn-ghost'
-    btn.textContent = 'COPY'
+    btn.textContent = t(getLocale(), 'codeCopy')
     btn.addEventListener('click', async () => {
       try {
         await navigator.clipboard.writeText(code)
         flash(btn)
-        btn.textContent = 'COPIED'
+        btn.textContent = t(getLocale(), 'codeCopied')
         window.setTimeout(() => {
-          btn.textContent = 'COPY'
+          btn.textContent = t(getLocale(), 'codeCopy')
         }, 1600)
       }
       catch {
-        btn.textContent = 'ERR'
+        btn.textContent = t(getLocale(), 'codeCopyErr')
       }
     })
     toolbar.appendChild(btn)

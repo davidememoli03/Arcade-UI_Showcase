@@ -10,9 +10,14 @@ import {
 import './style.css'
 import { createNavbar } from './components/navbar.js'
 import { createRouter } from './router.js'
+import { initLocaleDocument, subscribeLocale, getLocale } from './i18n/locale-store.js'
+import { syncDocumentTitle } from './i18n/messages.js'
 
 const audio = AudioManager.getInstance()
 audio.bindButtons(document.body)
+
+initLocaleDocument()
+syncDocumentTitle(getLocale())
 
 const root = document.getElementById('app-root')
 root.innerHTML = `
@@ -39,6 +44,12 @@ const { apply } = createRouter({
 })
 
 createNavbar(navMount)
+
+subscribeLocale((loc) => {
+  syncDocumentTitle(loc)
+  createNavbar(navMount)
+  apply()
+})
 
 if (!window.location.hash || window.location.hash === '#') {
   window.location.hash = '#/home'

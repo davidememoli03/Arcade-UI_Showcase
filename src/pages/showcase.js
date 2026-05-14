@@ -1,9 +1,10 @@
 import { mountCodeBlock } from '../components/code-block.js'
 import {
   findShowcaseItem,
-  SHOWCASE_CATEGORIES,
-  SHOWCASE_INTRO,
+  localizeShowcaseCatalog,
 } from '../data/showcase-catalog.js'
+import { getLocale } from '../i18n/locale-store.js'
+import { t } from '../i18n/messages.js'
 import { getShowcaseVariants } from '../data/showcase-variants.js'
 import {
   arcToast,
@@ -42,7 +43,7 @@ function wireDropdowns(root) {
   })
 }
 
-function wireSectionInteractive(panel, item) {
+function wireSectionInteractive(panel, item, locale) {
   const { interactive, id: itemId } = item
   if (!interactive) return
 
@@ -108,16 +109,16 @@ function wireSectionInteractive(panel, item) {
 
   if (interactive === 'toast') {
     panel.querySelector(`#sc-toast-i-${itemId}`)?.addEventListener('click', () => {
-      arcToast.show({ message: 'PLAYER 1 READY', type: 'info', duration: 2500 })
+      arcToast.show({ message: t(locale, 'toastInfoDemo'), type: 'info', duration: 2500 })
     })
     panel.querySelector(`#sc-toast-ok-${itemId}`)?.addEventListener('click', () => {
-      arcToast.show({ message: 'STAGE CLEAR', type: 'success', duration: 2500 })
+      arcToast.show({ message: t(locale, 'toastSuccessDemo'), type: 'success', duration: 2500 })
     })
     panel.querySelector(`#sc-toast-warn-${itemId}`)?.addEventListener('click', () => {
-      arcToast.show({ message: 'WARNING', type: 'warning', duration: 2500 })
+      arcToast.show({ message: t(locale, 'toastWarnDemo'), type: 'warning', duration: 2500 })
     })
     panel.querySelector(`#sc-toast-err-${itemId}`)?.addEventListener('click', () => {
-      arcToast.show({ message: 'GAME OVER', type: 'error', duration: 2500 })
+      arcToast.show({ message: t(locale, 'toastErrorDemo'), type: 'error', duration: 2500 })
     })
   }
 }
@@ -127,7 +128,7 @@ function sideLinkClass(active) {
   return active ? `${base} showcase-side-link-active` : base
 }
 
-function buildDetailCard(item) {
+function buildDetailCard(item, locale) {
   const panel = document.createElement('article')
   panel.className = 'arc-panel arc-panel-cyan'
   panel.id = item.id
@@ -144,7 +145,7 @@ function buildDetailCard(item) {
   intro.textContent = item.blurb
   body.appendChild(intro)
 
-  const variants = getShowcaseVariants(item)
+  const variants = getShowcaseVariants(item, locale)
   for (const v of variants) {
     const block = document.createElement('section')
     block.className = 'showcase-variant'
@@ -179,12 +180,12 @@ function buildDetailCard(item) {
     const copyBtn = document.createElement('button')
     copyBtn.type = 'button'
     copyBtn.className = 'arc-btn arc-btn-ghost'
-    copyBtn.textContent = 'COPY CODE'
+    copyBtn.textContent = t(locale, 'showcaseCopyCode')
     copyBtn.addEventListener('click', async () => {
       await navigator.clipboard.writeText(v.code.trim())
-      copyBtn.textContent = 'COPIATO'
+      copyBtn.textContent = t(locale, 'showcaseCopied')
       window.setTimeout(() => {
-        copyBtn.textContent = 'COPY CODE'
+        copyBtn.textContent = t(locale, 'showcaseCopyCode')
       }, 1500)
     })
     copy.appendChild(copyBtn)
@@ -201,7 +202,7 @@ function buildDetailCard(item) {
     sb.target = '_blank'
     sb.rel = 'noopener noreferrer'
     sb.className = 'arc-btn arc-btn-ghost'
-    sb.textContent = 'STORYBOOK'
+    sb.textContent = t(locale, 'showcaseStorybook')
     foot.appendChild(sb)
   }
 
@@ -209,7 +210,7 @@ function buildDetailCard(item) {
   panel.appendChild(body)
   panel.appendChild(foot)
 
-  wireSectionInteractive(panel, item)
+  wireSectionInteractive(panel, item, locale)
 
   return panel
 }
@@ -248,12 +249,14 @@ function restoreShowcaseDrawer(drawer, drawerScrollTop) {
 }
 
 export function renderShowcase(outlet, { navigateTo, showcaseSlug, drawerScrollTop = 0 }) {
+  const locale = getLocale()
+  const { intro: introBlock, categories } = localizeShowcaseCatalog(locale)
   const layout = document.createElement('div')
   layout.className = 'showcase-layout'
 
   const drawer = document.createElement('aside')
   drawer.className = 'showcase-drawer'
-  drawer.setAttribute('aria-label', 'Componenti')
+  drawer.setAttribute('aria-label', t(locale, 'showcaseDrawerAria'))
 
   const details = document.createElement('details')
   details.className = 'showcase-drawer-details'
@@ -261,7 +264,7 @@ export function renderShowcase(outlet, { navigateTo, showcaseSlug, drawerScrollT
 
   const summary = document.createElement('summary')
   summary.className = 'showcase-drawer-summary'
-  summary.textContent = 'COMPONENTI ▸'
+  summary.textContent = t(locale, 'showcaseDrawerSummary')
 
   const scrollWrap = document.createElement('div')
   scrollWrap.className = 'showcase-drawer-scroll'
@@ -269,10 +272,10 @@ export function renderShowcase(outlet, { navigateTo, showcaseSlug, drawerScrollT
   const idx = document.createElement('a')
   idx.href = '#/showcase'
   idx.className = `${sideLinkClass(!showcaseSlug)} showcase-drawer-indice`
-  idx.textContent = 'INDICE'
+  idx.textContent = t(locale, 'showcaseIndex')
   scrollWrap.appendChild(idx)
 
-  for (const cat of SHOWCASE_CATEGORIES) {
+  for (const cat of categories) {
     const catEl = document.createElement('div')
     catEl.className = 'showcase-side-group'
     const lab = document.createElement('div')
@@ -311,15 +314,15 @@ export function renderShowcase(outlet, { navigateTo, showcaseSlug, drawerScrollT
     const intro = document.createElement('div')
     intro.className = 'arc-panel arc-panel-yellow showcase-welcome-panel'
     intro.innerHTML = `
-      <div class="arc-panel-header">${SHOWCASE_INTRO.title}</div>
+      <div class="arc-panel-header">${introBlock.title}</div>
       <div class="arc-panel-body">
-        <p class="showcase-blurb">${SHOWCASE_INTRO.body}</p>
-        <p class="showcase-blurb">Ogni componente ha una pagina con <strong>tutte le varianti e opzioni</strong> raggruppate in sezioni (anteprima + codice).</p>
+        <p class="showcase-blurb">${introBlock.body}</p>
+        <p class="showcase-blurb">${t(locale, 'showcaseIndexExtra')}</p>
       </div>
     `
     detail.appendChild(intro)
 
-    for (const cat of SHOWCASE_CATEGORIES) {
+    for (const cat of categories) {
       const block = document.createElement('div')
       block.className = 'showcase-index-block'
       const h = document.createElement('div')
@@ -340,18 +343,18 @@ export function renderShowcase(outlet, { navigateTo, showcaseSlug, drawerScrollT
     }
   }
   else {
-    const found = findShowcaseItem(showcaseSlug)
+    const found = findShowcaseItem(showcaseSlug, locale)
     if (!found) {
       detail.classList.add('showcase-page--error')
       const err = document.createElement('div')
       err.className = 'arc-panel arc-panel-red'
       err.innerHTML = `
-        <div class="arc-panel-header">NON TROVATO</div>
+        <div class="arc-panel-header">${t(locale, 'showcaseNotFound')}</div>
         <div class="arc-panel-body">
-          <p class="showcase-blurb">Nessun componente con id <code class="arc-label" style="display:inline;padding:0 .25rem;">${showcaseSlug}</code>.</p>
+          <p class="showcase-blurb">${t(locale, 'showcaseBadSlugBody')} <code class="arc-label" style="display:inline;padding:0 .25rem;">${showcaseSlug}</code>.</p>
         </div>
         <div class="arc-panel-footer">
-          <button type="button" class="arc-btn arc-btn-primary" id="sc-badslug-back">TORNA ALL’INDICE</button>
+          <button type="button" class="arc-btn arc-btn-primary" id="sc-badslug-back">${t(locale, 'showcaseBackIndex')}</button>
         </div>
       `
       err.querySelector('#sc-badslug-back')?.addEventListener('click', () => {
@@ -367,7 +370,7 @@ export function renderShowcase(outlet, { navigateTo, showcaseSlug, drawerScrollT
         <span class="showcase-bc-sep">/</span>
         <span class="showcase-bc-part">${found.item.title}</span>`
       detail.appendChild(navRow)
-      detail.appendChild(buildDetailCard(found.item))
+      detail.appendChild(buildDetailCard(found.item, locale))
     }
   }
 

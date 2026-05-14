@@ -1469,6 +1469,13 @@ body {
   min-width: 0;
 }
 
+.showcase-lang-bar {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.2rem;
+  align-items: center;
+}
+
 .showcase-nav-links.is-open {
   display: flex;
 }
@@ -1494,6 +1501,17 @@ body {
 
   .showcase-nav-links .arc-btn {
     width: 100%;
+    justify-content: center;
+  }
+
+  .showcase-lang-bar {
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .showcase-lang-bar .arc-btn {
+    width: auto;
+    flex: 1 1 0;
     justify-content: center;
   }
 }
