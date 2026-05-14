@@ -12,7 +12,9 @@ function linkButtonClass(route, current) {
   if (route === '/showcase' && isShowcasePath(current)) {
     isActive = true
   }
-  return isActive ? 'arc-btn arc-btn-ghost showcase-nav-active' : 'arc-btn arc-btn-ghost'
+  return isActive
+    ? 'arc-btn arc-btn-ghost arc-btn-sm showcase-nav-active'
+    : 'arc-btn arc-btn-ghost arc-btn-sm'
 }
 
 export function createNavbar(container) {
@@ -48,7 +50,7 @@ export function createNavbar(container) {
     gh.href = 'https://github.com/davidememoli03/Arcade-UI'
     gh.target = '_blank'
     gh.rel = 'noopener noreferrer'
-    gh.className = 'arc-btn arc-btn-ghost'
+    gh.className = 'arc-btn arc-btn-ghost arc-btn-sm'
     gh.textContent = 'GITHUB'
     gh.addEventListener('click', () => closeMobile())
     nav.appendChild(gh)
@@ -57,7 +59,7 @@ export function createNavbar(container) {
     npm.href = 'https://www.npmjs.com/package/@davide03memoli/arcade-ui'
     npm.target = '_blank'
     npm.rel = 'noopener noreferrer'
-    npm.className = 'arc-btn arc-btn-ghost'
+    npm.className = 'arc-btn arc-btn-ghost arc-btn-sm'
     npm.textContent = 'NPM'
     npm.addEventListener('click', () => closeMobile())
     nav.appendChild(npm)
