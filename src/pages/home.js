@@ -1,6 +1,7 @@
 import { SHOWCASE_CATEGORIES } from '../data/showcase-catalog.js'
 
-const INSTALL = 'npm install @davide03memoli/arcade-ui'
+const NPM_PKG = '@davide03memoli/arcade-ui'
+const INSTALL = `npm install ${NPM_PKG}`
 
 const COMPONENT_COUNT = SHOWCASE_CATEGORIES.reduce((n, c) => n + c.items.length, 0)
 
@@ -74,7 +75,7 @@ export function renderHome(outlet, { navigateTo }) {
           <div class="arc-panel-body home-dev-body">
             <div class="home-dev-col home-dev-col--install">
               <p class="home-dev-label">Comando npm</p>
-              <code class="showcase-inline-code home-install-cmd">${INSTALL}</code>
+              <pre class="home-install-pre"><code class="home-install-cmd"><span class="home-install-kw">npm install</span> <span class="home-install-pkg">${NPM_PKG}</span></code></pre>
               <button type="button" class="arc-btn arc-btn-primary home-copy-btn" id="home-copy-install">COPY COMMAND</button>
             </div>
             <div class="home-dev-divider" aria-hidden="true"></div>
