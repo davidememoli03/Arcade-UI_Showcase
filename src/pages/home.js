@@ -25,12 +25,13 @@ export function renderHome(outlet, { navigateTo }) {
             </h1>
           </div>
           <p class="page-desc home-intro-below home-hero-lead">
-            Componenti da cabinato con bordi pixel e audio opzionale. Questa demo gira tutta sulla stessa libreria npm.
+            Arcade UI è una libreria npm di componenti per interfacce stile cabinato: pannelli e pulsanti arcade, glitch, scanline CRT e tipografia retrò, con sintesi audio opzionale al tocco — da usare nelle SPA, nelle landing o nei prototipi di HUD.
           </p>
         </header>
         <p class="home-meta-strip">
-          <span class="home-meta-strong">${COMPONENT_COUNT}</span> componenti · URL hash per ogni scheda
-          <code class="showcase-inline-code">#/showcase/…</code>
+          Pacchetto <strong class="home-meta-strong">@davide03memoli/arcade-ui</strong> · catalogo da
+          <span class="home-meta-strong">${COMPONENT_COUNT}</span>
+          blocchi ricorrenti (pannello, bottone, tooltip, countdown, AudioManager …) · in questo sito la documentazione è viva: anteprime, testi e codice pronto da copiare
         </p>
       </section>
 
