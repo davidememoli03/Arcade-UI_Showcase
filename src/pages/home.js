@@ -81,7 +81,7 @@ export function renderHome(outlet, { navigateTo }) {
             </div>
           </article>
           <article class="arc-panel arc-panel-green home-feature-card">
-            <div class="arc-panel-header">PLAYGROUND</div>
+            <div class="arc-panel-header">SANDBOX</div>
             <div class="arc-panel-body home-feature-body">
               <p class="home-feature-text">
                 Laboratorio immediato: scegli un componente, scrivi nel riquadro e guarda il risultato appena sotto.

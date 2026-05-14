@@ -350,12 +350,18 @@ body {
 }
 
 .home-feature-card .arc-panel-header {
+  box-sizing: border-box;
+  width: 100%;
   max-width: 100%;
   margin-bottom: 0.6rem;
+  padding-inline: 0.2rem;
   text-align: center;
-  word-break: normal;
-  overflow-wrap: normal;
   hyphens: manual;
+  font-size: clamp(0.34rem, 0.92vw + 0.38rem, 0.72rem);
+  letter-spacing: 0.06em;
+  line-height: 1.42;
+  word-break: normal;
+  overflow-wrap: break-word;
 }
 
 @supports (text-wrap: balance) {
