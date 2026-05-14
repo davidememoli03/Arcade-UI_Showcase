@@ -512,13 +512,13 @@ triggerGlitch(el, 500)`,
     {
       title: 'Classi pattern',
       description: 'arc-bg-grid · arc-bg-dots · arc-bg-scanlines · arc-bg-noise · arc-bg-circuit · arc-bg-stars',
-      previewHtml: `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(11.5rem,1fr));gap:clamp(1rem,2.5vw,1.35rem);max-width:38rem;width:100%;margin:0 auto;padding:0.15rem;">
-<div class="arc-bg-grid arc-border-pixel" style="min-height:5.25rem;padding:0.65rem 0.75rem;font-family:var(--arc-font-body);font-size:0.95rem;line-height:1.4;display:flex;align-items:center;justify-content:center;--arc-bg-opacity:0.55;">grid</div>
-<div class="arc-bg-dots arc-border-pixel" style="min-height:5.25rem;padding:0.65rem 0.75rem;font-family:var(--arc-font-body);font-size:0.95rem;line-height:1.4;display:flex;align-items:center;justify-content:center;">dots</div>
-<div class="arc-bg-scanlines arc-border-pixel" style="min-height:5.25rem;padding:0.65rem 0.75rem;font-family:var(--arc-font-body);font-size:0.95rem;line-height:1.4;display:flex;align-items:center;justify-content:center;">scan</div>
-<div class="arc-bg-noise arc-border-pixel" style="min-height:5.25rem;padding:0.65rem 0.75rem;font-family:var(--arc-font-body);font-size:0.95rem;line-height:1.4;display:flex;align-items:center;justify-content:center;">noise</div>
-<div class="arc-bg-circuit arc-border-pixel" style="min-height:5.25rem;padding:0.65rem 0.75rem;font-family:var(--arc-font-body);font-size:0.95rem;line-height:1.4;display:flex;align-items:center;justify-content:center;">circuit</div>
-<div class="arc-bg-stars arc-border-pixel" style="min-height:5.25rem;padding:0.65rem 0.75rem;font-family:var(--arc-font-body);font-size:0.95rem;line-height:1.4;display:flex;align-items:center;justify-content:center;">stars</div></div>`,
+      previewHtml: `<div class="showcase-bg-pattern-demo" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(11.5rem,1fr));gap:clamp(1rem,2.5vw,1.35rem);max-width:38rem;width:100%;margin:0 auto;padding:0.15rem;">
+<div class="arc-bg-grid arc-border-pixel" style="min-height:5.25rem;padding:0.65rem 0.75rem;display:flex;align-items:center;justify-content:center;--arc-bg-opacity:0.55;"><span class="showcase-bg-pattern-label">grid</span></div>
+<div class="arc-bg-dots arc-border-pixel" style="min-height:5.25rem;padding:0.65rem 0.75rem;display:flex;align-items:center;justify-content:center;"><span class="showcase-bg-pattern-label">dots</span></div>
+<div class="arc-bg-scanlines arc-border-pixel" style="min-height:5.25rem;padding:0.65rem 0.75rem;display:flex;align-items:center;justify-content:center;"><span class="showcase-bg-pattern-label">scan</span></div>
+<div class="arc-bg-noise arc-border-pixel" style="min-height:5.25rem;padding:0.65rem 0.75rem;display:flex;align-items:center;justify-content:center;"><span class="showcase-bg-pattern-label">noise</span></div>
+<div class="arc-bg-circuit arc-border-pixel" style="min-height:5.25rem;padding:0.65rem 0.75rem;display:flex;align-items:center;justify-content:center;"><span class="showcase-bg-pattern-label">circuit</span></div>
+<div class="arc-bg-stars arc-border-pixel" style="min-height:5.25rem;padding:0.65rem 0.75rem;display:flex;align-items:center;justify-content:center;"><span class="showcase-bg-pattern-label">stars</span></div></div>`,
       code: `<div class="arc-bg-grid" style="--arc-bg-opacity:0.4">…</div>`,
     },
   ],

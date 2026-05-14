@@ -1225,6 +1225,21 @@ body {
   margin: 0.55rem;
 }
 
+.showcase-bg-pattern-label {
+  font-family: var(--arc-font-pixel, monospace);
+  font-size: clamp(0.48rem, 1.05vw + 0.42rem, 0.74rem);
+  letter-spacing: 0.14em;
+  line-height: 1.35;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--arc-color-cyan, #00f5ff);
+  text-shadow:
+    0 0 2px rgba(0, 0, 0, 1),
+    0 0 14px rgba(0, 0, 0, 0.95),
+    0 2px 4px rgba(0, 0, 0, 0.9),
+    0 0 20px rgba(0, 245, 255, 0.4);
+}
+
 @media (max-width: 420px) {
   .showcase-preview-box {
     padding: 0.85rem 0.65rem;

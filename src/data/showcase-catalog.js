@@ -548,7 +548,7 @@ triggerGlitch(element, 500)`,
         blurb: 'Griglia, puntini, scanline, rumore, circuito, stelle — come classe su un contenitore (non sul body se vuoi controllare l’area).',
         storybook: `${SB}/?path=/story/effects-background-patterns--all-patterns`,
         previewHtml: `
-          <div class="arc-bg-grid arc-border-pixel" style="min-height:5rem;padding:0.85rem 1rem;font-family:var(--arc-font-body);font-size:1rem;--arc-bg-opacity:0.5;">Griglia leggera</div>`,
+          <div class="arc-bg-grid arc-border-pixel" style="min-height:5rem;padding:0.85rem 1rem;--arc-bg-opacity:0.5;display:flex;align-items:center;justify-content:center;"><span class="showcase-bg-pattern-label">Griglia leggera</span></div>`,
         code: `<div class="arc-bg-grid">…</div>
 <div class="arc-bg-scanlines">…</div>`,
       },
