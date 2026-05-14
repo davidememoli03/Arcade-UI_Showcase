@@ -105,17 +105,17 @@ export function renderPlayground(outlet) {
   shell.className = 'playground-shell'
 
   const head = document.createElement('header')
-  head.className = 'page-head'
+  head.className = 'page-head playground-page-intro'
   head.innerHTML = `
-    <p class="page-kicker">Playground</p>
-    <p class="page-title">Composer HTML in tempo reale</p>
+    <p class="page-kicker">Sandbox</p>
+    <p class="page-title">Prova markup e varianti in tempo reale</p>
     <p class="page-desc">
-      Scegli un tipo di componente, regola proprietà e stato, controlla l'anteprima e copia il markup generato nella sezione gialla.
+      Scegli un tipo di componente, regola stato e testi, osserva l&apos;anteprima e copia il markup dalla sezione finale.
     </p>
   `
 
   const wrap = document.createElement('div')
-  wrap.className = 'showcase-stack playground-inner'
+  wrap.className = 'showcase-stack playground-stack'
 
   const state = {
     component: 'button',
@@ -155,20 +155,20 @@ export function renderPlayground(outlet) {
   }
 
   const grid = document.createElement('div')
-  grid.className = 'showcase-play-grid'
+  grid.className = 'showcase-play-grid playground-top-grid'
 
   const controlPanel = document.createElement('div')
-  controlPanel.className = 'arc-panel arc-panel-cyan'
+  controlPanel.className = 'arc-panel arc-panel-cyan playground-panel playground-panel--config'
   controlPanel.innerHTML = `
-    <div class="arc-panel-header">CONFIG</div>
+    <div class="arc-panel-header">Controlli</div>
     <div class="arc-panel-body showcase-stack" id="pg-controls-body"></div>
     <div class="arc-panel-footer" id="pg-props-footer"></div>
   `
 
   const previewPanel = document.createElement('div')
-  previewPanel.className = 'arc-panel arc-panel-purple'
+  previewPanel.className = 'arc-panel arc-panel-cyan playground-panel playground-panel--preview'
   previewPanel.innerHTML = `
-    <div class="arc-panel-header">PREVIEW</div>
+    <div class="arc-panel-header">Anteprima</div>
     <div class="arc-panel-body">
       <div id="pg-preview" class="showcase-preview-box"></div>
     </div>
@@ -179,16 +179,21 @@ export function renderPlayground(outlet) {
   const preview = previewPanel.querySelector('#pg-preview')
 
   const outputSection = document.createElement('div')
-  outputSection.className = 'arc-panel arc-panel-yellow'
+  outputSection.className = 'arc-panel arc-panel-yellow playground-panel playground-panel--output'
   outputSection.innerHTML = `
-    <div class="arc-panel-header">GENERATED HTML</div>
+    <div class="arc-panel-header">Codice HTML</div>
     <div class="arc-panel-body" id="pg-out-body"></div>
     <div class="arc-panel-footer showcase-output-foot" id="pg-out-foot"></div>
   `
 
+  const lead = document.createElement('p')
+  lead.className = 'playground-lead'
+  lead.textContent = 'Seleziona un componente, poi modifica proprietà qui sotto. L\'output si aggiorna in tempo reale.'
+  bodyRoot.appendChild(lead)
+
   const cmpSelectWrap = document.createElement('div')
   cmpSelectWrap.className = 'arc-input-wrapper'
-  cmpSelectWrap.innerHTML = '<label class="arc-label" for="pg-cmp">COMPONENT</label>'
+  cmpSelectWrap.innerHTML = '<label class="arc-label" for="pg-cmp">COMPONENTE</label>'
   const cmpSelect = document.createElement('select')
   cmpSelect.id = 'pg-cmp'
   cmpSelect.className = 'arc-input arc-select'
@@ -202,7 +207,7 @@ export function renderPlayground(outlet) {
   bodyRoot.appendChild(cmpSelectWrap)
 
   const dynamicMount = document.createElement('div')
-  dynamicMount.className = 'showcase-stack'
+  dynamicMount.className = 'showcase-stack playground-controls-dynamic'
   bodyRoot.appendChild(dynamicMount)
 
   const outBody = outputSection.querySelector('#pg-out-body')
@@ -472,9 +477,9 @@ export function renderPlayground(outlet) {
       return '—'
     })()
     mountPropsTable(propsFooter, [
-      { name: 'component', value: state.component },
-      { name: 'variant / color', value: variantOrColor },
-      { name: 'flags', value: disabledVal },
+      { name: 'componente', value: state.component },
+      { name: 'variante / colore', value: variantOrColor },
+      { name: 'flag', value: disabledVal },
     ])
 
     outBody.replaceChildren()
@@ -487,13 +492,13 @@ export function renderPlayground(outlet) {
     outFoot.replaceChildren()
     const copy = document.createElement('button')
     copy.type = 'button'
-    copy.className = 'arc-btn arc-btn-ghost'
-    copy.textContent = 'COPY HTML'
+    copy.className = 'arc-btn arc-btn-primary playground-copy-html'
+    copy.textContent = 'COPIA MARKUP'
     copy.addEventListener('click', async () => {
       await navigator.clipboard.writeText(html)
-      copy.textContent = 'COPIED'
+      copy.textContent = 'COPIATO'
       window.setTimeout(() => {
-        copy.textContent = 'COPY HTML'
+        copy.textContent = 'COPIA MARKUP'
       }, 1500)
     })
     outFoot.appendChild(copy)

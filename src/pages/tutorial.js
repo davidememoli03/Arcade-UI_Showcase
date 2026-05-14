@@ -143,7 +143,7 @@ export function renderTutorial(outlet) {
   wrap.className = 'page-flow tutorial-page'
 
   const mast = document.createElement('header')
-  mast.className = 'page-head'
+  mast.className = 'page-head tutorial-page-intro'
   mast.innerHTML = `
     <p class="page-kicker">Percorso guidato</p>
     <p class="page-title">Primi passi con Arcade UI</p>
@@ -154,12 +154,13 @@ export function renderTutorial(outlet) {
 
   let index = 0
 
-  function mountStep() {
+  function mountStep(options = {}) {
+    const { scrollIntoView = false } = options
     buildProgress(progress, index, STEPS.length)
 
     const step = STEPS[index]
     const panel = document.createElement('div')
-    panel.className = 'arc-panel arc-panel-cyan'
+    panel.className = 'arc-panel arc-panel-cyan tutorial-step-panel'
     panel.innerHTML = `
       <div class="arc-panel-header"></div>
       <div class="arc-panel-body"></div>
@@ -179,20 +180,26 @@ export function renderTutorial(outlet) {
       goPrev: () => {
         if (index > 0) {
           index -= 1
-          mountStep()
+          mountStep({ scrollIntoView: true })
         }
       },
       goNext: () => {
         if (isLast) index = 0
         else index += 1
-        mountStep()
+        mountStep({ scrollIntoView: true })
       },
       isLast,
     })
 
     wrap.replaceChildren(mast, progress, panel)
+
+    if (scrollIntoView) {
+      requestAnimationFrame(() => {
+        panel.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      })
+    }
   }
 
   outlet.appendChild(wrap)
-  mountStep()
+  mountStep({ scrollIntoView: false })
 }

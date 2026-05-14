@@ -3,13 +3,13 @@ export function mountPropsTable(container, rows) {
   wrap.className = 'arc-table-wrapper arc-table-cyan'
   wrap.innerHTML = `
     <table class="arc-table arc-table-compact">
-      <caption style="caption-side: top; text-align: left; padding: 0.35rem 0; font-family: var(--arc-font-pixel); font-size: 0.65rem;">
-        LIVE CONTROLS
+      <caption class="playground-props-caption">
+        Stato attuale (sola lettura)
       </caption>
       <thead>
         <tr>
-          <th class="arc-table-th">PROPERTY</th>
-          <th class="arc-table-th arc-table-th-num">VALUE</th>
+          <th class="arc-table-th">Proprietà</th>
+          <th class="arc-table-th arc-table-th-num">Valore</th>
         </tr>
       </thead>
       <tbody></tbody>

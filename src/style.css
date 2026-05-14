@@ -524,9 +524,29 @@ body {
   opacity: 0.92;
 }
 
+.playground-props-caption {
+  caption-side: top;
+  text-align: left;
+  padding: 0 0 0.4rem;
+  margin: 0;
+  font-family: var(--arc-font-pixel, monospace);
+  font-size: clamp(0.36rem, 0.9vw + 0.32rem, 0.52rem);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--showcase-magenta);
+}
+
 .tutorial-progress {
   width: 100%;
   flex-shrink: 0;
+  margin: 0;
+  padding: clamp(0.7rem, 2.2vw, 1.05rem) clamp(0.65rem, 2vw, 1rem);
+  box-sizing: border-box;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(0, 245, 255, 0.16);
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 245, 255, 0.05),
+    0 8px 28px rgba(0, 0, 0, 0.28);
 }
 
 .tutorial-progress-meta {
@@ -534,10 +554,10 @@ body {
   justify-content: space-between;
   align-items: baseline;
   flex-wrap: wrap;
-  gap: 0.35rem 1rem;
-  margin-bottom: 0.4rem;
+  gap: 0.35rem 1.15rem;
+  margin: 0 0 0.55rem;
   font-family: var(--arc-font-mono, monospace);
-  font-size: 0.72rem;
+  font-size: clamp(0.7rem, 0.62rem + 0.35vw, 0.8rem);
   color: var(--arc-color-text-muted);
 }
 
@@ -547,8 +567,10 @@ body {
 }
 
 .tutorial-progress-track {
-  height: 3px;
-  background: rgba(0, 245, 255, 0.1);
+  height: 6px;
+  border-radius: 1px;
+  background: rgba(0, 245, 255, 0.12);
+  overflow: hidden;
 }
 
 .tutorial-progress-fill {
@@ -558,51 +580,170 @@ body {
     rgba(255, 0, 127, 0.9),
     rgba(0, 245, 255, 0.75)
   );
-  transition: width 0.2s ease;
+  transition: width 0.24s ease;
+}
+
+.tutorial-page.page-flow {
+  gap: clamp(1.35rem, 4vw, 2.35rem);
+}
+
+.tutorial-page-intro {
+  padding-bottom: clamp(0.75rem, 2vw, 1rem);
+  margin-bottom: 0;
+  border-bottom: 1px solid var(--showcase-line-soft);
+}
+
+.tutorial-page-intro .page-desc {
+  margin-top: 0.45rem;
+}
+
+.tutorial-step-panel {
+  scroll-margin-top: calc(var(--showcase-nav-offset) + 0.75rem);
+}
+
+.tutorial-step-panel .arc-panel-header {
+  letter-spacing: 0.05em;
+}
+
+.tutorial-step-panel .arc-panel-footer {
+  padding-top: clamp(0.75rem, 2.2vw, 1.1rem);
+  border-top: 1px solid rgba(0, 245, 255, 0.12);
 }
 
 .tutorial-page {
   width: 100%;
   max-width: min(52rem, 100%);
   margin: 0 auto;
-  padding: 0 0.08rem;
+  padding: 0;
   box-sizing: border-box;
 }
 
 .tutorial-panel-body-flow.showcase-stack {
-  gap: var(--showcase-gap-stack);
+  gap: clamp(0.95rem, 2.4vw, 1.35rem);
+}
+
+.tutorial-panel-body-flow > p {
+  margin: 0 0 clamp(0.85rem, 2vw, 1.05rem);
+  max-width: var(--showcase-readable);
+  color: var(--arc-color-text-muted, #077);
+  line-height: 1.62;
+}
+
+@media (min-width: 640px) {
+  .tutorial-panel-body-flow > p + .showcase-code-block,
+  .tutorial-panel-body-flow > .showcase-code-block + p {
+    margin-top: 0.15rem;
+  }
 }
 
 .tutorial-foot {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.65rem;
-  align-items: center;
+  gap: 0.65rem 0.85rem;
+  align-items: stretch;
   justify-content: space-between;
+}
+
+.tutorial-foot .arc-btn {
+  min-height: 3rem;
 }
 
 .tutorial-foot:has(.tutorial-foot-next:only-child) {
   justify-content: flex-end;
 }
 
+@media (max-width: 520px) {
+  .tutorial-foot {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .tutorial-foot .arc-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+.playground-page-intro {
+  padding-bottom: clamp(0.65rem, 1.8vw, 0.9rem);
+  margin-bottom: 0;
+  border-bottom: 1px solid var(--showcase-line-soft);
+}
+
+.playground-page-intro .page-desc {
+  margin-top: 0.45rem;
+  max-width: 40rem;
+}
+
 .playground-shell {
   display: flex;
   flex-direction: column;
-  gap: var(--showcase-gap-page);
+  gap: clamp(1.35rem, 3.5vw, 2.05rem);
   width: 100%;
-  max-width: min(920px, 100%);
+  max-width: min(52rem, 100%);
   margin: 0 auto;
+  min-width: 0;
 }
 
-.playground-shell .playground-inner {
-  gap: var(--showcase-gap-stack);
+.playground-shell .playground-stack {
+  gap: clamp(1.35rem, 3.2vw, 2rem);
+}
+
+.playground-lead {
+  margin: 0 0 1rem;
+  padding: 0 0 0.85rem;
+  border-bottom: 1px solid rgba(0, 245, 255, 0.12);
+  color: var(--arc-color-text-muted, #077);
+  font-size: clamp(0.95rem, 0.88rem + 0.35vw, 1.05rem);
+  line-height: 1.55;
+}
+
+.playground-controls-dynamic {
+  gap: clamp(0.75rem, 2vw, 1rem) !important;
+}
+
+.playground-panel .arc-panel-body {
+  min-width: 0;
+}
+
+.playground-panel--config .arc-panel-body {
+  padding-top: clamp(0.85rem, 2vw, 1.1rem);
+}
+
+.playground-panel--preview .showcase-preview-box {
+  min-height: clamp(11rem, 32vh, 18rem);
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.playground-panel--output .arc-panel-body {
+  padding-bottom: 0.85rem;
+}
+
+.playground-top-grid {
+  gap: clamp(1.1rem, 3vw, 1.75rem);
+  align-items: start;
+}
+
+.playground-copy-html {
+  width: 100%;
+  max-width: min(20rem, 100%);
+}
+
+@media (min-width: 480px) {
+  .playground-copy-html {
+    width: auto;
+    max-width: none;
+  }
 }
 
 .showcase-output-foot {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.55rem;
+  padding-top: 0.15rem;
 }
 
 .showcase-page--component > .showcase-breadcrumb:first-of-type {
@@ -1259,12 +1400,31 @@ body {
   font-size: 0.75rem;
   letter-spacing: 0.08em;
   color: var(--arc-color-cyan, #00f5ff);
+  text-decoration: none;
+  cursor: pointer;
   text-shadow:
     0 0 10px var(--arc-color-cyan-glow),
     0 0 24px rgba(0, 245, 255, 0.35);
   white-space: nowrap;
   margin-right: auto;
   flex-shrink: 0;
+  transition:
+    color 0.2s ease,
+    text-shadow 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.showcase-logo:hover {
+  opacity: 0.96;
+  text-shadow:
+    0 0 12px var(--arc-color-cyan-glow),
+    0 0 32px rgba(0, 245, 255, 0.45);
+}
+
+.showcase-logo:focus-visible {
+  outline: 2px solid var(--showcase-magenta, #ff007f);
+  outline-offset: 4px;
+  border-radius: 2px;
 }
 
 @media (max-width: 380px) {

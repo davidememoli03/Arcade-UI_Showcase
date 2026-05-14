@@ -22,7 +22,7 @@ export function createNavbar(container) {
   el.className = 'showcase-nav-outer'
   el.innerHTML = `
     <div class="showcase-nav-inner">
-      <span class="showcase-logo">ARCADE UI</span>
+      <a href="#/home" class="showcase-logo" aria-label="Arcade UI — vai alla home">ARCADE UI</a>
       <button type="button" class="arc-btn arc-btn-ghost showcase-nav-toggle" aria-expanded="false" aria-controls="arcade-nav-links" id="arcade-nav-toggle">
         MENU
       </button>
@@ -75,6 +75,8 @@ export function createNavbar(container) {
     toggle.setAttribute('aria-expanded', 'false')
     nav.classList.remove('is-open')
   }
+
+  el.querySelector('.showcase-logo')?.addEventListener('click', () => closeMobile())
 
   function openMobile() {
     mobileOpen = true
