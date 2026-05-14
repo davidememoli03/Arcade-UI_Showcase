@@ -101,8 +101,21 @@ function buildSnippet(state) {
 }
 
 export function renderPlayground(outlet) {
+  const shell = document.createElement('div')
+  shell.className = 'playground-shell'
+
+  const head = document.createElement('header')
+  head.className = 'page-head'
+  head.innerHTML = `
+    <p class="page-kicker">Playground</p>
+    <p class="page-title">Composer HTML in tempo reale</p>
+    <p class="page-desc">
+      Scegli un tipo di componente, regola proprietà e stato, controlla l'anteprima e copia il markup generato nella sezione gialla.
+    </p>
+  `
+
   const wrap = document.createElement('div')
-  wrap.className = 'showcase-stack'
+  wrap.className = 'showcase-stack playground-inner'
 
   const state = {
     component: 'button',
@@ -170,7 +183,7 @@ export function renderPlayground(outlet) {
   outputSection.innerHTML = `
     <div class="arc-panel-header">GENERATED HTML</div>
     <div class="arc-panel-body" id="pg-out-body"></div>
-    <div class="arc-panel-footer" id="pg-out-foot"></div>
+    <div class="arc-panel-footer showcase-output-foot" id="pg-out-foot"></div>
   `
 
   const cmpSelectWrap = document.createElement('div')
@@ -500,7 +513,9 @@ export function renderPlayground(outlet) {
   wrap.appendChild(grid)
   wrap.appendChild(outputSection)
 
-  outlet.appendChild(wrap)
+  shell.appendChild(head)
+  shell.appendChild(wrap)
+  outlet.appendChild(shell)
   buildDynamicControls()
   sync()
 }

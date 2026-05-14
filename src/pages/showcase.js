@@ -304,16 +304,17 @@ export function renderShowcase(outlet, { navigateTo, showcaseSlug, drawerScrollT
   })
 
   const detail = document.createElement('div')
-  detail.className = 'showcase-detail'
+  detail.className = 'showcase-detail showcase-page'
 
   if (!showcaseSlug) {
+    detail.classList.add('showcase-page--index')
     const intro = document.createElement('div')
-    intro.className = 'arc-panel arc-panel-yellow'
+    intro.className = 'arc-panel arc-panel-yellow showcase-welcome-panel'
     intro.innerHTML = `
       <div class="arc-panel-header">${SHOWCASE_INTRO.title}</div>
       <div class="arc-panel-body">
-        <p class="showcase-blurb" style="margin:0 0 1rem;">${SHOWCASE_INTRO.body}</p>
-        <p class="showcase-blurb" style="margin:0;">Ogni componente ha una pagina con <strong>tutte le varianti e opzioni</strong> raggruppate in sezioni (anteprima + codice).</p>
+        <p class="showcase-blurb">${SHOWCASE_INTRO.body}</p>
+        <p class="showcase-blurb">Ogni componente ha una pagina con <strong>tutte le varianti e opzioni</strong> raggruppate in sezioni (anteprima + codice).</p>
       </div>
     `
     detail.appendChild(intro)
@@ -341,6 +342,7 @@ export function renderShowcase(outlet, { navigateTo, showcaseSlug, drawerScrollT
   else {
     const found = findShowcaseItem(showcaseSlug)
     if (!found) {
+      detail.classList.add('showcase-page--error')
       const err = document.createElement('div')
       err.className = 'arc-panel arc-panel-red'
       err.innerHTML = `
@@ -358,6 +360,7 @@ export function renderShowcase(outlet, { navigateTo, showcaseSlug, drawerScrollT
       detail.appendChild(err)
     }
     else {
+      detail.classList.add('showcase-page--component')
       const navRow = document.createElement('div')
       navRow.className = 'showcase-breadcrumb'
       navRow.innerHTML = `<span class="showcase-bc-part">${found.category.label}</span>

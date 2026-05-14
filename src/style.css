@@ -3,6 +3,10 @@
   --showcase-magenta: #ff007f;
   --showcase-yellow: #ffe600;
   --showcase-nav-offset: calc(5.35rem + env(safe-area-inset-top, 0px));
+  --showcase-readable: min(45rem, 100%);
+  --showcase-gap-page: clamp(1.2rem, 2.85vw, 1.95rem);
+  --showcase-gap-stack: clamp(0.85rem, 2vw, 1.25rem);
+  --showcase-line-soft: rgba(0, 245, 255, 0.18);
 }
 
 *,
@@ -98,6 +102,197 @@ body {
   padding-right: max(env(safe-area-inset-right, 0px), clamp(0.75rem, 3.5vw, 1.25rem));
 }
 
+.page-flow {
+  display: flex;
+  flex-direction: column;
+  gap: var(--showcase-gap-page);
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.page-flow--tight {
+  gap: var(--showcase-gap-stack);
+}
+
+.page-head {
+  margin: 0;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid var(--showcase-line-soft);
+}
+
+.page-head--flush {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.page-head--center {
+  text-align: center;
+}
+
+.page-head--center .page-desc {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.page-kicker {
+  font-family: var(--arc-font-pixel, monospace);
+  font-size: 0.52rem;
+  letter-spacing: 0.14em;
+  color: var(--showcase-magenta);
+  text-transform: uppercase;
+  margin: 0 0 0.4rem;
+  line-height: 1.3;
+}
+
+.page-title {
+  font-family: var(--arc-font-pixel, monospace);
+  font-size: clamp(0.68rem, 1.85vw, 0.82rem);
+  letter-spacing: 0.06em;
+  color: var(--arc-color-cyan, #00f5ff);
+  margin: 0 0 0.5rem;
+  line-height: 1.38;
+  text-shadow:
+    0 0 10px var(--arc-color-cyan-glow, rgba(0, 245, 255, 0.35)),
+    0 0 22px rgba(0, 245, 255, 0.2);
+}
+
+.page-desc {
+  margin: 0;
+  max-width: var(--showcase-readable);
+  color: var(--arc-color-text-muted, #077);
+  font-size: clamp(1rem, 0.88rem + 0.48vw, 1.14rem);
+  line-height: 1.56;
+}
+
+.home-intro {
+  text-align: center;
+  margin: 0 auto;
+  padding: 0 0.35rem;
+  max-width: var(--showcase-readable);
+  color: var(--arc-color-text-muted, #077);
+  font-size: clamp(1.05rem, 0.55rem + 2.2vw, 1.35rem);
+}
+
+.home-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0.15rem 0;
+}
+
+.showcase-inline-code {
+  font-family: var(--arc-font-mono, monospace);
+  font-size: 0.95em;
+}
+
+.showcase-footer-note {
+  font-size: 0.95rem;
+  opacity: 0.92;
+}
+
+.tutorial-progress {
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.tutorial-progress-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.35rem 1rem;
+  margin-bottom: 0.4rem;
+  font-family: var(--arc-font-mono, monospace);
+  font-size: 0.72rem;
+  color: var(--arc-color-text-muted);
+}
+
+.tutorial-progress-meta strong {
+  color: var(--arc-color-text, #00f5ff);
+  letter-spacing: 0.06em;
+}
+
+.tutorial-progress-track {
+  height: 3px;
+  background: rgba(0, 245, 255, 0.1);
+}
+
+.tutorial-progress-fill {
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 0, 127, 0.9),
+    rgba(0, 245, 255, 0.75)
+  );
+  transition: width 0.2s ease;
+}
+
+.tutorial-page {
+  width: 100%;
+  max-width: min(52rem, 100%);
+  margin: 0 auto;
+  padding: 0 0.08rem;
+  box-sizing: border-box;
+}
+
+.tutorial-panel-body-flow.showcase-stack {
+  gap: var(--showcase-gap-stack);
+}
+
+.tutorial-foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tutorial-foot:has(.tutorial-foot-next:only-child) {
+  justify-content: flex-end;
+}
+
+.playground-shell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--showcase-gap-page);
+  width: 100%;
+  max-width: min(920px, 100%);
+  margin: 0 auto;
+}
+
+.playground-shell .playground-inner {
+  gap: var(--showcase-gap-stack);
+}
+
+.showcase-output-foot {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.showcase-page--component > .showcase-breadcrumb:first-of-type {
+  padding-bottom: 0.55rem;
+  margin-bottom: 0.15rem;
+  border-bottom: 1px solid var(--showcase-line-soft);
+}
+
+.showcase-welcome-panel .arc-panel-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+.home-intro-below {
+  margin-top: 0.35rem;
+}
+
+.home-page .showcase-hero-title-wrap {
+  margin: 0.25rem 0 0.65rem;
+}
+
 .showcase-hero-title-wrap {
   width: 100%;
   display: flex;
@@ -125,15 +320,6 @@ body {
   box-sizing: border-box;
 }
 
-.showcase-hero-sub {
-  text-align: center;
-  max-width: 42rem;
-  margin: 0 auto 2rem;
-  color: var(--arc-color-text-muted, #077);
-  font-size: clamp(1.05rem, 0.55rem + 2.2vw, 1.35rem);
-  padding: 0 0.25rem;
-}
-
 .showcase-row {
   display: flex;
   flex-wrap: wrap;
@@ -145,7 +331,7 @@ body {
 
 .showcase-layout {
   display: flex;
-  gap: 1.5rem;
+  gap: clamp(0.95rem, 2.2vw, 1.65rem);
   align-items: flex-start;
   width: 100%;
   max-width: 100%;
@@ -240,7 +426,7 @@ body {
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
-  gap: 1.35rem;
+  gap: var(--showcase-gap-page);
 }
 
 .showcase-side-link-active {
@@ -430,7 +616,7 @@ body {
   }
 
   .showcase-detail {
-    gap: 1.25rem;
+    gap: var(--showcase-gap-stack);
     min-width: 0;
   }
 
@@ -438,10 +624,6 @@ body {
     font-size: 0.74rem;
     padding-right: env(safe-area-inset-right, 0px);
     padding-left: env(safe-area-inset-left, 0px);
-  }
-
-  .showcase-variant {
-    gap: 1rem;
   }
 }
 
@@ -478,7 +660,7 @@ body {
 .showcase-stack {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: var(--showcase-gap-page);
   width: 100%;
   max-width: 100%;
   min-width: 0;
@@ -487,7 +669,7 @@ body {
 .showcase-variant {
   display: flex;
   flex-direction: column;
-  gap: 1.15rem;
+  gap: var(--showcase-gap-stack);
   width: 100%;
   max-width: 100%;
   min-width: 0;
@@ -525,7 +707,7 @@ body {
 .showcase-code-block {
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: var(--showcase-gap-stack);
   margin-top: 0.15rem;
   padding-top: 0.35rem;
   min-width: 0;
@@ -723,18 +905,6 @@ body {
   .showcase-nav-toggle {
     display: none !important;
   }
-}
-
-.showcase-tutorial-steps {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  max-width: min(52rem, 100%);
-  width: 100%;
-  min-width: 0;
-  margin: 0 auto;
-  box-sizing: border-box;
-  padding: 0 0.15rem;
 }
 
 .showcase-tutorial-hidden {
