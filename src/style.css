@@ -594,7 +594,7 @@ body {
   }
 
   .showcase-drawer-details {
-    flex: 1 1 auto;
+    flex: 1 1 0;
     min-height: 0;
     display: flex;
     flex-direction: column;
@@ -604,10 +604,14 @@ body {
   }
 
   .showcase-drawer-scroll {
-    flex: 1 1 auto;
+    flex: 1 1 0;
     min-height: 0;
-    max-height: none;
+    max-height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
     scrollbar-gutter: stable;
+    -webkit-overflow-scrolling: touch;
   }
 }
 
@@ -637,6 +641,14 @@ body {
   .showcase-drawer-scroll {
     max-height: none;
     overflow-y: visible;
+  }
+
+  .showcase-drawer-details[open] .showcase-drawer-scroll {
+    max-height: min(65vh, 22rem);
+    max-height: min(65dvh, 22rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
   }
 
   .showcase-main {
@@ -740,6 +752,8 @@ body {
   padding-top: 0.35rem;
   min-width: 0;
   max-width: 100%;
+  position: relative;
+  z-index: 0;
 }
 
 .showcase-code-toolbar {
@@ -750,7 +764,7 @@ body {
   margin-bottom: 0;
   flex-wrap: wrap;
   position: relative;
-  z-index: 2;
+  z-index: 1;
 }
 
 .showcase-lang-tag {
@@ -829,9 +843,9 @@ body {
   box-sizing: border-box;
   max-width: 100%;
   width: 100%;
-  overflow-x: auto;
-  overflow-y: visible;
-  overscroll-behavior-x: contain;
+  overflow: visible;
+  position: relative;
+  z-index: 3;
 }
 
 @media (max-width: 420px) {
