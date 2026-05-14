@@ -10,6 +10,7 @@
   --showcase-drawer-height: calc(
     100dvh - var(--showcase-nav-offset) - max(0.85rem, env(safe-area-inset-bottom, 0px))
   );
+  --showcase-drawer-scroll-max: calc(var(--showcase-drawer-height) - 0.85rem);
   --showcase-readable: min(45rem, 100%);
   --showcase-gap-page: clamp(1.2rem, 2.85vw, 1.95rem);
   --showcase-gap-stack: clamp(0.85rem, 2vw, 1.25rem);
@@ -606,16 +607,16 @@ body {
   }
 
   .showcase-drawer-scroll {
+    align-self: stretch;
     flex: 1 1 0;
+    flex-basis: 0;
     min-height: 0;
     width: 100%;
-    max-height: 100%;
+    max-height: var(--showcase-drawer-scroll-max);
     overflow-x: hidden;
-    overflow-y: auto;
+    overflow-y: scroll;
     overscroll-behavior: auto;
-    scrollbar-gutter: stable;
     -webkit-overflow-scrolling: touch;
-    touch-action: pan-y;
   }
 }
 
@@ -650,10 +651,9 @@ body {
   .showcase-drawer-details[open] .showcase-drawer-scroll {
     max-height: min(72vh, 34rem);
     max-height: min(72dvh, 34rem);
-    overflow-y: auto;
+    overflow-y: scroll;
     overscroll-behavior: auto;
     -webkit-overflow-scrolling: touch;
-    touch-action: pan-y;
   }
 
   .showcase-main {
