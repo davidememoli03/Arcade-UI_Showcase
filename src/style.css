@@ -21,6 +21,11 @@
   --showcase-viewport-under-nav: calc(
     100dvh - var(--showcase-nav-offset) - max(2rem, env(safe-area-inset-bottom, 0px))
   );
+  /** Riga playground desktop: controlli + anteprima stessa altezza, dentro la viewport. */
+  --playground-top-row-height: min(
+    62dvh,
+    max(14rem, calc(var(--showcase-viewport-under-nav) - clamp(12rem, 28dvh, 20rem)))
+  );
 }
 
 *,
@@ -760,39 +765,52 @@ body {
 
 .playground-controls-dynamic {
   gap: clamp(0.75rem, 2vw, 1rem) !important;
-  flex-shrink: 0;
+  flex: 1 1 0;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 .playground-panel .arc-panel-body {
   min-width: 0;
 }
 
-/* Solo l'anteprima ha tetto viewport: il pannello controlli resta alto naturale
-   così gli input/flex nested non collassano fino ad altezza ~0 dentro max-height+column flex. */
-.playground-panel--config {
+.playground-panel--config,
+.playground-panel--preview {
   display: flex;
   flex-direction: column;
   min-width: 0;
   min-height: 0;
+  overflow: hidden;
 }
 
-.playground-panel--preview {
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-  max-height: max(
-    min(
-      65dvh,
-      calc(var(--showcase-viewport-under-nav) - clamp(11.5rem, 27dvh, 18.5rem))
-    ),
-    12rem
-  );
+@media (max-width: 959px) {
+  /* Pannelli in colonna: tetto compatto così preview + output restano sulla pagina */
+  .playground-top-grid .playground-panel--config,
+  .playground-top-grid .playground-panel--preview {
+    max-height: min(var(--playground-top-row-height), 52dvh);
+    overflow: hidden;
+  }
 }
 
 .playground-panel--config .arc-panel-body {
   padding-top: clamp(0.85rem, 2vw, 1.1rem);
   flex: 1 1 auto;
   min-width: 0;
+  min-height: 0;
+}
+
+.playground-panel--config #pg-controls-body {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.playground-panel--config #pg-controls-body > .playground-lead,
+.playground-panel--config #pg-controls-body > .arc-input-wrapper {
+  flex-shrink: 0;
 }
 
 .playground-panel--preview .arc-panel-body {
@@ -854,18 +872,25 @@ body {
 }
 
 @media (min-width: 960px) {
-  /* Controlli compatti a sinistra, anteprima che occupa la maggior parte della riga */
+  /* Controlli + anteprima: stessa altezza (= altezza riga griglia), sotto viewport */
   .playground-top-grid.showcase-play-grid {
     grid-template-columns: minmax(18rem, 30%) minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
     align-items: stretch;
+    height: var(--playground-top-row-height);
+    max-height: var(--playground-top-row-height);
+    min-height: min(12rem, var(--playground-top-row-height));
   }
 
-  .playground-panel--preview {
-    flex: 1 1 auto;
+  .playground-top-grid.showcase-play-grid > .playground-panel--config,
+  .playground-top-grid.showcase-play-grid > .playground-panel--preview {
+    height: 100%;
+    max-height: 100%;
+    min-height: 0;
   }
 
   .playground-panel--preview .showcase-preview-box {
-    min-height: clamp(11rem, 28vh, 18rem);
+    min-height: 0;
   }
 }
 
