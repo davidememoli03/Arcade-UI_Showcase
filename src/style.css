@@ -17,6 +17,10 @@
   --showcase-line-soft: rgba(0, 245, 255, 0.18);
   /** Allineamento orizzontale barra fisso ↔ colonna contenuto (stesso inset su schermi larghi). */
   --showcase-pad-inline: clamp(0.75rem, 3.5vw, 1.25rem);
+  /** Area verticale sotto navbar e sopra il padding inferiore del main (preview / pannelli lunghi). */
+  --showcase-viewport-under-nav: calc(
+    100dvh - var(--showcase-nav-offset) - max(2rem, env(safe-area-inset-bottom, 0px))
+  );
 }
 
 *,
@@ -157,14 +161,23 @@ body {
 
 .page-title {
   font-family: var(--arc-font-pixel, monospace);
-  font-size: clamp(0.68rem, 1.85vw, 0.82rem);
+  font-size: clamp(0.55rem, 0.48rem + 0.95vw, 0.8rem);
   letter-spacing: 0.06em;
   color: var(--arc-color-cyan, #00f5ff);
   margin: 0 0 0.5rem;
   line-height: 1.38;
+  max-width: 100%;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  text-wrap: balance;
   text-shadow:
     0 0 10px var(--arc-color-cyan-glow, rgba(0, 245, 255, 0.35)),
     0 0 22px rgba(0, 245, 255, 0.2);
+}
+
+.page-head--center .page-title {
+  text-align: center;
 }
 
 .page-desc {
@@ -173,6 +186,8 @@ body {
   color: var(--arc-color-text-muted, #077);
   font-size: clamp(1rem, 0.88rem + 0.48vw, 1.14rem);
   line-height: 1.56;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .home-actions {
@@ -470,6 +485,16 @@ body {
   gap: 0.65rem;
 }
 
+.home-link-row .arc-btn {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-align: center;
+  justify-content: center;
+  font-size: clamp(10px, 0.32rem + 1.35vw, 13px);
+  line-height: 1.35;
+  padding: clamp(8px, 1.25vw + 5px, 14px) clamp(10px, 2vw, 22px);
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .home-hero {
     animation: home-hero-rise 0.82s cubic-bezier(0.22, 1, 0.36, 1) backwards;
@@ -561,6 +586,12 @@ body {
   color: var(--arc-color-text-muted);
 }
 
+.tutorial-progress-meta span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
 .tutorial-progress-meta strong {
   color: var(--arc-color-text, #00f5ff);
   letter-spacing: 0.06em;
@@ -602,10 +633,26 @@ body {
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  max-height: max(
+    min(calc(var(--showcase-viewport-under-nav) - clamp(8rem, 20dvh, 11rem)), 88dvh),
+    14rem
+  );
+}
+
+.tutorial-step-panel .arc-panel-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 .tutorial-step-panel .arc-panel-header {
   letter-spacing: 0.05em;
+  text-wrap: balance;
 }
 
 .tutorial-step-panel .arc-panel-footer {
@@ -719,19 +766,77 @@ body {
   min-width: 0;
 }
 
+.playground-panel--config,
+.playground-panel--preview {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  max-height: max(
+    min(
+      65dvh,
+      calc(var(--showcase-viewport-under-nav) - clamp(11.5rem, 27dvh, 18.5rem))
+    ),
+    12rem
+  );
+}
+
 .playground-panel--config .arc-panel-body {
   padding-top: clamp(0.85rem, 2vw, 1.1rem);
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.playground-panel--preview .arc-panel-body {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .playground-panel--preview .showcase-preview-box {
-  min-height: clamp(12rem, 36vh, 20rem);
+  min-height: clamp(10rem, 26vh, 16rem);
   flex: 1 1 auto;
   align-items: flex-start;
   justify-content: flex-start;
+  min-width: 0;
+  overflow: auto;
+}
+
+.playground-panel--output {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .playground-panel--output .arc-panel-body {
   padding-bottom: 0.85rem;
+  max-height: min(38dvh, 22rem);
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.playground-panel--config .arc-table-wrapper {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.playground-panel--config .arc-table th,
+.playground-panel--config .arc-table td {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+.playground-panel--config .arc-table-th-num,
+.playground-panel--config .arc-table-td-num {
+  white-space: normal;
 }
 
 .playground-top-grid {
@@ -745,26 +850,16 @@ body {
 @media (min-width: 960px) {
   /* Controlli compatti a sinistra, anteprima che occupa la maggior parte della riga */
   .playground-top-grid.showcase-play-grid {
-    grid-template-columns: minmax(15.5rem, 24%) minmax(0, 1fr);
+    grid-template-columns: minmax(18rem, 30%) minmax(0, 1fr);
     align-items: stretch;
   }
 
   .playground-panel--preview {
-    display: flex;
-    flex-direction: column;
-    min-height: min(70vh, 36rem);
-  }
-
-  .playground-panel--preview .arc-panel-body {
     flex: 1 1 auto;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
   }
 
   .playground-panel--preview .showcase-preview-box {
-    flex: 1 1 auto;
-    min-height: clamp(16rem, 42vh, 28rem);
+    min-height: clamp(11rem, 28vh, 18rem);
   }
 }
 
@@ -827,19 +922,29 @@ body {
 
 .showcase-hero-title {
   font-family: var(--arc-font-pixel, monospace);
-  font-size: clamp(1.1rem, 4vw, 2.35rem);
+  font-size: clamp(0.78rem, 2.05vw + 0.42rem, 1.82rem);
   text-align: center;
-  margin: 0;
-  letter-spacing: 0.06em;
-  line-height: 1.35;
+  margin: 0 auto;
+  letter-spacing: 0.05em;
+  line-height: 1.38;
   color: var(--arc-color-cyan, #00f5ff);
   text-shadow:
     0 0 12px var(--arc-color-cyan-glow, rgba(0, 245, 255, 0.45)),
     0 0 28px rgba(0, 245, 255, 0.25);
   display: block;
   width: fit-content;
-  max-width: 100%;
+  max-width: min(100%, 18.5rem);
+  padding-inline: 0.35rem;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  text-wrap: balance;
   box-sizing: border-box;
+}
+
+@supports not (text-wrap: balance) {
+  .showcase-hero-title {
+    max-width: 100%;
+  }
 }
 
 .showcase-row {
@@ -904,15 +1009,17 @@ body {
   list-style: none;
   cursor: pointer;
   font-family: var(--arc-font-pixel, monospace);
-  font-size: clamp(0.52rem, 1.6vw, 0.62rem);
-  letter-spacing: 0.08em;
+  font-size: clamp(0.45rem, 1.35vw + 0.32rem, 0.62rem);
+  letter-spacing: 0.06em;
   color: var(--arc-color-cyan, #00f5ff);
   padding: 0.55rem 0.65rem;
   margin: 0 0 0.5rem;
   border: 1px solid rgba(0, 245, 255, 0.45);
   background: rgba(0, 0, 0, 0.55);
-  line-height: 1.4;
+  line-height: 1.45;
   user-select: none;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .showcase-drawer-summary::-webkit-details-marker {
@@ -948,8 +1055,13 @@ body {
   width: 100%;
   justify-content: flex-start;
   text-align: left;
-  font-size: 0.95rem;
-  padding: 0.35rem 0.5rem;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  font-size: clamp(0.78rem, 0.72rem + 0.42vw, 0.93rem);
+  line-height: 1.42;
+  padding: 0.42rem 0.5rem;
+  min-height: 0;
 }
 
 .showcase-side-link-active {
@@ -990,6 +1102,12 @@ body {
   width: 100%;
   justify-content: center;
   box-sizing: border-box;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-align: center;
+  font-size: clamp(10px, 0.32rem + 1.3vw, 13px);
+  line-height: 1.38;
+  padding: clamp(8px, 1.15vw + 5px, 14px) clamp(10px, 2vw, 18px);
 }
 
 .showcase-index-block {
@@ -1067,6 +1185,50 @@ body {
 
 .showcase-main .arc-panel {
   box-sizing: border-box;
+}
+
+/* Intestazioni pannelli Arcade UI (~24px) ridotte e wrapp per colonne strette */
+.showcase-main .arc-panel-header {
+  font-size: clamp(10px, 0.32rem + 1.55vw, 14px);
+  line-height: 1.42;
+  letter-spacing: 0.07em;
+  margin-bottom: clamp(0.45rem, 1.8vw, 0.85rem);
+  padding-bottom: clamp(0.35rem, 1.2vw, 0.65rem);
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+.showcase-main .arc-panel-header:not(.showcase-card-header) {
+  text-align: center;
+}
+
+.showcase-main .arc-panel-header.showcase-card-header {
+  text-align: left;
+}
+
+/* Pulsanti nei pannelli: multilinea quando serve, padding fluido */
+.showcase-main .arc-panel .arc-btn {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  justify-content: center;
+  text-align: center;
+  line-height: 1.38;
+  font-size: clamp(10px, 0.28rem + 1.45vw, 13px);
+  padding: clamp(7px, 1.05vw + 5px, 14px) clamp(9px, 1.7vw + 5px, 26px);
+}
+
+.showcase-main .arc-panel .arc-btn-sm {
+  font-size: clamp(9px, 0.26rem + 1.15vw, 11px);
+  padding: clamp(5px, 0.75vw + 4px, 9px) clamp(7px, 1.3vw + 4px, 15px);
+  line-height: 1.32;
+}
+
+.showcase-main .arc-panel .arc-btn-lg {
+  font-size: clamp(11px, 0.38rem + 1.55vw, 15px);
+  padding: clamp(11px, 1.85vw + 7px, 18px) clamp(13px, 2.4vw + 8px, 34px);
+  line-height: 1.35;
 }
 
 .showcase-preview-box .arc-table-wrapper {
@@ -1247,6 +1409,11 @@ body {
   font-weight: 600;
   letter-spacing: 0.05em;
   color: var(--showcase-magenta);
+  max-width: 100%;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  text-wrap: balance;
 }
 
 .showcase-variant-desc {
