@@ -724,7 +724,8 @@ body {
 }
 
 .playground-panel--preview .showcase-preview-box {
-  min-height: clamp(11rem, 32vh, 18rem);
+  min-height: clamp(12rem, 36vh, 20rem);
+  flex: 1 1 auto;
   align-items: flex-start;
   justify-content: flex-start;
 }
@@ -739,6 +740,32 @@ body {
   width: 100%;
   max-width: 100%;
   min-width: 0;
+}
+
+@media (min-width: 960px) {
+  /* Controlli compatti a sinistra, anteprima che occupa la maggior parte della riga */
+  .playground-top-grid.showcase-play-grid {
+    grid-template-columns: minmax(15.5rem, 24%) minmax(0, 1fr);
+    align-items: stretch;
+  }
+
+  .playground-panel--preview {
+    display: flex;
+    flex-direction: column;
+    min-height: min(70vh, 36rem);
+  }
+
+  .playground-panel--preview .arc-panel-body {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .playground-panel--preview .showcase-preview-box {
+    flex: 1 1 auto;
+    min-height: clamp(16rem, 42vh, 28rem);
+  }
 }
 
 .playground-panel {
