@@ -1,5 +1,4 @@
 import { mountCodeBlock } from '../components/code-block.js'
-import { mountPropsTable } from '../components/props-table.js'
 import { getLocale } from '../i18n/locale-store.js'
 import { t } from '../i18n/messages.js'
 
@@ -161,11 +160,7 @@ export function renderPlayground(outlet) {
 
   const controlPanel = document.createElement('div')
   controlPanel.className = 'arc-panel arc-panel-cyan playground-panel playground-panel--config'
-  controlPanel.innerHTML = `
-    <div class="arc-panel-header">${t(loc, 'playgroundControls')}</div>
-    <div class="arc-panel-body showcase-stack" id="pg-controls-body"></div>
-    <div class="arc-panel-footer" id="pg-props-footer"></div>
-  `
+  controlPanel.innerHTML = `<div class="arc-panel-body showcase-stack" id="pg-controls-body"></div>`
 
   const previewPanel = document.createElement('div')
   previewPanel.className = 'arc-panel arc-panel-cyan playground-panel playground-panel--preview'
@@ -177,7 +172,6 @@ export function renderPlayground(outlet) {
   `
 
   const bodyRoot = controlPanel.querySelector('#pg-controls-body')
-  const propsFooter = controlPanel.querySelector('#pg-props-footer')
   const preview = previewPanel.querySelector('#pg-preview')
 
   const outputSection = document.createElement('div')
@@ -187,11 +181,6 @@ export function renderPlayground(outlet) {
     <div class="arc-panel-body" id="pg-out-body"></div>
     <div class="arc-panel-footer showcase-output-foot" id="pg-out-foot"></div>
   `
-
-  const lead = document.createElement('p')
-  lead.className = 'playground-lead'
-  lead.textContent = t(loc, 'playgroundLead')
-  bodyRoot.appendChild(lead)
 
   const cmpSelectWrap = document.createElement('div')
   cmpSelectWrap.className = 'arc-input-wrapper'
@@ -461,28 +450,11 @@ export function renderPlayground(outlet) {
 
   function sync() {
     const html = buildSnippet(state)
-    preview.innerHTML = html
-
-    propsFooter.replaceChildren()
-    const variantOrColor = (() => {
-      if (state.component === 'button') return state.btnVariant
-      if (state.component === 'panel') return state.panelColor
-      if (state.component === 'badge') return state.badgeColor
-      if (state.component === 'card') return state.cardAccent
-      if (state.component === 'accordion') return state.accColor
-      return '—'
-    })()
-    const disabledVal = (() => {
-      if (state.component === 'button' || state.component === 'input') return String(state.disabled)
-      if (state.component === 'toggle') return String(state.toggleChecked)
-      if (state.component === 'accordion') return String(state.accOpen)
-      return '—'
-    })()
-    mountPropsTable(propsFooter, [
-      { name: t(getLocale(), 'pgPropComponent'), value: state.component },
-      { name: t(getLocale(), 'pgPropVariant'), value: variantOrColor },
-      { name: t(getLocale(), 'pgPropFlag'), value: disabledVal },
-    ])
+    preview.replaceChildren()
+    const previewInner = document.createElement('div')
+    previewInner.className = 'playground-preview-inner'
+    previewInner.innerHTML = html
+    preview.appendChild(previewInner)
 
     outBody.replaceChildren()
     mountCodeBlock(outBody, {

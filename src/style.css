@@ -754,15 +754,6 @@ body {
   min-width: 0;
 }
 
-.playground-lead {
-  margin: 0 0 1rem;
-  padding: 0 0 0.85rem;
-  border-bottom: 1px solid rgba(0, 245, 255, 0.12);
-  color: var(--arc-color-text-muted, #077);
-  font-size: clamp(0.95rem, 0.88rem + 0.35vw, 1.05rem);
-  line-height: 1.55;
-}
-
 .playground-controls-dynamic {
   gap: clamp(0.75rem, 2vw, 1rem) !important;
   flex: 1 1 0;
@@ -808,7 +799,6 @@ body {
   overflow: hidden;
 }
 
-.playground-panel--config #pg-controls-body > .playground-lead,
 .playground-panel--config #pg-controls-body > .arc-input-wrapper {
   flex-shrink: 0;
 }
@@ -821,12 +811,49 @@ body {
 }
 
 .playground-panel--preview .showcase-preview-box {
+  display: flex;
+  flex-direction: column;
   min-height: clamp(10rem, 26vh, 16rem);
   flex: 1 1 auto;
-  align-items: flex-start;
-  justify-content: flex-start;
   min-width: 0;
   overflow: auto;
+}
+
+.playground-preview-inner {
+  flex: 1 1 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  gap: 1rem;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 0;
+  padding: clamp(0.65rem, 2vw, 1.25rem);
+}
+
+.playground-preview-inner > * {
+  flex-shrink: 0;
+  max-width: 100%;
+}
+
+.playground-preview-inner .arc-panel,
+.playground-preview-inner .arc-card,
+.playground-preview-inner .arc-accordion {
+  width: fit-content;
+  max-width: 100%;
+  align-self: center;
+}
+
+.playground-preview-inner .arc-input-wrapper,
+.playground-preview-inner > .arc-toggle {
+  align-self: stretch;
+  width: 100%;
+}
+
+.playground-preview-inner > .arc-btn {
+  align-self: center;
 }
 
 .playground-panel--output {
@@ -842,25 +869,6 @@ body {
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
-}
-
-.playground-panel--config .arc-table-wrapper {
-  display: block;
-  max-width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-.playground-panel--config .arc-table th,
-.playground-panel--config .arc-table td {
-  overflow-wrap: anywhere;
-  word-break: break-word;
-  hyphens: auto;
-}
-
-.playground-panel--config .arc-table-th-num,
-.playground-panel--config .arc-table-td-num {
-  white-space: normal;
 }
 
 .playground-top-grid {
