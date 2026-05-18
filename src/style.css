@@ -23,8 +23,8 @@
   );
   /** Riga playground desktop: controlli + anteprima stessa altezza, dentro la viewport. */
   --playground-top-row-height: min(
-    62dvh,
-    max(14rem, calc(var(--showcase-viewport-under-nav) - clamp(12rem, 28dvh, 20rem)))
+    70dvh,
+    max(15.5rem, calc(var(--showcase-viewport-under-nav) - clamp(10rem, 24dvh, 18rem)))
   );
 }
 
@@ -781,7 +781,7 @@ body {
   /* Pannelli in colonna: tetto compatto così preview + output restano sulla pagina */
   .playground-top-grid .playground-panel--config,
   .playground-top-grid .playground-panel--preview {
-    max-height: min(var(--playground-top-row-height), 52dvh);
+    max-height: min(var(--playground-top-row-height), 58dvh);
     overflow: hidden;
   }
 }
@@ -813,7 +813,7 @@ body {
 .playground-panel--preview .showcase-preview-box {
   display: flex;
   flex-direction: column;
-  min-height: clamp(10rem, 26vh, 16rem);
+  min-height: clamp(11rem, 30vh, 18rem);
   flex: 1 1 auto;
   min-width: 0;
   overflow: auto;
@@ -887,7 +887,7 @@ body {
     align-items: stretch;
     height: var(--playground-top-row-height);
     max-height: var(--playground-top-row-height);
-    min-height: min(12rem, var(--playground-top-row-height));
+    min-height: min(14rem, var(--playground-top-row-height));
   }
 
   .playground-top-grid.showcase-play-grid > .playground-panel--config,
