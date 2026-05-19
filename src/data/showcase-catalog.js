@@ -528,7 +528,7 @@ const ctrl = arcCountdown(displayEl, {
         navLabel: 'Glitch',
         title: 'Glitch',
         className: '.arc-glitch',
-        blurb: 'Text distortion: class on markup + `initGlitch()` to sync layers; `triggerGlitch()` for a burst.',
+        blurb: 'Text distortion: class on markup + `bindGlitch()` to sync layers (incl. hover mode); `triggerGlitch()` for a burst.',
         storybook: `${SB}/?path=/story/effects-glitch--always-on`,
         previewHtml: `
           <p class="arc-glitch arc-text-neon" data-text="HIGH SCORE" style="font-family:var(--arc-font-pixel);font-size:clamp(0.78rem,2.5vw,1.05rem);margin:0;">HIGH SCORE</p>
@@ -536,8 +536,8 @@ const ctrl = arcCountdown(displayEl, {
         interactive: 'glitch',
         code: `<p class="arc-glitch" data-text="TITLE">TITLE</p>
 
-import { initGlitch, triggerGlitch } from '@davide03memoli/arcade-ui'
-initGlitch(document.body)
+import { bindGlitch, triggerGlitch } from '@davide03memoli/arcade-ui'
+bindGlitch(document.body)
 triggerGlitch(element, 500)`,
         lang: 'javascript',
       },
@@ -600,7 +600,7 @@ triggerGlitch(element, 500)`,
         navLabel: 'AudioManager',
         title: 'Arcade sounds',
         className: 'AudioManager',
-        blurb: 'Synthesized SFX (no MP3 files): `play(\'coin\'|\'select\'| …)` and `bindButtons()` for data attributes on buttons.',
+        blurb: 'Synthesized SFX (no MP3 files): `play(\'coin\'|\'select\'| …)`, volume/mute, and `bindArcadeSounds(root)` for declarative `data-arc-sound-*` (click, pointerdown, hover, focus, success/error) plus default `.arc-btn` mapping. Alias: `bindButtons`.',
         storybook: `${SB}/?path=/story/components-button--primary`,
         previewHtml: `
           <button type="button" class="arc-btn arc-btn-primary" id="sc-audio-coin">coin</button>
@@ -609,7 +609,7 @@ triggerGlitch(element, 500)`,
         code: `import { AudioManager } from '@davide03memoli/arcade-ui'
 const a = AudioManager.getInstance()
 a.play('coin')
-a.bindButtons(document.body)`,
+a.bindArcadeSounds(document.body)`,
         lang: 'javascript',
       },
       {

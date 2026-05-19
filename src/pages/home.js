@@ -5,7 +5,59 @@ import { t } from '../i18n/messages.js'
 const NPM_PKG = '@davide03memoli/arcade-ui'
 const INSTALL = `npm install ${NPM_PKG}`
 
+const DOCS_FRAMEWORK_PARITY =
+  'https://github.com/davidememoli03/Arcade-UI/blob/main/docs/FRAMEWORK-PARITY.md'
+const DOCS_ANGULAR_CONSUMER =
+  'https://github.com/davidememoli03/Arcade-UI/blob/main/docs/angular-consumer.md'
+
+const REACT_SNIPPET = `import '@davide03memoli/arcade-ui/dist/arcade-ui.css'
+import '@davide03memoli/arcade-ui/react'
+import { bindArcadeSounds } from '@davide03memoli/arcade-ui'
+
+// After the app root is in the DOM:
+bindArcadeSounds(document.getElementById('root'))`
+
+const ANGULAR_SNIPPET = `import '@davide03memoli/arcade-ui/dist/arcade-ui.css'
+import { Component } from '@angular/core'
+import { arcadeUiAngularImports, ArcadeAudioService } from '@davide03memoli/arcade-ui/angular'
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [...arcadeUiAngularImports],
+  providers: [ArcadeAudioService],
+  template: \`<button class="arc-btn" arcadeSoundClick="coin">PLAY</button>\`,
+})
+export class AppComponent {}`
+
 const COMPONENT_COUNT = SHOWCASE_CATEGORIES.reduce((n, c) => n + c.items.length, 0)
+
+/** @param {string} text */
+function escapeHtml(text) {
+  return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+}
+
+/**
+ * @param {HTMLButtonElement | null} button
+ * @param {string} snippet
+ * @param {string} resetLabel
+ */
+function bindSnippetCopy(button, snippet, resetLabel) {
+  if (!button) return
+  button.addEventListener('click', async (e) => {
+    const btn = /** @type {HTMLButtonElement} */ (e.currentTarget)
+    try {
+      await navigator.clipboard.writeText(snippet)
+      btn.textContent = t(getLocale(), 'homeCopyInstalled')
+      window.setTimeout(() => {
+        btn.textContent = resetLabel
+      }, 1800)
+    }
+    catch {
+      btn.textContent = t(getLocale(), 'homeCopyFail')
+    }
+  })
+}
 
 function bindHomeRoutes(outlet, navigateTo) {
   outlet.querySelectorAll('[data-home-route]').forEach((el) => {
@@ -100,6 +152,36 @@ export function renderHome(outlet, { navigateTo }) {
         </div>
       </section>
 
+      <section class="home-block home-block--framework" aria-labelledby="home-framework-title">
+        <h2 id="home-framework-title" class="home-block-title">${t(loc, 'homeFrameworkTitle')}</h2>
+        <div class="arc-panel arc-panel-cyan home-stack-panel">
+          <div class="arc-panel-header">${t(loc, 'homeFrameworkPanelHdr')}</div>
+          <div class="arc-panel-body home-framework-body">
+            <p class="home-framework-intro">
+              ${t(loc, 'homeFrameworkIntro')}
+            </p>
+            <div class="home-framework-grid">
+              <div class="home-framework-col">
+                <p class="home-dev-label">${t(loc, 'homeFrameworkReactKicker')}</p>
+                <p class="home-framework-desc">${t(loc, 'homeFrameworkReactDesc')}</p>
+                <pre class="home-install-pre home-framework-pre"><code class="home-install-cmd home-framework-code">${escapeHtml(REACT_SNIPPET)}</code></pre>
+                <button type="button" class="arc-btn arc-btn-primary home-copy-btn" id="home-copy-react">${t(loc, 'homeFrameworkCopyReact')}</button>
+              </div>
+              <div class="home-framework-col">
+                <p class="home-dev-label">${t(loc, 'homeFrameworkAngularKicker')}</p>
+                <p class="home-framework-desc">${t(loc, 'homeFrameworkAngularDesc')}</p>
+                <pre class="home-install-pre home-framework-pre"><code class="home-install-cmd home-framework-code">${escapeHtml(ANGULAR_SNIPPET)}</code></pre>
+                <button type="button" class="arc-btn arc-btn-primary home-copy-btn" id="home-copy-angular">${t(loc, 'homeFrameworkCopyAngular')}</button>
+              </div>
+            </div>
+            <div class="home-framework-docs" role="group" aria-label="${t(loc, 'homeFrameworkTitle')}">
+              <a class="arc-btn arc-btn-ghost home-framework-doc-link" href="${DOCS_FRAMEWORK_PARITY}" target="_blank" rel="noopener noreferrer">${t(loc, 'homeFrameworkDocsParity')}</a>
+              <a class="arc-btn arc-btn-ghost home-framework-doc-link" href="${DOCS_ANGULAR_CONSUMER}" target="_blank" rel="noopener noreferrer">${t(loc, 'homeFrameworkDocsAngular')}</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <nav class="home-link-row" aria-label="${t(loc, 'homeQuickLinksAria')}">
         <a class="arc-btn arc-btn-ghost" href="https://github.com/davidememoli03/Arcade-UI" target="_blank" rel="noopener noreferrer">${t(loc, 'github')}</a>
         <a class="arc-btn arc-btn-ghost" href="https://www.npmjs.com/package/@davide03memoli/arcade-ui" target="_blank" rel="noopener noreferrer">${t(loc, 'npm')}</a>
@@ -123,4 +205,7 @@ export function renderHome(outlet, { navigateTo }) {
       btn.textContent = t(getLocale(), 'homeCopyFail')
     }
   })
+
+  bindSnippetCopy(outlet.querySelector('#home-copy-react'), REACT_SNIPPET, t(loc, 'homeFrameworkCopyReact'))
+  bindSnippetCopy(outlet.querySelector('#home-copy-angular'), ANGULAR_SNIPPET, t(loc, 'homeFrameworkCopyAngular'))
 }

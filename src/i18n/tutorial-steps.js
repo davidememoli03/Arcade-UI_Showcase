@@ -54,7 +54,11 @@ const EN = [
   },
   {
     header: 'STEP 4 // AUDIOMANAGER',
-    paragraphs: [{ html: `<p>SFX are synthesized via Web Audio — no audio assets.</p>` }],
+    paragraphs: [
+      {
+        html: `<p>SFX are synthesized via Web Audio — no audio assets. Use <code class="arc-label" style="display:inline;padding:.1rem .35rem;font-size:.9em;">bindArcadeSounds(root)</code> to wire <code>data-arc-sound-click</code>, <code>data-arc-sound-pointerdown</code>, <code>data-arc-sound-hover</code>, <code>data-arc-sound-focus</code>, success/error events, and default <code>.arc-btn</code> behaviour; or call <code>play('coin' | 'select' | …)</code> from code.</p>`,
+      },
+    ],
     codes: [
       {
         lang: 'javascript',
@@ -64,7 +68,7 @@ const audio = AudioManager.getInstance()
 document.querySelector('#go').addEventListener('click', () => {
   audio.play('select')
 })
-audio.bindButtons(document.body)`,
+audio.bindArcadeSounds(document.body)`,
       },
     ],
     demoButtonId: 'tut-audio',
@@ -75,15 +79,15 @@ audio.bindButtons(document.body)`,
     header: 'STEP 5 // GLITCH EFFECT',
     paragraphs: [
       {
-        html: `<p>The <strong>.arc-glitch</strong>, <strong>initGlitch()</strong>, and optional <strong>triggerGlitch()</strong> use the <strong>data-text</strong> attribute for the distorted layers.</p>`,
+        html: `<p>The <strong>.arc-glitch</strong>, <strong>bindGlitch()</strong>, and optional <strong>triggerGlitch()</strong> use the <strong>data-text</strong> attribute for the distorted layers.</p>`,
       },
     ],
     codes: [
       {
         lang: 'javascript',
-        code: `import { initGlitch, triggerGlitch } from '@davide03memoli/arcade-ui'
+        code: `import { bindGlitch, triggerGlitch } from '@davide03memoli/arcade-ui'
 
-initGlitch(document.body)
+bindGlitch(document.body)
 
 const el = document.querySelector('.arc-glitch')
 triggerGlitch(el, 600)`,
@@ -126,7 +130,11 @@ const IT = [
   },
   {
     header: 'STEP 4 // AUDIOMANAGER',
-    paragraphs: [{ html: `<p>Gli SFX sono sintetizzati in Web Audio: nessun file audio.</p>` }],
+    paragraphs: [
+      {
+        html: `<p>Gli SFX sono sintetizzati in Web Audio: nessun file audio. Usa <code class="arc-label" style="display:inline;padding:.1rem .35rem;font-size:.9em;">bindArcadeSounds(root)</code> per collegare <code>data-arc-sound-click</code>, <code>data-arc-sound-pointerdown</code>, <code>data-arc-sound-hover</code>, <code>data-arc-sound-focus</code>, eventi success/error sul DOM e il comportamento predefinito dei <code>.arc-btn</code>; oppure chiama <code>play('coin' | 'select' | …)</code> da JS.</p>`,
+      },
+    ],
     codes: EN[3].codes,
     demoButtonId: 'tut-audio',
     demoInnerHtml:
@@ -136,7 +144,7 @@ const IT = [
     header: 'STEP 5 // EFFETTO GLITCH',
     paragraphs: [
       {
-        html: `<p>La classe <strong>.arc-glitch</strong>, <strong>initGlitch()</strong> e (opzionale) <strong>triggerGlitch()</strong> usano l'attributo <strong>data-text</strong> per i livelli distorti.</p>`,
+        html: `<p>La classe <strong>.arc-glitch</strong>, <strong>bindGlitch()</strong> e (opzionale) <strong>triggerGlitch()</strong> usano l'attributo <strong>data-text</strong> per i livelli distorti.</p>`,
       },
     ],
     codes: EN[4].codes,

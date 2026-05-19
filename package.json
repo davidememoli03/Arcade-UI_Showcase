@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@davide03memoli/arcade-ui": "^4.1.0"
+    "@davide03memoli/arcade-ui": "^5.6.0"
   },
   "devDependencies": {
     "vite": "^6.0.0"

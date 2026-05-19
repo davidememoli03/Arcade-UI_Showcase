@@ -479,12 +479,12 @@ arcSprite.init(document.querySelector('.arc-sprite'))?.play()`,
     },
     {
       title: 'Burst (JS)',
-      description: 'initGlitch(root) + triggerGlitch(el, ms)',
+      description: 'bindGlitch(root) + triggerGlitch(el, ms)',
       previewHtml: `<div style="display:flex;flex-direction:column;align-items:center;gap:1rem;width:100%;">
 <p class="arc-glitch arc-text-neon" data-text="PULSE" style="font-family:var(--arc-font-pixel);font-size:clamp(0.78rem,2.5vw,1.05rem);margin:0;">PULSE</p>
 <button type="button" class="arc-btn arc-btn-ghost" id="sc-glitch-cmp-glitch">Trigger</button></div>`,
-      code: `import { initGlitch, triggerGlitch } from '@davide03memoli/arcade-ui'
-initGlitch(document.body)
+      code: `import { bindGlitch, triggerGlitch } from '@davide03memoli/arcade-ui'
+bindGlitch(document.body)
 triggerGlitch(el, 500)`,
       lang: 'javascript',
     },
@@ -562,7 +562,7 @@ a.play('select')
 a.setVolume(0.5)
 a.mute() / a.unmute()
 
-a.bindButtons(document.body)`,
+a.bindArcadeSounds(document.body)`,
       lang: 'javascript',
     },
   ],

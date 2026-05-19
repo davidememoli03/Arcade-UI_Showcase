@@ -118,7 +118,7 @@ export const SHOWCASE_ITEM_IT = {
   "cmp-glitch": {
     "navLabel": "Glitch",
     "title": "Glitch",
-    "blurb": "Distorsione su testo: classe sul markup + `initGlitch()` per sincronizzare i layer; `triggerGlitch()` per un burst."
+    "blurb": "Distorsione su testo: classe sul markup + `bindGlitch()` per sincronizzare i layer (anche hover); `triggerGlitch()` per un burst."
   },
   "cmp-pixel-border": {
     "navLabel": "Bordo pixel",
@@ -143,7 +143,7 @@ export const SHOWCASE_ITEM_IT = {
   "cmp-audio": {
     "navLabel": "AudioManager",
     "title": "Suoni arcade",
-    "blurb": "SFX sintetizzati (nessun MP3): `play('coin'|'select'|… )` e `bindButtons()` per i data-attribute sui bottoni."
+    "blurb": "SFX sintetizzati (nessun MP3): `play('coin'|'select'|… )`, volume/mute e `bindArcadeSounds(root)` per i `data-arc-sound-*` (click, pointerdown, hover, focus, success/error) e il mapping predefinito su `.arc-btn`. Alias: `bindButtons`."
   },
   "cmp-toast": {
     "navLabel": "Toast",

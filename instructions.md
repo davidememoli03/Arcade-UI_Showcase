@@ -21,9 +21,11 @@ Le classi principali da usare nel sito sono:
 | Bottoni | `arc-btn arc-btn-primary` / `arc-btn-secondary` / `arc-btn-ghost` |
 | Pannelli | `arc-panel arc-panel-cyan` con figli `arc-panel-header`, `arc-panel-body`, `arc-panel-footer` |
 | Input | `arc-input` con wrapper `arc-input-wrapper` e `arc-label` |
-| Effetti JS | `AudioManager`, effetto `glitch` |
+| Effetti JS | `AudioManager.bindArcadeSounds()` (`bindButtons` è alias), `bindGlitch()`, `arcModal`, `arcToast`, … |
 
 Colori neon del design system: cyan `#00f5ff`, magenta `#ff007f`, yellow `#ffe600`.
+
+Showcase pensato per **`@davide03memoli/arcade-ui` v5.6.x** ([repo Arcade-UI](https://github.com/davidememoli03/Arcade-UI), [Storybook](https://davidememoli03.github.io/Arcade-UI/)).
 
 ---
 

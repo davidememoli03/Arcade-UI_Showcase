@@ -1,5 +1,5 @@
 import { mountCodeBlock } from '../components/code-block.js'
-import { AudioManager, initGlitch, triggerGlitch } from '@davide03memoli/arcade-ui'
+import { AudioManager, bindGlitch, triggerGlitch } from '@davide03memoli/arcade-ui'
 import { getLocale } from '../i18n/locale-store.js'
 import { getTutorialBlueprint } from '../i18n/tutorial-steps.js'
 import { tf, t } from '../i18n/messages.js'
@@ -90,7 +90,7 @@ function renderStepBody(stepIndex, /** @type HTMLElement */ body) {
     demo.className = 'showcase-preview-box'
     demo.innerHTML = step.demoGlitchWrapHtml.trim()
     frag.appendChild(demo)
-    initGlitch(demo)
+    bindGlitch(demo)
     demo.querySelector(`#${step.demoGlitchBurstId}`)?.addEventListener('click', () => {
       const el = demo.querySelector('.arc-glitch')
       if (el) triggerGlitch(el, 550)

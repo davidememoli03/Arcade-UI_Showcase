@@ -208,7 +208,7 @@ export const SHOWCASE_VARIANTS_EN = {
     },
     {
       title: 'Burst (JS)',
-      description: 'initGlitch(root) + triggerGlitch(el, ms)',
+      description: 'bindGlitch(root) + triggerGlitch(el, ms)',
     },
   ],
   'cmp-pixel-border': [

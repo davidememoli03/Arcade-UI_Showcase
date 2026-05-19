@@ -1,11 +1,11 @@
 import '@davide03memoli/arcade-ui/dist/arcade-ui.css'
 import {
   arcModal,
-  AudioManager,
+  bindArcadeSounds,
   bindArcDisplays,
+  bindGlitch,
   bindSliders,
   bindTabs,
-  initGlitch,
 } from '@davide03memoli/arcade-ui'
 import './style.css'
 import { createNavbar } from './components/navbar.js'
@@ -13,8 +13,7 @@ import { createRouter } from './router.js'
 import { initLocaleDocument, subscribeLocale, getLocale } from './i18n/locale-store.js'
 import { syncDocumentTitle } from './i18n/messages.js'
 
-const audio = AudioManager.getInstance()
-audio.bindButtons(document.body)
+bindArcadeSounds(document.body)
 
 initLocaleDocument()
 syncDocumentTitle(getLocale())
@@ -34,8 +33,8 @@ const navMount = document.getElementById('nav-mount')
 const { apply } = createRouter({
   outlet,
   onAfterNavigate() {
-    audio.bindButtons(outlet)
-    initGlitch(outlet)
+    bindArcadeSounds(outlet)
+    bindGlitch(outlet)
     bindTabs(outlet)
     bindSliders(outlet)
     bindArcDisplays(outlet)

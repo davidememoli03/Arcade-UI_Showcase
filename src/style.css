@@ -482,6 +482,81 @@ body {
   justify-content: center;
 }
 
+.home-framework-body {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 2.5vw, 1.35rem);
+  padding-top: 0.05rem;
+}
+
+.home-framework-intro {
+  margin: 0;
+  max-width: var(--showcase-readable);
+  color: var(--arc-color-text-muted, #077);
+  font-size: clamp(0.96rem, 0.88rem + 0.42vw, 1.08rem);
+  line-height: 1.56;
+}
+
+.home-framework-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(1.25rem, 3vw, 1.75rem);
+  width: 100%;
+  align-items: stretch;
+}
+
+@media (min-width: 52rem) {
+  .home-framework-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.home-framework-col {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: clamp(0.55rem, 1.8vw, 0.85rem);
+  text-align: start;
+  min-width: 0;
+}
+
+.home-framework-col .home-dev-label {
+  align-self: flex-start;
+}
+
+.home-framework-desc {
+  margin: 0;
+  font-size: 0.93rem;
+  line-height: 1.52;
+  color: var(--arc-color-text-muted, #077);
+}
+
+.home-framework-pre {
+  max-width: none;
+  margin-inline: 0;
+}
+
+.home-framework-code {
+  font-size: clamp(0.78rem, 0.68rem + 0.55vw, 0.92rem) !important;
+  line-height: 1.5;
+}
+
+.home-framework-docs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  justify-content: center;
+  padding-top: 0.25rem;
+}
+
+.home-framework-doc-link {
+  flex: 1 1 auto;
+  min-width: min(100%, 12rem);
+  text-align: center;
+  justify-content: center;
+  font-size: clamp(10px, 0.3rem + 1.25vw, 12px);
+}
+
 .home-link-row {
   display: flex;
   flex-wrap: wrap;
@@ -512,12 +587,17 @@ body {
   .home-block--dev .home-stack-panel {
     animation: home-card-rise 0.72s cubic-bezier(0.22, 1, 0.36, 1) 0.14s backwards;
   }
+
+  .home-block--framework .home-stack-panel {
+    animation: home-card-rise 0.72s cubic-bezier(0.22, 1, 0.36, 1) 0.2s backwards;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .home-hero,
   .home-block--routes .home-stack-panel,
-  .home-block--dev .home-stack-panel {
+  .home-block--dev .home-stack-panel,
+  .home-block--framework .home-stack-panel {
     animation: none !important;
   }
 }

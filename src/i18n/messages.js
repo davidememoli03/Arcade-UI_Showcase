@@ -72,6 +72,20 @@ const MSG = /** @type {const} */ ({
     homeCopyInstalled: 'DONE!',
     homeCopyFail: 'COPY FAILED',
     homeQuickLinksAria: 'Quick links',
+    homeFrameworkTitle: 'React & Angular',
+    homeFrameworkIntro:
+      'The same CSS and declarative hooks work in SPA frameworks: TypeScript JSX augmentation (React) and optional directives plus services (Angular). Import paths are documented in the library repo.',
+    homeFrameworkReactKicker: 'React',
+    homeFrameworkReactDesc:
+      'Import `@davide03memoli/arcade-ui/react` once so `data-*` props on native elements are typed; keep importing the main bundle for CSS and `bindArcadeSounds`, `bindGlitch`, `bindTabs`, etc. after mount.',
+    homeFrameworkAngularKicker: 'Angular',
+    homeFrameworkAngularDesc:
+      'Use the secondary entry `@davide03memoli/arcade-ui/angular` for `arcadeUiAngularImports`, `ArcadeAudioService`, glitch and theme directives — map `data-arc-sound-*` to `arcadeSoundClick` and similar inputs in templates.',
+    homeFrameworkCopyReact: 'COPY REACT SNIPPET',
+    homeFrameworkCopyAngular: 'COPY ANGULAR SNIPPET',
+    homeFrameworkPanelHdr: 'Secondary entries & bootstrap',
+    homeFrameworkDocsParity: 'Framework parity (mapping HTML ↔ React ↔ Angular)',
+    homeFrameworkDocsAngular: 'Angular consumer guide',
     codeCopy: 'COPY',
     codeCopied: 'COPIED',
     codeCopyErr: 'ERR',
@@ -154,6 +168,20 @@ const MSG = /** @type {const} */ ({
     homeCopyInstalled: 'COPIATO!',
     homeCopyFail: 'COPY FALLITO',
     homeQuickLinksAria: 'Collegamenti rapidi',
+    homeFrameworkTitle: 'React e Angular',
+    homeFrameworkIntro:
+      'Stessi CSS e stessi hook dichiarativi nelle SPA: augmentation TypeScript per JSX (React) e directive + servizi opzionali (Angular). I percorsi di import sono descritti nel repo della libreria.',
+    homeFrameworkReactKicker: 'React',
+    homeFrameworkReactDesc:
+      'Importa `@davide03memoli/arcade-ui/react` una volta per tipizzare le prop `data-*` sugli elementi nativi; continua a importare il bundle principale per il CSS e per `bindArcadeSounds`, `bindGlitch`, `bindTabs`, ecc. dopo il mount.',
+    homeFrameworkAngularKicker: 'Angular',
+    homeFrameworkAngularDesc:
+      'Usa la entry secondaria `@davide03memoli/arcade-ui/angular` per `arcadeUiAngularImports`, `ArcadeAudioService`, directive per glitch/tema — nei template `arcadeSoundClick` e gli altri input mappano gli attributi `data-arc-sound-*`.',
+    homeFrameworkCopyReact: 'COPIA SNIPPET REACT',
+    homeFrameworkCopyAngular: 'COPIA SNIPPET ANGULAR',
+    homeFrameworkPanelHdr: 'Entry secondarie e bootstrap',
+    homeFrameworkDocsParity: 'Framework parity (tabella HTML ↔ React ↔ Angular)',
+    homeFrameworkDocsAngular: 'Guida consumer Angular',
     codeCopy: 'COPIA',
     codeCopied: 'COPIATO',
     codeCopyErr: 'ERR',
